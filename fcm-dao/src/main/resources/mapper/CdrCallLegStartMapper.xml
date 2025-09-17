@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.CdrCallLegStartMapper">
+    
+    <resultMap type="CdrCallLegStart" id="CdrCallLegStartResult">
+        <result property="cdrId"    column="cdr_id"    />
+        <result property="id"    column="id"    />
+        <result property="session"    column="session"    />
+        <result property="callBridge"    column="call_bridge"    />
+        <result property="recordIndex"    column="record_index"    />
+        <result property="correlatorIndex"    column="correlator_index"    />
+        <result property="displayName"    column="display_name"    />
+        <result property="localAddress"    column="local_address"    />
+        <result property="remoteAddress"    column="remote_address"    />
+        <result property="remoteParty"    column="remote_party"    />
+        <result property="cdrTag"    column="cdr_tag"    />
+        <result property="guestConnection"    column="guest_connection"    />
+        <result property="recording"    column="recording"    />
+        <result property="streaming"    column="streaming"    />
+        <result property="type"    column="type"    />
+        <result property="subType"    column="sub_type"    />
+        <result property="lyncSubType"    column="lync_sub_type"    />
+        <result property="direction"    column="direction"    />
+        <result property="call"    column="call_id"    />
+        <result property="ownerId"    column="owner_id"    />
+        <result property="sipCallId"    column="sip_call_id"    />
+        <result property="groupId"    column="group_id"    />
+        <result property="replacesSipCallId"    column="replaces_sip_call_id"    />
+        <result property="canMove"    column="can_move"    />
+        <result property="movedCallLeg"    column="moved_call_leg"    />
+        <result property="movedCallLegCallBridge"    column="moved_call_leg_call_bridge"    />
+        <result property="time"    column="time"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="createUserId"    column="create_user_id"    />
+        <result property="createUserName"    column="create_user_name"    />
+    </resultMap>
+
+    <sql id="selectCdrCallLegStartVo">
+        select cdr_id, id, session, call_bridge, record_index, correlator_index, display_name, local_address, remote_address, remote_party, cdr_tag, guest_connection, recording, streaming, type, sub_type, lync_sub_type, direction, call_id, owner_id, sip_call_id, group_id, replaces_sip_call_id, can_move, moved_call_leg, moved_call_leg_call_bridge, time from cdr_call_leg_start
+    </sql>
+
+    <select id="selectCdrCallLegStartList" parameterType="CdrCallLegStart" resultMap="CdrCallLegStartResult">
+        <include refid="selectCdrCallLegStartVo"/>
+        <where>
+            <if test="cdrId != null  and cdrId != ''"> and cdr_id = #{cdrId}</if>
+            <if test="session != null  and session != ''"> and session = #{session}</if>
+            <if test="callBridge != null  and callBridge != ''"> and call_bridge = #{callBridge}</if>
+            <if test="recordIndex != null "> and record_index = #{recordIndex}</if>
+            <if test="correlatorIndex != null "> and correlator_index = #{correlatorIndex}</if>
+            <if test="displayName != null  and displayName != ''"> and display_name like concat('%', #{displayName}, '%')</if>
+            <if test="localAddress != null  and localAddress != ''"> and local_address = #{localAddress}</if>
+            <if test="remoteAddress != null  and remoteAddress != ''"> and remote_address = #{remoteAddress}</if>
+            <if test="remoteParty != null  and remoteParty != ''"> and remote_party = #{remoteParty}</if>
+            <if test="cdrTag != null  and cdrTag != ''"> and cdr_tag = #{cdrTag}</if>
+            <if test="guestConnection != null "> and guest_connection = #{guestConnection}</if>
+            <if test="recording != null "> and recording = #{recording}</if>
+            <if test="streaming != null "> and streaming = #{streaming}</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="subType != null  and subType != ''"> and sub_type = #{subType}</if>
+            <if test="lyncSubType != null  and lyncSubType != ''"> and lync_sub_type = #{lyncSubType}</if>
+            <if test="direction != null  and direction != ''"> and direction = #{direction}</if>
+            <if test="call != null  and call != ''"> and call_id = #{call}</if>
+            <if test="ownerId != null  and ownerId != ''"> and owner_id = #{ownerId}</if>
+            <if test="sipCallId != null  and sipCallId != ''"> and sip_call_id = #{sipCallId}</if>
+            <if test="groupId != null  and groupId != ''"> and group_id = #{groupId}</if>
+            <if test="replacesSipCallId != null  and replacesSipCallId != ''"> and replaces_sip_call_id = #{replacesSipCallId}</if>
+            <if test="canMove != null "> and can_move = #{canMove}</if>
+            <if test="movedCallLeg != null  and movedCallLeg != ''"> and moved_call_leg = #{movedCallLeg}</if>
+            <if test="movedCallLegCallBridge != null  and movedCallLegCallBridge != ''"> and moved_call_leg_call_bridge = #{movedCallLegCallBridge}</if>
+            <if test="time != null "> and time = #{time}</if>
+        </where>
+    </select>
+    
+    <select id="selectCdrCallLegStartById" parameterType="Integer" resultMap="CdrCallLegStartResult">
+        <include refid="selectCdrCallLegStartVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectCdrCallLegStartByRecordIndex" resultMap="CdrCallLegStartResult">
+        <include refid="selectCdrCallLegStartVo"/>
+        <where>
+            <if test="cdrId != null "> and cdr_id = #{cdrId}</if>
+            <if test="recordIndex != null "> and record_index = #{recordIndex}</if>
+            <if test="correlatorIndex != null "> and correlator_index = #{correlatorIndex}</if>
+        </where>
+    </select>
+        
+    <insert id="insertCdrCallLegStart" parameterType="CdrCallLegStart">
+        insert into cdr_call_leg_start
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="cdrId != null">cdr_id,</if>
+            <if test="id != null">id,</if>
+            <if test="session != null">session,</if>
+            <if test="callBridge != null">call_bridge,</if>
+            <if test="recordIndex != null">record_index,</if>
+            <if test="correlatorIndex != null">correlator_index,</if>
+            <if test="displayName != null">display_name,</if>
+            <if test="localAddress != null">local_address,</if>
+            <if test="remoteAddress != null">remote_address,</if>
+            <if test="remoteParty != null">remote_party,</if>
+            <if test="cdrTag != null">cdr_tag,</if>
+            <if test="guestConnection != null">guest_connection,</if>
+            <if test="recording != null">recording,</if>
+            <if test="streaming != null">streaming,</if>
+            <if test="type != null">type,</if>
+            <if test="subType != null">sub_type,</if>
+            <if test="lyncSubType != null">lync_sub_type,</if>
+            <if test="direction != null">direction,</if>
+            <if test="call != null">call_id,</if>
+            <if test="ownerId != null">owner_id,</if>
+            <if test="sipCallId != null">sip_call_id,</if>
+            <if test="groupId != null">group_id,</if>
+            <if test="replacesSipCallId != null">replaces_sip_call_id,</if>
+            <if test="canMove != null">can_move,</if>
+            <if test="movedCallLeg != null">moved_call_leg,</if>
+            <if test="movedCallLegCallBridge != null">moved_call_leg_call_bridge,</if>
+            <if test="time != null">time,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="createUserId != null">create_user_id,</if>
+            <if test="createUserName != null">create_user_name,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="cdrId != null">#{cdrId},</if>
+            <if test="id != null">#{id},</if>
+            <if test="session != null">#{session},</if>
+            <if test="callBridge != null">#{callBridge},</if>
+            <if test="recordIndex != null">#{recordIndex},</if>
+            <if test="correlatorIndex != null">#{correlatorIndex},</if>
+            <if test="displayName != null">#{displayName},</if>
+            <if test="localAddress != null">#{localAddress},</if>
+            <if test="remoteAddress != null">#{remoteAddress},</if>
+            <if test="remoteParty != null">#{remoteParty},</if>
+            <if test="cdrTag != null">#{cdrTag},</if>
+            <if test="guestConnection != null">#{guestConnection},</if>
+            <if test="recording != null">#{recording},</if>
+            <if test="streaming != null">#{streaming},</if>
+            <if test="type != null">#{type},</if>
+            <if test="subType != null">#{subType},</if>
+            <if test="lyncSubType != null">#{lyncSubType},</if>
+            <if test="direction != null">#{direction},</if>
+            <if test="call != null">#{call},</if>
+            <if test="ownerId != null">#{ownerId},</if>
+            <if test="sipCallId != null">#{sipCallId},</if>
+            <if test="groupId != null">#{groupId},</if>
+            <if test="replacesSipCallId != null">#{replacesSipCallId},</if>
+            <if test="canMove != null">#{canMove},</if>
+            <if test="movedCallLeg != null">#{movedCallLeg},</if>
+            <if test="movedCallLegCallBridge != null">#{movedCallLegCallBridge},</if>
+            <if test="time != null">#{time},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="createUserId != null">#{createUserId},</if>
+            <if test="createUserName != null">#{createUserName},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCdrCallLegStart" parameterType="CdrCallLegStart">
+        update cdr_call_leg_start
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="cdrId != null">cdr_id = #{cdrId},</if>
+            <if test="session != null">session = #{session},</if>
+            <if test="callBridge != null">call_bridge = #{callBridge},</if>
+            <if test="recordIndex != null">record_index = #{recordIndex},</if>
+            <if test="correlatorIndex != null">correlator_index = #{correlatorIndex},</if>
+            <if test="displayName != null">display_name = #{displayName},</if>
+            <if test="localAddress != null">local_address = #{localAddress},</if>
+            <if test="remoteAddress != null">remote_address = #{remoteAddress},</if>
+            <if test="remoteParty != null">remote_party = #{remoteParty},</if>
+            <if test="cdrTag != null">cdr_tag = #{cdrTag},</if>
+            <if test="guestConnection != null">guest_connection = #{guestConnection},</if>
+            <if test="recording != null">recording = #{recording},</if>
+            <if test="streaming != null">streaming = #{streaming},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="subType != null">sub_type = #{subType},</if>
+            <if test="lyncSubType != null">lync_sub_type = #{lyncSubType},</if>
+            <if test="direction != null">direction = #{direction},</if>
+            <if test="call != null">call_id = #{call},</if>
+            <if test="ownerId != null">owner_id = #{ownerId},</if>
+            <if test="sipCallId != null">sip_call_id = #{sipCallId},</if>
+            <if test="groupId != null">group_id = #{groupId},</if>
+            <if test="replacesSipCallId != null">replaces_sip_call_id = #{replacesSipCallId},</if>
+            <if test="canMove != null">can_move = #{canMove},</if>
+            <if test="movedCallLeg != null">moved_call_leg = #{movedCallLeg},</if>
+            <if test="movedCallLegCallBridge != null">moved_call_leg_call_bridge = #{movedCallLegCallBridge},</if>
+            <if test="time != null">time = #{time},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="createUserId != null">create_user_id = #{createUserId},</if>
+            <if test="createUserName != null">create_user_name = #{createUserName},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <update id="updateByCallLegId" parameterType="CdrCallLegStart">
+        update cdr_call_leg_start
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="session != null">session = #{session},</if>
+            <if test="callBridge != null">call_bridge = #{callBridge},</if>
+            <if test="recordIndex != null">record_index = #{recordIndex},</if>
+            <if test="correlatorIndex != null">correlator_index = #{correlatorIndex},</if>
+            <if test="displayName != null">display_name = #{displayName},</if>
+            <if test="localAddress != null">local_address = #{localAddress},</if>
+            <if test="remoteAddress != null">remote_address = #{remoteAddress},</if>
+            <if test="remoteParty != null">remote_party = #{remoteParty},</if>
+            <if test="cdrTag != null">cdr_tag = #{cdrTag},</if>
+            <if test="guestConnection != null">guest_connection = #{guestConnection},</if>
+            <if test="recording != null">recording = #{recording},</if>
+            <if test="streaming != null">streaming = #{streaming},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="subType != null">sub_type = #{subType},</if>
+            <if test="lyncSubType != null">lync_sub_type = #{lyncSubType},</if>
+            <if test="direction != null">direction = #{direction},</if>
+            <if test="call != null">call_id = #{call},</if>
+            <if test="ownerId != null">owner_id = #{ownerId},</if>
+            <if test="sipCallId != null">sip_call_id = #{sipCallId},</if>
+            <if test="groupId != null">group_id = #{groupId},</if>
+            <if test="replacesSipCallId != null">replaces_sip_call_id = #{replacesSipCallId},</if>
+            <if test="canMove != null">can_move = #{canMove},</if>
+            <if test="movedCallLeg != null">moved_call_leg = #{movedCallLeg},</if>
+            <if test="movedCallLegCallBridge != null">moved_call_leg_call_bridge = #{movedCallLegCallBridge},</if>
+            <if test="time != null">time = #{time},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="createUserId != null">create_user_id = #{createUserId},</if>
+            <if test="createUserName != null">create_user_name = #{createUserName},</if>
+        </trim>
+        where cdr_id = #{cdrId}
+    </update>
+
+    <delete id="deleteCdrCallLegStartById" parameterType="Integer">
+        delete from cdr_call_leg_start where id = #{id}
+    </delete>
+
+    <delete id="deleteCdrCallLegStartByIds" parameterType="String">
+        delete from cdr_call_leg_start where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectCallLegStartListForConferenceTerminalById" resultMap="CdrCallLegStartResult">
+        select a.cdr_id, a.id, a.session, a.call_bridge, a.record_index, a.correlator_index, a.display_name, a.local_address, a.remote_address, a.remote_party, a.cdr_tag, a.guest_connection, a.recording, a.streaming, a.type, a.sub_type, a.lync_sub_type, a.direction, a.call_id, a.owner_id, a.sip_call_id, a.group_id, a.replaces_sip_call_id, a.can_move, a.moved_call_leg, a.moved_call_leg_call_bridge, a.time
+        from cdr_call_leg_start a
+        inner join busi_history_participant p on p.call_leg_id = a.cdr_id
+        inner join busi_history_participant_terminal pt on pt.terminal_id = p.terminal_id and pt.terminal_id = #{terminalId} and pt.history_conference_id = #{historyConferenceId}
+        order by a.id desc
+        limit 1
+    </select>
+
+    <select id="selectCallLegStartListForConferenceTerminalByRemoteParty" resultMap="CdrCallLegStartResult">
+        select a.cdr_id, a.id, a.session, a.call_bridge, a.record_index, a.correlator_index, a.display_name, a.local_address, a.remote_address, a.remote_party, a.cdr_tag, a.guest_connection, a.recording, a.streaming, a.type, a.sub_type, a.lync_sub_type, a.direction, a.call_id, a.owner_id, a.sip_call_id, a.group_id, a.replaces_sip_call_id, a.can_move, a.moved_call_leg, a.moved_call_leg_call_bridge, a.time
+        from cdr_call_leg_start a
+        inner join busi_history_participant p on p.call_leg_id = a.cdr_id
+        inner join busi_history_participant_terminal pt on pt.remote_party = p.remote_party and pt.remote_party = #{remoteParty} and pt.history_conference_id = #{historyConferenceId}
+        order by a.id desc
+        limit 1
+    </select>
+
+    <delete id="deleteHistory">
+        delete from cdr_call_leg_start where create_time &lt; #{beforeDate}
+    </delete>
+</mapper>

@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiSmc2DeptTemplateMapper">
+    
+    <resultMap type="com.paradisecloud.fcm.dao.model.BusiSmc2DeptTemplate" id="BusiSmc2DeptTemplateResult">
+        <result property="id"    column="id"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="smcTemplateId"    column="smc_template_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="templateName"    column="template_name"    />
+        <result property="duration"    column="duration"    />
+        <result property="type"    column="type"    />
+        <result property="rate"    column="rate"    />
+        <result property="supportLive"    column="support_live"    />
+        <result property="supportRecord"    column="support_record"    />
+        <result property="amcRecord"    column="amc_record"    />
+        <result property="autoMute"    column="auto_mute"    />
+        <result property="chairmanPassword"    column="chairman_password"    />
+        <result property="guestPassword"    column="guest_password"    />
+        <result property="vmrNumber"    column="vmr_number"    />
+        <result property="maxParticipantNum"    column="max_participant_num"    />
+        <result property="masterTerminalId"    column="master_terminal_id"    />
+        <result property="enableDataConf"    column="enable_data_conf"    />
+        <result property="smc2TemplateId"    column="smc2_template_id"    />
+        <result property="accessCode"    column="access_code"    />
+        <result property="billCode"    column="bill_code"    />
+        <result property="password"    column="password"    />
+        <result property="creatUser"    column="creat_user"    />
+        <result property="confid"    column="confid"    />
+    </resultMap>
+
+    <sql id="selectBusiSmc2DeptTemplateVo">
+        select id, dept_id, smc_template_id, create_time, template_name, duration, type, rate, support_live, support_record, amc_record, auto_mute, chairman_password, guest_password, vmr_number, max_participant_num, master_terminal_id, enable_data_conf, smc2_template_id, access_code, bill_code, password, creat_user,confid from busi_smc2_dept_template
+    </sql>
+
+    <select id="selectBusiSmc2DeptTemplateList" parameterType="com.paradisecloud.fcm.dao.model.BusiSmc2DeptTemplate" resultMap="BusiSmc2DeptTemplateResult">
+        <include refid="selectBusiSmc2DeptTemplateVo"/>
+        <where>  
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="smcTemplateId != null  and smcTemplateId != ''"> and smc_template_id = #{smcTemplateId}</if>
+            <if test="templateName != null  and templateName != ''"> and template_name like concat('%', #{templateName}, '%')</if>
+            <if test="duration != null "> and duration = #{duration}</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="rate != null "> and rate = #{rate}</if>
+            <if test="supportLive != null "> and support_live = #{supportLive}</if>
+            <if test="supportRecord != null "> and support_record = #{supportRecord}</if>
+            <if test="amcRecord != null "> and amc_record = #{amcRecord}</if>
+            <if test="autoMute != null "> and auto_mute = #{autoMute}</if>
+            <if test="chairmanPassword != null  and chairmanPassword != ''"> and chairman_password = #{chairmanPassword}</if>
+            <if test="guestPassword != null  and guestPassword != ''"> and guest_password = #{guestPassword}</if>
+            <if test="vmrNumber != null  and vmrNumber != ''"> and vmr_number = #{vmrNumber}</if>
+            <if test="maxParticipantNum != null "> and max_participant_num = #{maxParticipantNum}</if>
+            <if test="masterTerminalId != null "> and master_terminal_id = #{masterTerminalId}</if>
+            <if test="enableDataConf != null "> and enable_data_conf = #{enableDataConf}</if>
+            <if test="smc2TemplateId != null "> and smc2_template_id = #{smc2TemplateId}</if>
+            <if test="accessCode != null  and accessCode != ''"> and access_code = #{accessCode}</if>
+            <if test="billCode != null  and billCode != ''"> and bill_code = #{billCode}</if>
+            <if test="password != null  and password != ''"> and password = #{password}</if>
+            <if test="creatUser != null  and creatUser != ''"> and creat_user = #{creatUser}</if>
+            <if test="confid != null  and confid != ''"> and confid = #{confid}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiSmc2DeptTemplateById" parameterType="Integer" resultMap="BusiSmc2DeptTemplateResult">
+        <include refid="selectBusiSmc2DeptTemplateVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiSmc2DeptTemplate" parameterType="com.paradisecloud.fcm.dao.model.BusiSmc2DeptTemplate" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_smc2_dept_template
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="deptId != null">dept_id,</if>
+            <if test="smcTemplateId != null">smc_template_id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="templateName != null and templateName != ''">template_name,</if>
+            <if test="duration != null">duration,</if>
+            <if test="type != null">type,</if>
+            <if test="rate != null">rate,</if>
+            <if test="supportLive != null">support_live,</if>
+            <if test="supportRecord != null">support_record,</if>
+            <if test="amcRecord != null">amc_record,</if>
+            <if test="autoMute != null">auto_mute,</if>
+            <if test="chairmanPassword != null">chairman_password,</if>
+            <if test="guestPassword != null">guest_password,</if>
+            <if test="vmrNumber != null">vmr_number,</if>
+            <if test="maxParticipantNum != null">max_participant_num,</if>
+            <if test="masterTerminalId != null">master_terminal_id,</if>
+            <if test="enableDataConf != null">enable_data_conf,</if>
+            <if test="smc2TemplateId != null">smc2_template_id,</if>
+            <if test="accessCode != null">access_code,</if>
+            <if test="billCode != null">bill_code,</if>
+            <if test="password != null">password,</if>
+            <if test="creatUser != null">creat_user,</if>
+            <if test="confid != null">confid,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="deptId != null">#{deptId},</if>
+            <if test="smcTemplateId != null">#{smcTemplateId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="templateName != null and templateName != ''">#{templateName},</if>
+            <if test="duration != null">#{duration},</if>
+            <if test="type != null">#{type},</if>
+            <if test="rate != null">#{rate},</if>
+            <if test="supportLive != null">#{supportLive},</if>
+            <if test="supportRecord != null">#{supportRecord},</if>
+            <if test="amcRecord != null">#{amcRecord},</if>
+            <if test="autoMute != null">#{autoMute},</if>
+            <if test="chairmanPassword != null">#{chairmanPassword},</if>
+            <if test="guestPassword != null">#{guestPassword},</if>
+            <if test="vmrNumber != null">#{vmrNumber},</if>
+            <if test="maxParticipantNum != null">#{maxParticipantNum},</if>
+            <if test="masterTerminalId != null">#{masterTerminalId},</if>
+            <if test="enableDataConf != null">#{enableDataConf},</if>
+            <if test="smc2TemplateId != null">#{smc2TemplateId},</if>
+            <if test="accessCode != null">#{accessCode},</if>
+            <if test="billCode != null">#{billCode},</if>
+            <if test="password != null">#{password},</if>
+            <if test="creatUser != null">#{creatUser},</if>
+            <if test="confid != null">#{confid},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiSmc2DeptTemplate" parameterType="com.paradisecloud.fcm.dao.model.BusiSmc2DeptTemplate">
+        update busi_smc2_dept_template
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="smcTemplateId != null">smc_template_id = #{smcTemplateId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="templateName != null and templateName != ''">template_name = #{templateName},</if>
+            <if test="duration != null">duration = #{duration},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="rate != null">rate = #{rate},</if>
+            <if test="supportLive != null">support_live = #{supportLive},</if>
+            <if test="supportRecord != null">support_record = #{supportRecord},</if>
+            <if test="amcRecord != null">amc_record = #{amcRecord},</if>
+            <if test="autoMute != null">auto_mute = #{autoMute},</if>
+            <if test="chairmanPassword != null">chairman_password = #{chairmanPassword},</if>
+            <if test="guestPassword != null">guest_password = #{guestPassword},</if>
+            <if test="vmrNumber != null">vmr_number = #{vmrNumber},</if>
+            <if test="maxParticipantNum != null">max_participant_num = #{maxParticipantNum},</if>
+            <if test="masterTerminalId != null">master_terminal_id = #{masterTerminalId},</if>
+            <if test="enableDataConf != null">enable_data_conf = #{enableDataConf},</if>
+            <if test="smc2TemplateId != null">smc2_template_id = #{smc2TemplateId},</if>
+            <if test="accessCode != null">access_code = #{accessCode},</if>
+            <if test="billCode != null">bill_code = #{billCode},</if>
+            <if test="password != null">password = #{password},</if>
+            <if test="creatUser != null">creat_user = #{creatUser},</if>
+            <if test="confid != null">confid = #{confid},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiSmc2DeptTemplateById" parameterType="Integer">
+        delete from busi_smc2_dept_template where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiSmc2DeptTemplateByIds" parameterType="String">
+        delete from busi_smc2_dept_template where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+
+    <select id="selectBusiSmc2DeptTemplateListNotInAppointMent" resultMap="BusiSmc2DeptTemplateResult">
+        select id, dept_id, smc_template_id,
+               create_time, template_name, duration,
+               `type`, rate, support_live, support_record,
+               amc_record, auto_mute, chairman_password,
+               guest_password, vmr_number, max_participant_num,
+               master_terminal_id, enable_data_conf, smc2_template_id,
+               access_code, bill_code, password, creat_user,confid from busi_smc2_dept_template
+        <where>
+            smc2_template_id not in (select smc2_template_id from busi_smc2_appointment_conference)
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+        </where>
+    </select>
+
+</mapper>

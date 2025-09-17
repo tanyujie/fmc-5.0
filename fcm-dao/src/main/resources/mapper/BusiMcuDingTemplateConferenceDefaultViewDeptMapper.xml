@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 2.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiMcuDingTemplateConferenceDefaultViewDeptMapper">
+    
+    <resultMap type="BusiMcuDingTemplateConferenceDefaultViewDept" id="BusiMcuDingTemplateConferenceDefaultViewDeptResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="templateConferenceId"    column="template_conference_id"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="weight"    column="weight"    />
+        <result property="type"    column="type"    />
+    </resultMap>
+
+    <sql id="selectBusiMcuDingTemplateConferenceDefaultViewDeptVo">
+        select id, create_time, update_time, template_conference_id, dept_id, weight, type from busi_mcu_ding_template_conference_default_view_dept
+    </sql>
+
+    <select id="selectBusiMcuDingTemplateConferenceDefaultViewDeptList" parameterType="BusiMcuDingTemplateConferenceDefaultViewDept" resultMap="BusiMcuDingTemplateConferenceDefaultViewDeptResult">
+        <include refid="selectBusiMcuDingTemplateConferenceDefaultViewDeptVo"/>
+        <where>  
+            <if test="templateConferenceId != null "> and template_conference_id = #{templateConferenceId}</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="weight != null "> and weight = #{weight}</if>
+            <if test="type != null "> and type = #{type}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiMcuDingTemplateConferenceDefaultViewDeptById" parameterType="Long" resultMap="BusiMcuDingTemplateConferenceDefaultViewDeptResult">
+        <include refid="selectBusiMcuDingTemplateConferenceDefaultViewDeptVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiMcuDingTemplateConferenceDefaultViewDept" parameterType="BusiMcuDingTemplateConferenceDefaultViewDept" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_mcu_ding_template_conference_default_view_dept
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="templateConferenceId != null">template_conference_id,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="weight != null">weight,</if>
+            <if test="type != null">type,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="templateConferenceId != null">#{templateConferenceId},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="weight != null">#{weight},</if>
+            <if test="type != null">#{type},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiMcuDingTemplateConferenceDefaultViewDept" parameterType="BusiMcuDingTemplateConferenceDefaultViewDept">
+        update busi_mcu_ding_template_conference_default_view_dept
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="templateConferenceId != null">template_conference_id = #{templateConferenceId},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="weight != null">weight = #{weight},</if>
+            <if test="type != null">type = #{type},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiMcuDingTemplateConferenceDefaultViewDeptById" parameterType="Long">
+        delete from busi_mcu_ding_template_conference_default_view_dept where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiMcuDingTemplateConferenceDefaultViewDeptByIds" parameterType="String">
+        delete from busi_mcu_ding_template_conference_default_view_dept where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <delete id="deleteBusiMcuDingTemplateConferenceDefaultViewDeptByTemplateConferenceId" parameterType="Long">
+        delete from busi_mcu_ding_template_conference_default_view_dept where template_conference_id = #{templateConferenceId}
+    </delete>
+
+    <delete id="deleteBusiMcuDingTemplateConferenceDefaultViewDeptByTemplateConferenceIdAndDeptId">
+        delete from busi_mcu_ding_template_conference_default_view_dept where template_conference_id = #{templateConferenceId} and dept_id = #{deptId}
+    </delete>
+</mapper>

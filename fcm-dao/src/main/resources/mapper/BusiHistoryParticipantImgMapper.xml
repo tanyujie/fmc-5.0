@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiHistoryParticipantImgMapper">
+
+    <resultMap type="BusiHistoryParticipantImg" id="BusiHistoryParticipantImgResult">
+        <result property="id" column="id"/>
+        <result property="remoteParty" column="remote_party"/>
+        <result property="coSpace" column="co_space"/>
+        <result property="callId" column="call_id"/>
+        <result property="name" column="name"/>
+        <result property="imageBase64" column="image_base64"/>
+        <result property="callLegId" column="call_leg_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="imgTime" column="img_time"/>
+        <result property="joinTime" column="join_time"/>
+        <result property="chairman" column="chairman"/>
+        <result property="historyId" column="history_id"/>
+    </resultMap>
+
+    <sql id="selectBusiHistoryParticipantImgVo">
+        select id,
+               remote_party,
+               co_space,
+               call_id,
+               name,
+               image_base64,
+               call_leg_id,
+               create_time,
+               img_time,
+               join_time,
+               chairman,
+               history_id
+        from busi_history_participant_img
+    </sql>
+
+    <select id="selectBusiHistoryParticipantImgList" parameterType="BusiHistoryParticipantImg"
+            resultMap="BusiHistoryParticipantImgResult">
+        <include refid="selectBusiHistoryParticipantImgVo"/>
+        <where>
+            <if test="remoteParty != null  and remoteParty != ''">and remote_party = #{remoteParty}</if>
+            <if test="coSpace != null  and coSpace != ''">and co_space = #{coSpace}</if>
+            <if test="callId != null  and callId != ''">and call_id = #{callId}</if>
+            <if test="name != null  and name != ''">and name like concat('%', #{name}, '%')</if>
+            <if test="imageBase64 != null  and imageBase64 != ''">and image_base64 = #{imageBase64}</if>
+            <if test="callLegId != null  and callLegId != ''">and call_leg_id = #{callLegId}</if>
+            <if test="imgTime != null ">and img_time = #{imgTime}</if>
+            <if test="joinTime != null ">and join_time = #{joinTime}</if>
+            <if test="historyId != null ">and history_id = #{historyId}</if>
+        </where>
+    </select>
+
+    <select id="selectBusiHistoryParticipantImgById" parameterType="Integer"
+            resultMap="BusiHistoryParticipantImgResult">
+        <include refid="selectBusiHistoryParticipantImgVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertBusiHistoryParticipantImg" parameterType="BusiHistoryParticipantImg" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into busi_history_participant_img
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="remoteParty != null">remote_party,</if>
+            <if test="coSpace != null">co_space,</if>
+            <if test="callId != null">call_id,</if>
+            <if test="name != null">name,</if>
+            <if test="imageBase64 != null">image_base64,</if>
+            <if test="callLegId != null">call_leg_id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="imgTime != null">img_time,</if>
+            <if test="joinTime != null">join_time,</if>
+            <if test="chairman != null">chairman,</if>
+            <if test="historyId != null">history_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="remoteParty != null">#{remoteParty},</if>
+            <if test="coSpace != null">#{coSpace},</if>
+            <if test="callId != null">#{callId},</if>
+            <if test="name != null">#{name},</if>
+            <if test="imageBase64 != null">#{imageBase64},</if>
+            <if test="callLegId != null">#{callLegId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="imgTime != null">#{imgTime},</if>
+            <if test="joinTime != null">#{joinTime},</if>
+            <if test="chairman != null">#{chairman},</if>
+            <if test="historyId != null">#{historyId},</if>
+        </trim>
+    </insert>
+
+    <update id="updateBusiHistoryParticipantImg" parameterType="BusiHistoryParticipantImg">
+        update busi_history_participant_img
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="remoteParty != null">remote_party = #{remoteParty},</if>
+            <if test="coSpace != null">co_space = #{coSpace},</if>
+            <if test="callId != null">call_id = #{callId},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="imageBase64 != null">image_base64 = #{imageBase64},</if>
+            <if test="callLegId != null">call_leg_id = #{callLegId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="imgTime != null">img_time = #{imgTime},</if>
+            <if test="joinTime != null">join_time = #{joinTime},</if>
+            <if test="chairman != null">chairman = #{chairman},</if>
+            <if test="historyId != null">history_id = #{historyId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiHistoryParticipantImgById" parameterType="Integer">
+        delete
+        from busi_history_participant_img
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiHistoryParticipantImgByIds" parameterType="String">
+        delete from busi_history_participant_img where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <insert id="batchInsertBusiHistoryParticipantImg" parameterType="java.util.List" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into busi_history_participant_img
+        (<trim suffixOverrides=",">
+        remote_party,
+        co_space,
+        call_id,
+        name,
+        image_base64,
+        call_leg_id,
+        create_time,
+        img_time,
+        join_time,
+        chairman,history_id
+    </trim>)
+        values
+        <foreach collection="imgList" item="item" separator=",">
+            (
+            <trim suffixOverrides=",">
+                #{item.remoteParty},
+                #{item.coSpace},
+                #{item.callId},
+                #{item.name},
+                #{item.imageBase64},
+                #{item.callLegId},
+                #{item.createTime},
+                #{item.imgTime},
+                #{item.joinTime},
+                #{item.chairman},
+                #{item.historyId}
+            </trim>
+            )
+        </foreach>
+    </insert>
+
+
+
+    <select id="selectMeetingVenues" parameterType="String" resultMap="BusiHistoryParticipantImgResult">
+        SELECT `name`,
+               `join_time`                              AS joinTime,
+               GROUP_CONCAT(image_base64 SEPARATOR ',') AS images
+        FROM busi_history_participant_img
+        WHERE co_space = #{coSpace}
+        GROUP BY name, join_time
+    </select>
+
+
+    <select id="selectImgs" resultType="String">
+        SELECT image_base64
+        FROM busi_history_participant_img
+        WHERE  history_id = #{historyId}
+          AND remote_party = #{remoteParty}  AND image_base64 IS NOT NULL;
+    </select>
+
+</mapper>

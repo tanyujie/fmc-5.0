@@ -1,0 +1,2 @@
+ALTER TABLE `fcmdb`.`busi_mcu_smc3_template_conference`
+    CHANGE COLUMN `presence_multi_pic` `confPresetParam` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '预设画面' AFTER `up_cascade_index`;

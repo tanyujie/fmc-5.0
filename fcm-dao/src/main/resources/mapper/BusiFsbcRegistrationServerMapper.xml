@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiFsbcRegistrationServerMapper">
+    
+    <resultMap type="BusiFsbcRegistrationServer" id="BusiFsbcRegistrationServerResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="name"    column="name"    />
+        <result property="callIp"    column="call_ip"    />
+        <result property="port"    column="port"    />
+        <result property="sipPort"    column="sip_port"    />
+        <result property="dataSyncIp"    column="data_sync_ip"    />
+        <result property="username"    column="username"    />
+        <result property="password"    column="password"    />
+        <result property="domainName"    column="domain_name"    />
+    </resultMap>
+
+    <sql id="selectBusiFsbcRegistrationServerVo">
+        select id, create_time, update_time, name, call_ip, data_sync_ip, port, sip_port, username, password, domain_name from busi_fsbc_registration_server
+    </sql>
+
+    <select id="selectBusiFsbcRegistrationServerList" parameterType="BusiFsbcRegistrationServer" resultMap="BusiFsbcRegistrationServerResult">
+        <include refid="selectBusiFsbcRegistrationServerVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="callIp != null  and callIp != ''"> and call_ip = #{callIp}</if>
+            <if test="port != null "> and port = #{port}</if>
+            <if test="sipPort != null "> and sip_port = #{sipPort}</if>
+            <if test="dataSyncIp != null  and dataSyncIp != ''"> and data_sync_ip = #{dataSyncIp}</if>
+            <if test="username != null  and username != ''"> and username like concat('%', #{username}, '%')</if>
+            <if test="password != null  and password != ''"> and password = #{password}</if>
+            <if test="domainName != null  and domainName != ''"> and domain_name like concat('%', #{domainName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiFsbcRegistrationServerById" parameterType="Long" resultMap="BusiFsbcRegistrationServerResult">
+        <include refid="selectBusiFsbcRegistrationServerVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiFsbcRegistrationServer" parameterType="BusiFsbcRegistrationServer" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_fsbc_registration_server
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="name != null">name,</if>
+            <if test="callIp != null">call_ip,</if>
+            <if test="port != null">port,</if>
+            <if test="sipPort != null">sip_port,</if>
+            <if test="dataSyncIp != null">data_sync_ip,</if>
+            <if test="username != null">username,</if>
+            <if test="password != null">password,</if>
+            <if test="domainName != null">domain_name,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="name != null">#{name},</if>
+            <if test="callIp != null">#{callIp},</if>
+            <if test="port != null">#{port},</if>
+            <if test="sipPort != null">#{sipPort},</if>
+            <if test="dataSyncIp != null">#{dataSyncIp},</if>
+            <if test="username != null">#{username},</if>
+            <if test="password != null">#{password},</if>
+            <if test="domainName != null">#{domainName},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiFsbcRegistrationServer" parameterType="BusiFsbcRegistrationServer">
+        update busi_fsbc_registration_server
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="callIp != null">call_ip = #{callIp},</if>
+            <if test="port != null">port = #{port},</if>
+            <if test="sipPort != null">sip_port = #{sipPort},</if>
+            <if test="dataSyncIp != null">data_sync_ip = #{dataSyncIp},</if>
+            <if test="username != null">username = #{username},</if>
+            <if test="password != null">password = #{password},</if>
+            <if test="domainName != null">domain_name = #{domainName},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiFsbcRegistrationServerById" parameterType="Long">
+        delete from busi_fsbc_registration_server where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiFsbcRegistrationServerByIds" parameterType="String">
+        delete from busi_fsbc_registration_server where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

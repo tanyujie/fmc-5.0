@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 2.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiMcuDingTemplatePollingDeptMapper">
+    
+    <resultMap type="BusiMcuDingTemplatePollingDept" id="BusiMcuDingTemplatePollingDeptResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="templateConferenceId"    column="template_conference_id"    />
+        <result property="pollingSchemeId"    column="polling_scheme_id"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="weight"    column="weight"    />
+    </resultMap>
+
+    <sql id="selectBusiMcuDingTemplatePollingDeptVo">
+        select id, create_time, update_time, template_conference_id, polling_scheme_id, dept_id, weight from busi_mcu_ding_template_polling_dept
+    </sql>
+
+    <select id="selectBusiMcuDingTemplatePollingDeptList" parameterType="BusiMcuDingTemplatePollingDept" resultMap="BusiMcuDingTemplatePollingDeptResult">
+        <include refid="selectBusiMcuDingTemplatePollingDeptVo"/>
+        <where>  
+            <if test="templateConferenceId != null "> and template_conference_id = #{templateConferenceId}</if>
+            <if test="pollingSchemeId != null "> and polling_scheme_id = #{pollingSchemeId}</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="weight != null "> and weight = #{weight}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiMcuDingTemplatePollingDeptById" parameterType="Long" resultMap="BusiMcuDingTemplatePollingDeptResult">
+        <include refid="selectBusiMcuDingTemplatePollingDeptVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiMcuDingTemplatePollingDept" parameterType="BusiMcuDingTemplatePollingDept" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_mcu_ding_template_polling_dept
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="templateConferenceId != null">template_conference_id,</if>
+            <if test="pollingSchemeId != null">polling_scheme_id,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="weight != null">weight,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="templateConferenceId != null">#{templateConferenceId},</if>
+            <if test="pollingSchemeId != null">#{pollingSchemeId},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="weight != null">#{weight},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiMcuDingTemplatePollingDept" parameterType="BusiMcuDingTemplatePollingDept">
+        update busi_mcu_ding_template_polling_dept
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="templateConferenceId != null">template_conference_id = #{templateConferenceId},</if>
+            <if test="pollingSchemeId != null">polling_scheme_id = #{pollingSchemeId},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="weight != null">weight = #{weight},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiMcuDingTemplatePollingDeptById" parameterType="Long">
+        delete from busi_mcu_ding_template_polling_dept where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiMcuDingTemplatePollingDeptByIds" parameterType="String">
+        delete from busi_mcu_ding_template_polling_dept where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <delete id="deletePollingDeptByPollingSchemeId" parameterType="Long">
+        delete from busi_mcu_ding_template_polling_dept where polling_scheme_id = #{id}
+    </delete>
+</mapper>

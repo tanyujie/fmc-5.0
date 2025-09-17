@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.ViewTemplateParticipantMapper">
+
+    <resultMap type="ViewTemplateParticipant" id="ViewTemplateParticipantResult">
+        <result property="mcuType"    column="mcu_type"    />
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="templateConferenceId"    column="template_conference_id"    />
+        <result property="uuid"    column="uuid"    />
+        <result property="attendType"    column="attend_type"    />
+        <result property="terminalId"    column="terminal_id"    />
+        <result property="weight"    column="weight"    />
+        <result property="businessProperties"    column="business_properties"  typeHandler="com.paradisecloud.fcm.dao.typehandler.JSONTypeMapHandler" jdbcType="OTHER"  />
+    </resultMap>
+
+    <sql id="selectViewTemplateParticipantVo">
+        select mcu_type, id, create_time, update_time, uuid, attend_type, template_conference_id, terminal_id, weight, business_properties from view_template_participant
+    </sql>
+
+    <select id="selectViewTemplateParticipantList" parameterType="ViewTemplateParticipant" resultMap="ViewTemplateParticipantResult">
+        <include refid="selectViewTemplateParticipantVo"/>
+        <where>
+            <if test="mcuType != null and mcuType != ''"> and mcu_type = #{mcuType}</if>
+            <if test="uuid != null  and uuid != ''"> and uuid = #{uuid}</if>
+            <if test="attendType != null "> and attend_type = #{attendType}</if>
+            <if test="templateConferenceId != null "> and template_conference_id = #{templateConferenceId}</if>
+            <if test="terminalId != null "> and terminal_id = #{terminalId}</if>
+            <if test="weight != null "> and weight = #{weight}</if>
+        </where>
+    </select>
+
+    <select id="selectViewTemplateParticipantById" parameterType="Long" resultMap="ViewTemplateParticipantResult">
+        <include refid="selectViewTemplateParticipantVo"/>
+        where id = #{id}
+    </select>
+</mapper>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiSmartRoomThirdOaMapper">
+    
+    <resultMap type="BusiSmartRoomThirdOa" id="BusiSmartRoomThirdOaResult">
+        <result property="id"    column="id"    />
+        <result property="oaType"    column="oa_type"    />
+        <result property="host"    column="host"    />
+        <result property="port"    column="port"    />
+        <result property="suiteId"    column="suite_id"    />
+        <result property="suiteSecret"    column="suite_secret"    />
+        <result property="suiteAccessToken"    column="suite_access_token"    />
+        <result property="suiteAccessTokenExpiredTime"    column="suite_access_token_expired_time"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectBusiSmartRoomThirdOaVo">
+        select id, oa_type, host, port, suite_id, suite_secret, suite_access_token, suite_access_token_expired_time, create_time, create_by, update_time, update_by, remark from busi_smart_room_third_oa
+    </sql>
+
+    <select id="selectBusiSmartRoomThirdOaList" parameterType="BusiSmartRoomThirdOa" resultMap="BusiSmartRoomThirdOaResult">
+        <include refid="selectBusiSmartRoomThirdOaVo"/>
+        <where>  
+            <if test="oaType != null "> and oa_type = #{oaType}</if>
+            <if test="host != null  and host != ''"> and host = #{host}</if>
+            <if test="port != null "> and port = #{port}</if>
+            <if test="suiteId != null  and suiteId != ''"> and suite_id = #{suiteId}</if>
+            <if test="suiteSecret != null  and suiteSecret != ''"> and suite_secret = #{suiteSecret}</if>
+            <if test="suiteAccessToken != null  and suiteAccessToken != ''"> and suite_access_token = #{suiteAccessToken}</if>
+            <if test="suiteAccessTokenExpiredTime != null  and suiteAccessTokenExpiredTime != ''"> and suite_access_token_expired_time = #{suiteAccessTokenExpiredTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiSmartRoomThirdOaById" parameterType="Long" resultMap="BusiSmartRoomThirdOaResult">
+        <include refid="selectBusiSmartRoomThirdOaVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiSmartRoomThirdOa" parameterType="BusiSmartRoomThirdOa" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_smart_room_third_oa
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="oaType != null">oa_type,</if>
+            <if test="host != null and host != ''">host,</if>
+            <if test="port != null">port,</if>
+            <if test="suiteId != null">suite_id,</if>
+            <if test="suiteSecret != null">suite_secret,</if>
+            <if test="suiteAccessToken != null">suite_access_token,</if>
+            <if test="suiteAccessTokenExpiredTime != null">suite_access_token_expired_time,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="oaType != null">#{oaType},</if>
+            <if test="host != null and host != ''">#{host},</if>
+            <if test="port != null">#{port},</if>
+            <if test="suiteId != null">#{suiteId},</if>
+            <if test="suiteSecret != null">#{suiteSecret},</if>
+            <if test="suiteAccessToken != null">#{suiteAccessToken},</if>
+            <if test="suiteAccessTokenExpiredTime != null">#{suiteAccessTokenExpiredTime},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiSmartRoomThirdOa" parameterType="BusiSmartRoomThirdOa">
+        update busi_smart_room_third_oa
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="oaType != null">oa_type = #{oaType},</if>
+            <if test="host != null and host != ''">host = #{host},</if>
+            <if test="port != null">port = #{port},</if>
+            <if test="suiteId != null">suite_id = #{suiteId},</if>
+            <if test="suiteSecret != null">suite_secret = #{suiteSecret},</if>
+            <if test="suiteAccessToken != null">suite_access_token = #{suiteAccessToken},</if>
+            <if test="suiteAccessuiteAccessTokenExpiredTimesToken != null">suite_access_token_expired_time = #{suiteAccessTokenExpiredTime},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null and createBy != ''">create_by = #{createBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiSmartRoomThirdOaById" parameterType="Long">
+        delete from busi_smart_room_third_oa where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiSmartRoomThirdOaByIds" parameterType="String">
+        delete from busi_smart_room_third_oa where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

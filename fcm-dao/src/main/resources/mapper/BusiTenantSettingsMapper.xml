@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiTenantSettingsMapper">
+    
+    <resultMap type="BusiTenantSettings" id="BusiTenantSettingsResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="fmeTenantUuid"    column="fme_tenant_uuid"    />
+    </resultMap>
+
+    <sql id="selectBusiTenantSettingsVo">
+        select id, create_time, update_time, dept_id, fme_tenant_uuid from busi_tenant_settings
+    </sql>
+
+    <select id="selectBusiTenantSettingsList" parameterType="BusiTenantSettings" resultMap="BusiTenantSettingsResult">
+        <include refid="selectBusiTenantSettingsVo"/>
+        <where>  
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="fmeTenantUuid != null  and fmeTenantUuid != ''"> and fme_tenant_uuid = #{fmeTenantUuid}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiTenantSettingsById" parameterType="Long" resultMap="BusiTenantSettingsResult">
+        <include refid="selectBusiTenantSettingsVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiTenantSettings" parameterType="BusiTenantSettings" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_tenant_settings
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="fmeTenantUuid != null">fme_tenant_uuid,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="fmeTenantUuid != null">#{fmeTenantUuid},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiTenantSettings" parameterType="BusiTenantSettings">
+        update busi_tenant_settings
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="fmeTenantUuid != null">fme_tenant_uuid = #{fmeTenantUuid},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiTenantSettingsById" parameterType="Long">
+        delete from busi_tenant_settings where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiTenantSettingsByIds" parameterType="String">
+        delete from busi_tenant_settings where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

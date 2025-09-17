@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiRecordsMapper">
+
+    <resultMap type="BusiRecords" id="BusiRecordsResult">
+        <result property="id" column="id"/>
+        <result property="conferenceNumber" column="conference_number"/>
+        <result property="coSpaceId" column="co_space_id"/>
+        <result property="fileName" column="file_name"/>
+        <result property="realName" column="real_name"/>
+        <result property="templateName" column="template_name"/>
+        <result property="deptId" column="dept_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="fileSize" column="file_size"/>
+        <result property="deleteTime" column="delete_time"/>
+        <result property="recordsFileStatus" column="record_file_status"/>
+    </resultMap>
+
+    <sql id="selectBusiRecordsVo">
+        select id, conference_number, co_space_id, file_name, real_name, template_name, dept_id, create_time, update_time, file_size, delete_time, record_file_status from busi_records
+    </sql>
+
+    <select id="selectBusiRecordsByCoSpaceId"  resultMap="BusiRecordsResult">
+        <include refid="selectBusiRecordsVo"/>
+        <where>
+            delete_time is null
+        	<if test="deptId != null ">and dept_id = #{deptId}</if>
+        	<if test="coSpaceId != null ">and co_space_id = #{coSpaceId}</if>
+        </where>
+        order by create_time desc
+        <if test="isLast != null and isLast"> limit 1</if>
+    </select>
+
+    <select id="selectBusiRecordsList" parameterType="BusiRecords" resultMap="BusiRecordsResult">
+        <include refid="selectBusiRecordsVo"/>
+        <where>
+            <if test="conferenceNumber != null ">and conference_number = #{conferenceNumber}</if>
+            <if test="coSpaceId != null  and coSpaceId != ''">and co_space_id = #{coSpaceId}</if>
+            <if test="fileName != null  and fileName != ''">and file_name like concat('%', #{fileName}, '%')</if>
+            <if test="realName != null  and realName != ''">and real_name like concat('%', #{realName}, '%')</if>
+            <if test="templateName != null  and templateName != ''">and template_name like concat('%', #{templateName},
+                '%')
+            </if>
+            <if test="deptId != null ">and dept_id = #{deptId}</if>
+            <if test="fileSize != null">and file_size = #{fileSize}</if>
+            <if test="deleteTime != null">and delete_time = #{deleteTime}</if>
+            <if test="recordsFileStatus != null">and record_file_status = #{recordsFileStatus}</if>
+        </where>
+    </select>
+
+    <select id="selectBusiRecordsById" parameterType="Long" resultMap="BusiRecordsResult">
+        <include refid="selectBusiRecordsVo"/>
+        where id = #{id}
+    </select>
+    <select id="selectIsDelect" resultMap="BusiRecordsResult">
+        <include refid="selectBusiRecordsVo"/>
+        where create_time NOT BETWEEN #{startTime} AND #{endTime}
+    </select>
+
+    <select id="selectByRetentionTime" resultMap="BusiRecordsResult">
+        <include refid="selectBusiRecordsVo"/>
+        where create_time &lt; #{retentionTime}
+    </select>
+
+    <select id="selectReclaim" resultMap="BusiRecordsResult">
+        <include refid="selectBusiRecordsVo"/>
+        where delete_time &lt; #{retentionTime}
+    </select>
+
+    <insert id="insertBusiRecords" parameterType="BusiRecords" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_records
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="conferenceNumber != null">conference_number,</if>
+            <if test="coSpaceId != null">co_space_id,</if>
+            <if test="fileName != null">file_name,</if>
+            <if test="realName != null">real_name,</if>
+            <if test="templateName != null">template_name,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="fileSize != null">file_size,</if>
+            <if test="deleteTime != null">delete_time,</if>
+            <if test="recordsFileStatus != null">record_file_status,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="conferenceNumber != null">#{conferenceNumber},</if>
+            <if test="coSpaceId != null">#{coSpaceId},</if>
+            <if test="fileName != null">#{fileName},</if>
+            <if test="realName != null">#{realName},</if>
+            <if test="templateName != null">#{templateName},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="fileSize != null">#{fileSize},</if>
+            <if test="deleteTime != null">#{deleteTime},</if>
+            <if test="recordsFileStatus != null">#{recordsFileStatus},</if>
+        </trim>
+    </insert>
+
+    <update id="updateBusiRecords" parameterType="BusiRecords">
+        update busi_records
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="conferenceNumber != null">conference_number = #{conferenceNumber},</if>
+            <if test="coSpaceId != null">co_space_id = #{coSpaceId},</if>
+            <if test="fileName != null">file_name = #{fileName},</if>
+            <if test="realName != null">real_name = #{realName},</if>
+            <if test="templateName != null">template_name = #{templateName},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="fileSize != null">file_size = #{fileSize},</if>
+            <if test="deleteTime != null">delete_time = #{deleteTime},</if>
+            <if test="recordsFileStatus != null">record_file_status = #{recordsFileStatus},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiRecordsById" parameterType="Long">
+        delete from busi_records where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiRecordsByIds" parameterType="String">
+        delete from busi_records where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <delete id="deleteRecordsByCoSpaceId">
+        delete
+        from busi_records
+        where co_space_id = #{coSpaceId}
+    </delete>
+
+
+    <select id="selectBusiRecordsListGroup" parameterType="BusiRecords" resultMap="BusiRecordsResult">
+
+        SELECT
+        *
+        FROM
+        busi_records
+        WHERE
+        create_time IN ( SELECT max( create_time ) FROM busi_records GROUP BY co_space_id )
+        delete_time is null
+        <if test="deptId != null ">and dept_id = #{deptId}</if>
+        <if test="searchValue != null  and searchValue != ''">and (conference_number like concat('%', #{searchValue}, '%') or template_name like concat('%', #{searchValue}, '%'))</if>
+    </select>
+
+    <resultMap type="BusiRecordsSearchResult" id="BusiRecordsSearchGroupResult">
+        <result property="conferenceNumber" column="conference_number"/>
+        <result property="name" column="name"/>
+        <result property="coSpaceId" column="co_space_id"/>
+        <result property="deptId" column="dept_id"/>
+        <result property="recordingTimeOfLate" column="recording_time_of_late"/>
+        <result property="recordFileNum" column="record_file_num"/>
+    </resultMap>
+
+    <select id="selectBusiRecordsListForGroup" resultMap="BusiRecordsSearchGroupResult">
+        select base.conference_number, base.template_name name, base.co_space_id, base.dept_id, base.create_time recording_time_of_late, rg.record_file_num
+        from busi_records base,
+            (select max(id) id, count(1) record_file_num from busi_records
+            <where>
+                delete_time is null
+                <if test="deptId != null "> and dept_id = #{deptId}</if>
+                <if test="searchKey != null and searchKey != ''"> and (conference_number like concat('%', #{searchKey}, '%') or template_name like concat('%', #{searchKey}, '%'))</if>
+            </where>
+            group by co_space_id) rg
+        where base.id = rg.id
+        order by base.create_time desc
+    </select>
+
+    <select id="selectReclaimRecordsList" resultMap="BusiRecordsResult">
+        <include refid="selectBusiRecordsVo"/>
+        <where>
+            delete_time is not null
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="searchKey != null and searchKey != ''"> and (conference_number like concat('%', #{searchKey}, '%') or template_name like concat('%', #{searchKey}, '%'))</if>
+        </where>
+    </select>
+
+    <update id="recoverBusiRecords" parameterType="BusiRecords">
+        update busi_records
+        <trim prefix="SET" suffixOverrides=",">
+            update_time = current_timestamp,
+            delete_time = null,
+            record_file_status = 2
+        </trim>
+        where id = #{id}
+    </update>
+
+    <select id="selectBusiRecordsListForGroupForMyConference" resultMap="BusiRecordsSearchGroupResult">
+        select base.conference_number, base.template_name name, base.co_space_id, base.dept_id, base.create_time recording_time_of_late, rg.record_file_num
+        from busi_records base,
+        (select max(id) id, count(1) record_file_num from busi_records
+        <where>
+            delete_time is null
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="searchKey != null and searchKey != ''"> and (conference_number like concat('%', #{searchKey}, '%') or template_name like concat('%', #{searchKey}, '%'))</if>
+            and exists(select 1 from busi_history_conference bhc where bhc.co_space = base.co_space_id and bhc.create_user_id = #{userId})
+        </where>
+        group by co_space_id) rg
+        where base.id = rg.id
+        order by base.create_time desc
+    </select>
+
+    <select id="selectBusiRecordsListForGroupForMyJoinedConference" resultMap="BusiRecordsSearchGroupResult">
+        select base.conference_number, base.template_name name, base.co_space_id, base.dept_id, base.create_time recording_time_of_late, rg.record_file_num
+        from busi_records base,
+        (select max(id) id, count(1) record_file_num from busi_records
+        <where>
+            delete_time is null
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="searchKey != null and searchKey != ''"> and (conference_number like concat('%', #{searchKey}, '%') or template_name like concat('%', #{searchKey}, '%'))</if>
+            and exists(select 1 from busi_history_participant bhp where bhp.co_space = base.co_space_id and bhp.terminal_id = #{terminalId})
+        </where>
+        group by co_space_id) rg
+        where base.id = rg.id
+        order by base.create_time desc
+    </select>
+
+    <select id="selectBusiRecordsByCoSpaceIdForMyConference" resultMap="BusiRecordsResult">
+        <include refid="selectBusiRecordsVo"/>
+        <where>
+            delete_time is null
+            <if test="deptId != null ">and dept_id = #{deptId}</if>
+            <if test="coSpaceId != null ">and co_space_id = #{coSpaceId}</if>
+            and exists(select 1 from busi_history_conference bhc where bhc.co_space = busi_records.co_space_id and bhc.create_user_id = #{userId})
+        </where>
+        order by create_time desc
+        <if test="isLast != null and isLast"> limit 1</if>
+    </select>
+
+    <select id="selectBusiRecordsByCoSpaceIdForMyJoinedConference" resultMap="BusiRecordsResult">
+        <include refid="selectBusiRecordsVo"/>
+        <where>
+            delete_time is null
+            <if test="deptId != null ">and dept_id = #{deptId}</if>
+            <if test="coSpaceId != null ">and co_space_id = #{coSpaceId}</if>
+            and exists(select 1 from busi_history_participant bhp where bhp.co_space = busi_records.co_space_id and bhp.terminal_id = #{terminalId})
+        </where>
+        order by create_time desc
+        <if test="isLast != null and isLast"> limit 1</if>
+    </select>
+</mapper>

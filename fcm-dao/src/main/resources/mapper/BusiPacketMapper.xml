@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiPacketMapper">
+    
+    <resultMap type="BusiPacket" id="BusiPacketResult">
+        <result property="id"    column="id"    />
+        <result property="ip"    column="ip"    />
+        <result property="username"    column="username"    />
+        <result property="password"    column="password"    />
+    </resultMap>
+
+    <sql id="selectBusiPacketVo">
+        select id, ip, username, password from busi_packet
+    </sql>
+
+    <select id="selectBusiPacketList" parameterType="BusiPacket" resultMap="BusiPacketResult">
+        <include refid="selectBusiPacketVo"/>
+        <where>  
+            <if test="ip != null  and ip != ''"> and ip = #{ip}</if>
+            <if test="username != null  and username != ''"> and username like concat('%', #{username}, '%')</if>
+            <if test="password != null  and password != ''"> and password = #{password}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiPacketById" parameterType="Integer" resultMap="BusiPacketResult">
+        <include refid="selectBusiPacketVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiPacket" parameterType="BusiPacket" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_packet
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="ip != null and ip != ''">ip,</if>
+            <if test="username != null and username != ''">username,</if>
+            <if test="password != null and password != ''">password,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="ip != null and ip != ''">#{ip},</if>
+            <if test="username != null and username != ''">#{username},</if>
+            <if test="password != null and password != ''">#{password},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiPacket" parameterType="BusiPacket">
+        update busi_packet
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="ip != null and ip != ''">ip = #{ip},</if>
+            <if test="username != null and username != ''">username = #{username},</if>
+            <if test="password != null and password != ''">password = #{password},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiPacketById" parameterType="Integer">
+        delete from busi_packet where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiPacketByIds" parameterType="String">
+        delete from busi_packet where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

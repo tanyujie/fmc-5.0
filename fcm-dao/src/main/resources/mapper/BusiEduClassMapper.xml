@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiEduClassMapper">
+    
+    <resultMap type="BusiEduClass" id="BusiEduClassResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="number"    column="number"    />
+        <result property="name"    column="name"    />
+        <result property="monitor"    column="monitor"    />
+        <result property="classTeacher"    column="class_teacher"    />
+        <result property="honoraryTitle"    column="honorary_title"    />
+        <result property="graduationTime"    column="graduation_time"    />
+        <result property="learningStage"    column="learning_stage"    />
+    </resultMap>
+
+    <sql id="selectBusiEduClassVo">
+        select id, create_time, update_time, dept_id, number, name, monitor, class_teacher, honorary_title, graduation_time, learning_stage from busi_edu_class
+    </sql>
+    
+    <resultMap type="DeptRecordCount" id="DeptRecordCountMap">
+        <result property="deptId"    column="dept_id"    />
+        <result property="count"    column="ct"    />
+    </resultMap>
+    
+    <select id="getDeptRecordCounts" resultMap="DeptRecordCountMap">
+        SELECT
+        	a.dept_id,
+        	count(*) ct 
+        FROM
+        	busi_edu_class a
+        GROUP BY
+        	a.dept_id 
+        ORDER BY
+        	a.dept_id ASC
+    </select>
+
+    <select id="selectBusiEduClassList" parameterType="BusiEduClass" resultMap="BusiEduClassResult">
+        <include refid="selectBusiEduClassVo"/>
+        <where>  
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="number != null  and number != ''"> and number = #{number}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="monitor != null  and monitor != ''"> and monitor = #{monitor}</if>
+            <if test="classTeacher != null  and classTeacher != ''"> and class_teacher = #{classTeacher}</if>
+            <if test="honoraryTitle != null  and honoraryTitle != ''"> and honorary_title = #{honoraryTitle}</if>
+            <if test="graduationTime != null  and graduationTime != ''"> and graduation_time = #{graduationTime}</if>
+            <if test="learningStage != null "> and learning_stage = #{learningStage}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiEduClassById" parameterType="Long" resultMap="BusiEduClassResult">
+        <include refid="selectBusiEduClassVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiEduClass" parameterType="BusiEduClass" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_edu_class
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="number != null">number,</if>
+            <if test="name != null">name,</if>
+            <if test="monitor != null">monitor,</if>
+            <if test="classTeacher != null">class_teacher,</if>
+            <if test="honoraryTitle != null">honorary_title,</if>
+            <if test="graduationTime != null">graduation_time,</if>
+            <if test="learningStage != null">learning_stage,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="number != null">#{number},</if>
+            <if test="name != null">#{name},</if>
+            <if test="monitor != null">#{monitor},</if>
+            <if test="classTeacher != null">#{classTeacher},</if>
+            <if test="honoraryTitle != null">#{honoraryTitle},</if>
+            <if test="graduationTime != null">#{graduationTime},</if>
+            <if test="learningStage != null">#{learningStage},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiEduClass" parameterType="BusiEduClass">
+        update busi_edu_class
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="number != null">number = #{number},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="monitor != null">monitor = #{monitor},</if>
+            <if test="classTeacher != null">class_teacher = #{classTeacher},</if>
+            <if test="honoraryTitle != null">honorary_title = #{honoraryTitle},</if>
+            <if test="graduationTime != null">graduation_time = #{graduationTime},</if>
+            <if test="learningStage != null">learning_stage = #{learningStage},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiEduClassById" parameterType="Long">
+        delete from busi_edu_class where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiEduClassByIds" parameterType="String">
+        delete from busi_edu_class where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

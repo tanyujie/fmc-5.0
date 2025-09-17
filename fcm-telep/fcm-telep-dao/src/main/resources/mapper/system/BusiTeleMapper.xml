@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.telep.dao.mapper.BusiTeleMapper">
+    
+    <resultMap type="BusiTele" id="BusiTeleResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="adminUsername"    column="admin_username"    />
+        <result property="adminPassword"    column="admin_password"    />
+        <result property="name"    column="name"    />
+        <result property="ip"    column="ip"    />
+        <result property="port"    column="port"    />
+        <result property="status"    column="status"    />
+        <result property="capacity"    column="capacity"    />
+        <result property="spareTeleId"    column="spare_tele_id"    />
+    </resultMap>
+
+    <sql id="selectBusiTeleVo">
+        select id, create_time, update_time, admin_username, admin_password, name, ip, port, status, capacity, spare_tele_id from busi_tele
+    </sql>
+
+    <select id="selectBusiTeleList" parameterType="BusiTele" resultMap="BusiTeleResult">
+        <include refid="selectBusiTeleVo"/>
+        <where>  
+            <if test="adminUsername != null  and adminUsername != ''"> and admin_username like concat('%', #{adminUsername}, '%')</if>
+            <if test="adminPassword != null  and adminPassword != ''"> and admin_password = #{adminPassword}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="ip != null  and ip != ''"> and ip = #{ip}</if>
+            <if test="port != null "> and port = #{port}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="capacity != null "> and capacity = #{capacity}</if>
+            <if test="spareTeleId != null "> and spare_tele_id = #{spareTeleId}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiTeleById" parameterType="Long" resultMap="BusiTeleResult">
+        <include refid="selectBusiTeleVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiTele" parameterType="BusiTele" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_tele
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="adminUsername != null and adminUsername != ''">admin_username,</if>
+            <if test="adminPassword != null and adminPassword != ''">admin_password,</if>
+            <if test="name != null">name,</if>
+            <if test="ip != null and ip != ''">ip,</if>
+            <if test="port != null">port,</if>
+            <if test="status != null">status,</if>
+            <if test="capacity != null">capacity,</if>
+            <if test="spareTeleId != null">spare_tele_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="adminUsername != null and adminUsername != ''">#{adminUsername},</if>
+            <if test="adminPassword != null and adminPassword != ''">#{adminPassword},</if>
+            <if test="name != null">#{name},</if>
+            <if test="ip != null and ip != ''">#{ip},</if>
+            <if test="port != null">#{port},</if>
+            <if test="status != null">#{status},</if>
+            <if test="capacity != null">#{capacity},</if>
+            <if test="spareTeleId != null">#{spareTeleId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiTele" parameterType="BusiTele">
+        update busi_tele
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="adminUsername != null and adminUsername != ''">admin_username = #{adminUsername},</if>
+            <if test="adminPassword != null and adminPassword != ''">admin_password = #{adminPassword},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="ip != null and ip != ''">ip = #{ip},</if>
+            <if test="port != null">port = #{port},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="capacity != null">capacity = #{capacity},</if>
+            <if test="spareTeleId != null">spare_tele_id = #{spareTeleId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiTeleById" parameterType="Long">
+        delete from busi_tele where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiTeleByIds" parameterType="String">
+        delete from busi_tele where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

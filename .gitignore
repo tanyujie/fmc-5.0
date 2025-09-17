@@ -1,0 +1,97 @@
+# Created by .ignore support plugin (hsz.mobi)
+### java template
+# maven ignore
+target/
+!.mvn/wrapper/maven-wrapper.jar
+*.jar
+*.war
+*.swp
+*.zip
+*.tar
+*.tar.gz
+!fcm-common/src/other/*
+!fcm-smc2/fcm-smc2-service/src/main/resources/lib/*
+
+# eclipse ignore
+.settings/
+*/.settings
+/.settings/*
+*/.externalToolBuilders
+/.externalToolBuilders/*
+
+.project
+.classpath
+*.project
+*.settings
+*.classpath
+*target
+
+# idea ignore
+.idea/
+*.ipr
+*.iml
+*.iws
+.metadata/*
+
+
+# temp ignore
+*.log
+*logs
+logbaks
+*.cache
+*.diff
+*.patch
+*.tmp
+*tmp
+
+
+# system ignore
+.DS_Store
+Thumbs.db
+
+
+*.class
+*.pid
+*/target
+*/target/*
+*/bin
+bin
+*/bin/*
+*.prefs
+/*.project
+
+.gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+nbproject/private/
+build/*
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+######################################################################
+# Others
+*.xml.versionsBackup
+*.swp
+
+
+
+
+

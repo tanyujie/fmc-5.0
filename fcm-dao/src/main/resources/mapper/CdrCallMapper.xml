@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.CdrCallMapper">
+    
+    <resultMap type="CdrCall" id="CdrCallResult">
+        <result property="cdrId"    column="cdr_id"    />
+        <result property="id"    column="id"    />
+        <result property="session"    column="session"    />
+        <result property="callBridge"    column="call_bridge"    />
+        <result property="recordIndex"    column="record_index"    />
+        <result property="correlatorIndex"    column="correlator_index"    />
+        <result property="name"    column="name"    />
+        <result property="coSpace"    column="co_space"    />
+        <result property="ownerName"    column="owner_name"    />
+        <result property="tenant"    column="tenant"    />
+        <result property="cdrTag"    column="cdr_tag"    />
+        <result property="callType"    column="call_type"    />
+        <result property="callCorrelator"    column="call_correlator"    />
+        <result property="callLegsCompleted"    column="call_legs_completed"    />
+        <result property="callLegsMaxActive"    column="call_legs_max_active"    />
+        <result property="durationSeconds"    column="duration_seconds"    />
+        <result property="recordType"    column="record_type"    />
+        <result property="time"    column="time"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="createUserId"    column="create_user_id"    />
+        <result property="createUserName"    column="create_user_name"    />
+    </resultMap>
+
+    <sql id="selectCdrCallVo">
+        select cdr_id, id, session, call_bridge, record_index, correlator_index, name, co_space, owner_name, tenant, cdr_tag, call_type, call_correlator, call_legs_completed, call_legs_max_active, duration_seconds, record_type, time from cdr_call
+    </sql>
+
+    <select id="selectCdrCallList" parameterType="CdrCall" resultMap="CdrCallResult">
+        <include refid="selectCdrCallVo"/>
+        <where>  
+            <if test="session != null  and session != ''"> and session = #{session}</if>
+            <if test="cdrId != null  and cdrId != ''"> and cdr_id = #{cdrId}</if>
+            <if test="callBridge != null  and callBridge != ''"> and call_bridge = #{callBridge}</if>
+            <if test="recordIndex != null "> and record_index = #{recordIndex}</if>
+            <if test="correlatorIndex != null "> and correlator_index = #{correlatorIndex}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="coSpace != null  and coSpace != ''"> and co_space = #{coSpace}</if>
+            <if test="ownerName != null  and ownerName != ''"> and owner_name like concat('%', #{ownerName}, '%')</if>
+            <if test="tenant != null  and tenant != ''"> and tenant = #{tenant}</if>
+            <if test="cdrTag != null  and cdrTag != ''"> and cdr_tag = #{cdrTag}</if>
+            <if test="callType != null  and callType != ''"> and call_type = #{callType}</if>
+            <if test="callCorrelator != null  and callCorrelator != ''"> and call_correlator = #{callCorrelator}</if>
+            <if test="callLegsCompleted != null "> and call_legs_completed = #{callLegsCompleted}</if>
+            <if test="callLegsMaxActive != null "> and call_legs_max_active = #{callLegsMaxActive}</if>
+            <if test="durationSeconds != null "> and duration_seconds = #{durationSeconds}</if>
+            <if test="recordType != null "> and record_type = #{recordType}</if>
+            <if test="time != null "> and time = #{time}</if>
+        </where>
+    </select>
+    
+    <select id="selectCdrCallById" parameterType="Integer" resultMap="CdrCallResult">
+        <include refid="selectCdrCallVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectCdrCallByRecordIndex" resultMap="CdrCallResult">
+        <include refid="selectCdrCallVo"/>
+        <where>
+            <if test="cdrId != null "> and cdr_id = #{cdrId}</if>
+            <if test="recordIndex != null "> and record_index = #{recordIndex}</if>
+            <if test="correlatorIndex != null "> and correlator_index = #{correlatorIndex}</if>
+        </where>
+    </select>
+
+    <insert id="insertCdrCall" parameterType="CdrCall">
+        insert into cdr_call
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="cdrId != null">cdr_id,</if>
+            <if test="id != null">id,</if>
+            <if test="session != null">session,</if>
+            <if test="callBridge != null">call_bridge,</if>
+            <if test="recordIndex != null">record_index,</if>
+            <if test="correlatorIndex != null">correlator_index,</if>
+            <if test="name != null">name,</if>
+            <if test="coSpace != null">co_space,</if>
+            <if test="ownerName != null">owner_name,</if>
+            <if test="tenant != null">tenant,</if>
+            <if test="cdrTag != null">cdr_tag,</if>
+            <if test="callType != null">call_type,</if>
+            <if test="callCorrelator != null">call_correlator,</if>
+            <if test="callLegsCompleted != null">call_legs_completed,</if>
+            <if test="callLegsMaxActive != null">call_legs_max_active,</if>
+            <if test="durationSeconds != null">duration_seconds,</if>
+            <if test="recordType != null">record_type,</if>
+            <if test="time != null">time,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="createUserId != null">create_user_id,</if>
+            <if test="createUserName != null">create_user_name,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="cdrId != null">#{cdrId},</if>
+            <if test="id != null">#{id},</if>
+            <if test="session != null">#{session},</if>
+            <if test="callBridge != null">#{callBridge},</if>
+            <if test="recordIndex != null">#{recordIndex},</if>
+            <if test="correlatorIndex != null">#{correlatorIndex},</if>
+            <if test="name != null">#{name},</if>
+            <if test="coSpace != null">#{coSpace},</if>
+            <if test="ownerName != null">#{ownerName},</if>
+            <if test="tenant != null">#{tenant},</if>
+            <if test="cdrTag != null">#{cdrTag},</if>
+            <if test="callType != null">#{callType},</if>
+            <if test="callCorrelator != null">#{callCorrelator},</if>
+            <if test="callLegsCompleted != null">#{callLegsCompleted},</if>
+            <if test="callLegsMaxActive != null">#{callLegsMaxActive},</if>
+            <if test="durationSeconds != null">#{durationSeconds},</if>
+            <if test="recordType != null">#{recordType},</if>
+            <if test="time != null">#{time},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="createUserId != null">#{createUserId},</if>
+            <if test="createUserName != null">#{createUserName},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCdrCall" parameterType="CdrCall">
+        update cdr_call
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="cdrId != null">cdr_id = #{cdrId},</if>
+            <if test="session != null">session = #{session},</if>
+            <if test="callBridge != null">call_bridge = #{callBridge},</if>
+            <if test="recordIndex != null">record_index = #{recordIndex},</if>
+            <if test="correlatorIndex != null">correlator_index = #{correlatorIndex},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="coSpace != null">co_space = #{coSpace},</if>
+            <if test="ownerName != null">owner_name = #{ownerName},</if>
+            <if test="tenant != null">tenant = #{tenant},</if>
+            <if test="cdrTag != null">cdr_tag = #{cdrTag},</if>
+            <if test="callType != null">call_type = #{callType},</if>
+            <if test="callCorrelator != null">call_correlator = #{callCorrelator},</if>
+            <if test="callLegsCompleted != null">call_legs_completed = #{callLegsCompleted},</if>
+            <if test="callLegsMaxActive != null">call_legs_max_active = #{callLegsMaxActive},</if>
+            <if test="durationSeconds != null">duration_seconds = #{durationSeconds},</if>
+            <if test="recordType != null">record_type = #{recordType},</if>
+            <if test="time != null">time = #{time},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="createUserId != null">create_user_id = #{createUserId},</if>
+            <if test="createUserName != null">create_user_name = #{createUserName},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCdrCallById" parameterType="Integer">
+        delete from cdr_call where id = #{id}
+    </delete>
+
+    <delete id="deleteCdrCallByIds" parameterType="String">
+        delete from cdr_call where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectCdrCallByIdAndRecordType" resultMap="CdrCallResult">
+        <include refid="selectCdrCallVo"/>
+        <where>
+            <if test="cdrId != null "> and cdr_id = #{cdrId}</if>
+            <if test="recordType != null"> and record_type = #{recordType}</if>
+        </where>
+    </select>
+
+    <delete id="deleteHistory">
+        delete from cdr_call where create_time &lt; #{beforeDate}
+    </delete>
+</mapper>

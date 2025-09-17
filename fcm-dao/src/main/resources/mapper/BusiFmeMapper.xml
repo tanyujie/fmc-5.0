@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiFmeMapper">
+
+      <resultMap type="BusiFme" id="BusiFmeResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="username"    column="username"    />
+        <result property="password"    column="password"    />
+        <result property="adminUsername"    column="admin_username"    />
+        <result property="adminPassword"    column="admin_password"    />
+        <result property="name"    column="name"    />
+        <result property="ip"    column="ip"    />
+        <result property="cucmIp"    column="cucm_ip"    />
+        <result property="port"    column="port"    />
+        <result property="status"    column="status"    />
+        <result property="capacity"    column="capacity"    />
+        <result property="spareFmeId"    column="spare_fme_id"    />
+    </resultMap>
+
+    <sql id="selectBusiFmeVo">
+        select id, create_time, update_time, username, password, admin_username, admin_password, name, ip, cucm_ip, port, status, capacity, spare_fme_id from busi_fme
+    </sql>
+
+    <select id="selectBusiFmeList" parameterType="BusiFme" resultMap="BusiFmeResult">
+        <include refid="selectBusiFmeVo"/>
+        <where>  
+            <if test="username != null  and username != ''"> and username like concat('%', #{username}, '%')</if>
+            <if test="password != null  and password != ''"> and password = #{password}</if>
+            <if test="adminUsername != null  and adminUsername != ''"> and admin_username like concat('%', #{adminUsername}, '%')</if>
+            <if test="adminPassword != null  and adminPassword != ''"> and admin_password = #{adminPassword}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="ip != null  and ip != ''"> and ip = #{ip}</if>
+            <if test="cucmIp != null  and cucmIp != ''"> and cucm_ip = #{cucmIp}</if>
+            <if test="port != null "> and port = #{port}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="capacity != null "> and capacity = #{capacity}</if>
+            <if test="spareFmeId != null "> and spare_fme_id = #{spareFmeId}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiFmeById" parameterType="Long" resultMap="BusiFmeResult">
+        <include refid="selectBusiFmeVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiFme" parameterType="BusiFme" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_fme
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="username != null">username,</if>
+            <if test="password != null">password,</if>
+            <if test="adminUsername != null">admin_username,</if>
+            <if test="adminPassword != null">admin_password,</if>
+            <if test="name != null">name,</if>
+            <if test="ip != null">ip,</if>
+            <if test="cucmIp != null">cucm_ip,</if>
+            <if test="port != null">port,</if>
+            <if test="status != null">status,</if>
+            <if test="capacity != null">capacity,</if>
+            <if test="spareFmeId != null">spare_fme_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="username != null">#{username},</if>
+            <if test="password != null">#{password},</if>
+            <if test="adminUsername != null">#{adminUsername},</if>
+            <if test="adminPassword != null">#{adminPassword},</if>
+            <if test="name != null">#{name},</if>
+            <if test="ip != null">#{ip},</if>
+            <if test="cucmIp != null">#{cucmIp},</if>
+            <if test="port != null">#{port},</if>
+            <if test="status != null">#{status},</if>
+            <if test="capacity != null">#{capacity},</if>
+            <if test="spareFmeId != null">#{spareFmeId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiFme" parameterType="BusiFme">
+        update busi_fme
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="username != null">username = #{username},</if>
+            <if test="password != null">password = #{password},</if>
+            <if test="adminUsername != null">admin_username = #{adminUsername},</if>
+            <if test="adminPassword != null">admin_password = #{adminPassword},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="ip != null">ip = #{ip},</if>
+            <if test="cucmIp != null">cucm_ip = #{cucmIp},</if>
+            <if test="port != null">port = #{port},</if>
+            <if test="capacity != null">capacity = #{capacity},</if>
+            <if test="status != null">status = #{status},</if>
+            spare_fme_id = #{spareFmeId},
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiFmeById" parameterType="Long">
+        delete from busi_fme where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiFmeByIds" parameterType="String">
+        delete from busi_fme where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

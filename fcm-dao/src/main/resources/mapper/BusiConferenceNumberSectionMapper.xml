@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiConferenceNumberSectionMapper">
+    
+    <resultMap type="BusiConferenceNumberSection" id="BusiConferenceNumberSectionResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="startValue"    column="start_value"    />
+        <result property="endValue"    column="end_value"    />
+        <result property="mcuType"    column="mcu_type"    />
+        <result property="sectionType"    column="section_type"    />
+    </resultMap>
+
+    <sql id="selectBusiConferenceNumberSectionVo">
+        select id, create_time, update_time, dept_id, start_value, end_value, mcu_type, section_type from busi_conference_number_section
+    </sql>
+    
+    <resultMap type="DeptRecordCount" id="DeptRecordCountMap">
+        <result property="deptId"    column="dept_id"    />
+        <result property="count"    column="ct"    />
+    </resultMap>
+    
+    <select id="getDeptRecordCounts" resultMap="DeptRecordCountMap">
+        SELECT
+        	a.dept_id,
+        	count(*) ct 
+        FROM
+        	busi_conference_number_section a
+        GROUP BY
+        	a.dept_id 
+        ORDER BY
+        	a.dept_id ASC
+    </select>
+
+    <select id="selectBusiConferenceNumberSectionList" parameterType="BusiConferenceNumberSection" resultMap="BusiConferenceNumberSectionResult">
+        <include refid="selectBusiConferenceNumberSectionVo"/>
+        <where>  
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="startValue != null "> and start_value = #{startValue}</if>
+            <if test="endValue != null "> and end_value = #{endValue}</if>
+            <if test="mcuType != null and mcuType != ''"> and mcu_type = #{mcuType}</if>
+            <if test="sectionType != null "> and section_type = #{sectionType}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiConferenceNumberSectionById" parameterType="Long" resultMap="BusiConferenceNumberSectionResult">
+        <include refid="selectBusiConferenceNumberSectionVo"/>
+        where id = #{id}
+    </select>
+        
+    <select id="countSection" resultType="Integer" >
+        select count(*) from busi_conference_number_section where start_value
+        <![CDATA[
+            <= #{val} and #{val} <= end_value
+        ]]>
+        <if test="id != null"> and id != #{id}</if>
+    </select>
+        
+    <insert id="insertBusiConferenceNumberSection" parameterType="BusiConferenceNumberSection" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_conference_number_section
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="startValue != null">start_value,</if>
+            <if test="endValue != null">end_value,</if>
+            <if test="mcuType != null">mcu_type,</if>
+            <if test="sectionType != null">section_type,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="startValue != null">#{startValue},</if>
+            <if test="endValue != null">#{endValue},</if>
+            <if test="mcuType != null">#{mcuType},</if>
+            <if test="sectionType != null">#{sectionType},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiConferenceNumberSection" parameterType="BusiConferenceNumberSection">
+        update busi_conference_number_section
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="startValue != null">start_value = #{startValue},</if>
+            <if test="endValue != null">end_value = #{endValue},</if>
+            <if test="mcuType != null">mcu_type = #{mcuType},</if>
+            <if test="sectionType != null">section_type = #{sectionType},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiConferenceNumberSectionById" parameterType="Long">
+        delete from busi_conference_number_section where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiConferenceNumberSectionByIds" parameterType="String">
+        delete from busi_conference_number_section where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

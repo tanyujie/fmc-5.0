@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiConferenceAppointmentMapper">
+    
+    <resultMap type="BusiConferenceAppointment" id="BusiConferenceAppointmentResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="templateId"    column="template_id"    />
+        <result property="isAutoCreateTemplate"    column="is_auto_create_template"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="endTime"    column="end_time"    />
+        <result property="status"    column="status"    />
+        <result property="extendMinutes"    column="extend_minutes"    />
+        <result property="repeatRate"    column="repeat_rate"    />
+        <result property="isHangUp"    column="is_hang_up"    />
+        <result property="repeatDate"    column="repeat_date"    />
+        <result property="password"    column="password"    />
+        <result property="attendeeLimit"    column="attendee_limit"    />
+        <result property="isStart"    column="is_start"    />
+        <result property="startFailedReason"    column="start_failed_reason"    />
+        <result property="type"    column="type"    />
+        <result property="params.businessFieldType"    column="business_field_type"    />
+        <result property="params.businessProperties"    column="business_properties" typeHandler="com.paradisecloud.fcm.dao.typehandler.JSONTypeMapHandler"  />
+        <result property="params.conferenceName"    column="conference_name"    />
+        <result property="params.conferenceNumber"    column="conference_number"    />
+        <result property="params.createUserId" column="create_user_id" />
+        <result property="params.createUserName" column="create_user_name" />
+        <result property="createBy"    column="create_by"    />
+        <result property="approvalId"    column="approval_id"    />
+        <result property="roomBookId"    column="room_book_id"    />
+    </resultMap>
+
+    <sql id="selectBusiConferenceAppointmentVo">
+        select id, create_time, update_time, dept_id, template_id, is_auto_create_template, start_time, end_time
+            , status, extend_minutes, repeat_rate, is_hang_up, repeat_date, password, attendee_limit, is_start
+            , start_failed_reason, create_by, type, approval_id, room_book_id from busi_conference_appointment
+    </sql>
+
+
+
+    <select id="selectBusiConferenceAppointmentListBykey"  resultMap="BusiConferenceAppointmentResult">
+        select ca.*,tc.business_field_type,tc.business_properties,tc.name as conference_name,tc.conference_number,tc.create_user_id,tc.create_user_name from busi_conference_appointment
+        ca left join busi_template_conference tc on ca.template_id = tc.id
+        <where>
+            <if test="deptId != null "> and ca.dept_id = #{deptId}</if>
+            <if test="searchKey != null "> and tc.name like  concat('%',#{searchKey},'%') or tc.conference_number=#{searchKey}</if>
+        </where>
+    </select>
+
+    <select id="selectBusiConferenceAppointmentList" parameterType="BusiConferenceAppointment" resultMap="BusiConferenceAppointmentResult">
+        select ca.*,tc.business_field_type,tc.business_properties,tc.name as conference_name,tc.conference_number,tc.create_user_id,tc.create_user_name from busi_conference_appointment
+        ca left join busi_template_conference tc on ca.template_id = tc.id
+        <where>  
+            <if test="deptId != null "> and ca.dept_id = #{deptId}</if>
+            <if test="templateId != null "> and ca.template_id = #{templateId}</if>
+            <if test="isAutoCreateTemplate != null "> and ca.is_auto_create_template = #{isAutoCreateTemplate}</if>
+            <if test="startTime != null  and startTime != ''"> and ca.start_time = #{startTime}</if>
+            <if test="endTime != null  and endTime != ''"> and ca.end_time = #{endTime}</if>
+            <if test="repeatRate != null "> and ca.repeat_rate = #{repeatRate}</if>
+            <if test="status != null "> and ca.status = #{status}</if>
+            <if test="extendMinutes != null "> and ca.extend_minutes = #{extendMinutes}</if>
+            <if test="repeatDate != null "> and ca.repeat_date = #{repeatDate}</if>
+            <if test="isHangUp != null "> and ca.is_hang_up = #{isHangUp}</if>
+            <if test="password != null  and password != ''"> and ca.password = #{password}</if>
+            <if test="attendeeLimit != null "> and ca.attendee_limit = #{attendeeLimit}</if>
+            <if test="isStart != null "> and ca.is_start = #{isStart}</if>
+            <if test="createBy != null "> and ca.create_by = #{createBy}</if>
+            <if test="params.businessFieldType != null "> and tc.business_field_type = #{params.businessFieldType}</if>
+            <if test="params.businessProperties != null">
+            
+                <!-- （教育行业）相关查询 -->
+                <if test="params.businessFieldType == @com.paradiscloud.fcm.business.model.enumer.BusinessFieldType@EDUCATION.value">
+                    <!-- 学科查询 -->
+                    <if test="params.businessProperties.subjectId != null">
+                        and tc.business_properties -> '$.subjectId' = #{params.businessProperties.subjectId}
+                    </if>
+                    
+                    <!-- 班级查询 -->
+                    <if test="params.businessProperties.classId != null">
+                        and tc.id in (
+                            select template_conference_id from busi_template_participant where business_properties -> '$.classId' = #{params.businessProperties.classId}
+                        )
+                    </if>
+                </if>
+                
+                <!-- 归属用户查询 -->
+                <if test="params.businessProperties.createUserId != null">
+                    and tc.create_user_id = #{params.businessProperties.createUserId}
+                </if>
+                
+                <!-- 终端查询（教室） -->
+                <if test="params.businessProperties.terminalId != null">
+                    and tc.id in (
+                        select template_conference_id from busi_template_participant where terminal_id = #{params.businessProperties.terminalId}
+                    )
+                </if>
+            </if>
+            <if test="approvalId != null "> and ca.approval_id = #{approvalId}</if>
+            <if test="roomBookId != null "> and ca.room_book_id = #{roomBookId}</if>
+        </where>
+    </select>
+    
+    <resultMap type="DeptRecordCount" id="DeptRecordCountMap">
+        <result property="deptId"    column="dept_id"    />
+        <result property="count"    column="appointment_count"    />
+    </resultMap>
+    
+    <select id="getDeptRecordCounts" parameterType="Integer" resultMap="DeptRecordCountMap">
+        SELECT
+        	a.dept_id,
+        	count(*) appointment_count 
+        FROM
+        	busi_conference_appointment a LEFT JOIN busi_template_conference c ON a.template_id = c.id 
+        WHERE
+        	business_field_type = #{businessFieldType} 
+        GROUP BY
+        	a.dept_id 
+        ORDER BY
+        	a.dept_id ASC
+    </select>
+    
+    <select id="selectBusiConferenceAppointmentById" parameterType="Long" resultMap="BusiConferenceAppointmentResult">
+        <include refid="selectBusiConferenceAppointmentVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectBusiConferenceAppointmentByTemplateId" parameterType="Long" resultMap="BusiConferenceAppointmentResult">
+        <include refid="selectBusiConferenceAppointmentVo"/>
+        where template_id = #{templateId}
+    </select>
+        
+    <insert id="insertBusiConferenceAppointment" parameterType="BusiConferenceAppointment" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_conference_appointment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="templateId != null">template_id,</if>
+            <if test="isAutoCreateTemplate != null">is_auto_create_template,</if>
+            <if test="startTime != null">start_time,</if>
+            <if test="endTime != null">end_time,</if>
+            <if test="repeatRate != null">repeat_rate,</if>
+            <if test="status != null">status,</if>
+            <if test="extendMinutes != null">extend_minutes,</if>
+            <if test="repeatDate != null">repeat_date,</if>
+            <if test="isHangUp != null">is_hang_up,</if>
+            <if test="password != null">password,</if>
+            <if test="attendeeLimit != null">attendee_limit,</if>
+            <if test="isStart != null">is_start,</if>
+            <if test="type != null">type,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="approvalId != null">approval_id,</if>
+            <if test="roomBookId != null">room_book_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="templateId != null">#{templateId},</if>
+            <if test="isAutoCreateTemplate != null">#{isAutoCreateTemplate},</if>
+            <if test="startTime != null">#{startTime},</if>
+            <if test="endTime != null">#{endTime},</if>
+            <if test="repeatRate != null">#{repeatRate},</if>
+            <if test="status != null">#{status},</if>
+            <if test="extendMinutes != null">#{extendMinutes},</if>
+            <if test="repeatDate != null">#{repeatDate},</if>
+            <if test="isHangUp != null">#{isHangUp},</if>
+            <if test="password != null">#{password},</if>
+            <if test="attendeeLimit != null">#{attendeeLimit},</if>
+            <if test="isStart != null">#{isStart},</if>
+            <if test="type != null">#{type},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="approvalId != null">#{approvalId},</if>
+            <if test="roomBookId != null">#{roomBookId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiConferenceAppointment" parameterType="BusiConferenceAppointment">
+        update busi_conference_appointment
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="templateId != null">template_id = #{templateId},</if>
+            <if test="isAutoCreateTemplate != null">is_auto_create_template = #{isAutoCreateTemplate},</if>
+            <if test="startTime != null">start_time = #{startTime},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+            <if test="repeatRate != null">repeat_rate = #{repeatRate},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="repeatDate != null">repeat_date = #{repeatDate},</if>
+            extend_minutes = #{extendMinutes},
+            is_hang_up = #{isHangUp},
+            is_start = #{isStart},
+            start_failed_reason = #{startFailedReason},
+            password = #{password},
+            <if test="attendeeLimit != null">attendee_limit = #{attendeeLimit},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="approvalId != null">approval_id = #{approvalId},</if>
+            <if test="roomBookId != null">room_book_id = #{roomBookId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiConferenceAppointmentById" parameterType="Long">
+        delete from busi_conference_appointment where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiConferenceAppointmentByIds" parameterType="String">
+        delete from busi_conference_appointment where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

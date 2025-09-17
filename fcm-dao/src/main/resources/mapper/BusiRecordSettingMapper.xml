@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiRecordSettingMapper">
+    
+    <resultMap type="BusiRecordSetting" id="BusiRecordSettingResult">
+        <result property="id"    column="id"    />
+        <result property="url"    column="url"    />
+        <result property="path"    column="path"    />
+        <result property="folder"    column="folder"    />
+        <result property="mergeName"    column="merge_name"    />
+        <result property="mergeCoverName"    column="merge_cover_name"    />
+        <result property="status"    column="status"    />
+        <result property="description"    column="description"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="retentionType"    column="retention_type"    />
+    </resultMap>
+
+    <sql id="selectBusiRecordSettingVo">
+        select id, url, path, folder, merge_name, merge_cover_name, status, description, dept_id, create_time, update_time, retention_type from busi_record_setting
+    </sql>
+
+    <select id="selectBusiRecordSettingList" parameterType="BusiRecordSetting" resultMap="BusiRecordSettingResult">
+        <include refid="selectBusiRecordSettingVo"/>
+        <where>
+            <if test="url != null  and url != ''"> and url = #{url}</if>
+            <if test="path != null  and path != ''"> and path = #{path}</if>
+            <if test="folder != null  and folder != ''"> and folder = #{folder}</if>
+            <if test="mergeName != null  and mergeName != ''"> and merge_name like concat('%', #{mergeName}, '%')</if>
+            <if test="mergeCoverName != null  and mergeCoverName != ''"> and merge_cover_name like concat('%', #{mergeCoverName}, '%')</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="description != null  and description != ''"> and description = #{description}</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="retentionType != null "> and retention_type = #{retentionType}</if>
+        </where>
+    </select>
+
+    <select id="selectBusiRecordSettingById" parameterType="Long" resultMap="BusiRecordSettingResult">
+        <include refid="selectBusiRecordSettingVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertBusiRecordSetting" parameterType="BusiRecordSetting" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_record_setting
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="url != null">url,</if>
+            <if test="path != null">path,</if>
+            <if test="folder != null">folder,</if>
+            <if test="mergeName != null">merge_name,</if>
+            <if test="mergeCoverName != null">merge_cover_name,</if>
+            <if test="status != null">status,</if>
+            <if test="description != null">description,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="retentionType != null">retention_type,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="url != null">#{url},</if>
+            <if test="path != null">#{path},</if>
+            <if test="folder != null">#{folder},</if>
+            <if test="mergeName != null">#{mergeName},</if>
+            <if test="mergeCoverName != null">#{mergeCoverName},</if>
+            <if test="status != null">#{status},</if>
+            <if test="description != null">#{description},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="retentionType != null">#{retentionType},</if>
+        </trim>
+    </insert>
+
+    <update id="updateBusiRecordSetting" parameterType="BusiRecordSetting">
+        update busi_record_setting
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="url != null">url = #{url},</if>
+            <if test="path != null">path = #{path},</if>
+            <if test="folder != null">folder = #{folder},</if>
+            <if test="mergeName != null">merge_name = #{mergeName},</if>
+            <if test="mergeCoverName != null">merge_cover_name = #{mergeCoverName},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="retentionType != null">retention_type = #{retentionType},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiRecordSettingById" parameterType="Long">
+        delete from busi_record_setting where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiRecordSettingByIds" parameterType="String">
+        delete from busi_record_setting where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

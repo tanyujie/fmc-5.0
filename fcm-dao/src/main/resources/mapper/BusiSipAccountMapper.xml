@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiSipAccountMapper">
+    <resultMap type="BusiSipAccount" id="BusiSipAccountResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="sipServer"    column="sip_server"    />
+        <result property="sipPort"    column="sip_port"    />
+        <result property="sipUserName"    column="sip_user_name"    />
+        <result property="sipPassword"    column="sip_password"    />
+        <result property="turnServer"    column="turn_server"    />
+        <result property="turnPort"    column="turn_port"    />
+        <result property="stunServer"    column="stun_server"    />
+        <result property="stunPort"    column="stun_port"    />
+        <result property="sn"    column="sn"    />
+        <result property="turnUserName"    column="turn_user_name"    />
+        <result property="turnPassword"    column="turn_password"    />
+        <result property="proxyServer"    column="proxy_server"    />
+        <result property="terminalId"    column="terminal_id"    />
+        <result property="deptId"    column="dept_id"    />
+    </resultMap>
+
+    <sql id="selectBusiSipAccountVo">
+        select id, create_time, update_time, sip_server, sip_port, sip_user_name, sip_password, turn_server, turn_port, stun_server, stun_port, sn, turn_user_name, turn_password, proxy_server, terminal_id, dept_id from busi_sip_account
+    </sql>
+
+    <select id="selectBusiSipAccountList" parameterType="BusiSipAccount" resultMap="BusiSipAccountResult">
+        <include refid="selectBusiSipAccountVo"/>
+        <where>  
+            <if test="sipServer != null  and sipServer != ''"> and sip_server = #{sipServer}</if>
+            <if test="sipPort != null "> and sip_port = #{sipPort}</if>
+            <if test="sipUserName != null "> and sip_user_name like concat('%', #{sipUserName}, '%')</if>
+            <if test="sipPassword != null  and sipPassword != ''"> and sip_password = #{sipPassword}</if>
+            <if test="turnServer != null  and turnServer != ''"> and turn_server = #{turnServer}</if>
+            <if test="turnPort != null "> and turn_port = #{turnPort}</if>
+            <if test="stunServer != null  and stunServer != ''"> and stun_server = #{stunServer}</if>
+            <if test="stunPort != null "> and stun_port = #{stunPort}</if>
+            <if test="sn != null  and sn != ''"> and sn = #{sn}</if>
+            <if test="turnUserName != null  and turnUserName != ''"> and turn_user_name like concat('%', #{turnUserName}, '%')</if>
+            <if test="turnPassword != null  and turnPassword != ''"> and turn_password = #{turnPassword}</if>
+            <if test="proxyServer != null  and proxyServer != ''"> and proxy_server = #{proxyServer}</if>
+            <if test="terminalId != null "> and terminal_id = #{terminalId}</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiSipAccountById" parameterType="Long" resultMap="BusiSipAccountResult">
+        <include refid="selectBusiSipAccountVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiSipAccount" parameterType="BusiSipAccount" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_sip_account
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="sipServer != null">sip_server,</if>
+            <if test="sipPort != null">sip_port,</if>
+            <if test="sipUserName != null">sip_user_name,</if>
+            <if test="sipPassword != null">sip_password,</if>
+            <if test="turnServer != null">turn_server,</if>
+            <if test="turnPort != null">turn_port,</if>
+            <if test="stunServer != null">stun_server,</if>
+            <if test="stunPort != null">stun_port,</if>
+            <if test="sn != null">sn,</if>
+            <if test="turnUserName != null">turn_user_name,</if>
+            <if test="turnPassword != null">turn_password,</if>
+            <if test="proxyServer != null">proxy_server,</if>
+            <if test="terminalId != null">terminal_id,</if>
+            <if test="deptId != null">dept_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="sipServer != null">#{sipServer},</if>
+            <if test="sipPort != null">#{sipPort},</if>
+            <if test="sipUserName != null">#{sipUserName},</if>
+            <if test="sipPassword != null">#{sipPassword},</if>
+            <if test="turnServer != null">#{turnServer},</if>
+            <if test="turnPort != null">#{turnPort},</if>
+            <if test="stunServer != null">#{stunServer},</if>
+            <if test="stunPort != null">#{stunPort},</if>
+            <if test="sn != null">#{sn},</if>
+            <if test="turnUserName != null">#{turnUserName},</if>
+            <if test="turnPassword != null">#{turnPassword},</if>
+            <if test="proxyServer != null">#{proxyServer},</if>
+            <if test="terminalId != null">#{terminalId},</if>
+            <if test="deptId != null">#{deptId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiSipAccount" parameterType="BusiSipAccount">
+        update busi_sip_account
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="sipServer != null">sip_server = #{sipServer},</if>
+            <if test="sipPort != null">sip_port = #{sipPort},</if>
+            <if test="sipUserName != null">sip_user_name = #{sipUserName},</if>
+            <if test="sipPassword != null">sip_password = #{sipPassword},</if>
+            <if test="turnServer != null">turn_server = #{turnServer},</if>
+            <if test="turnPort != null">turn_port = #{turnPort},</if>
+            <if test="stunServer != null">stun_server = #{stunServer},</if>
+            <if test="stunPort != null">stun_port = #{stunPort},</if>
+            <if test="sn != null">sn = #{sn},</if>
+            <if test="turnUserName != null">turn_user_name = #{turnUserName},</if>
+            <if test="turnPassword != null">turn_password = #{turnPassword},</if>
+            <if test="proxyServer != null">proxy_server = #{proxyServer},</if>
+            <if test="terminalId != null">terminal_id = #{terminalId},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiSipAccountById" parameterType="Long">
+        delete from busi_sip_account where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiSipAccountByIds" parameterType="String">
+        delete from busi_sip_account where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

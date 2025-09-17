@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiSmartRoomMapper">
+
+    <resultMap type="BusiSmartRoom" id="BusiSmartRoomResult">
+        <result property="id"    column="id"    />
+        <result property="roomName"    column="room_name"    />
+        <result property="roomStatus"    column="room_status"    />
+        <result property="roomType"    column="room_type"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="remark"    column="remark"    />
+        <result property="city"    column="city"    />
+        <result property="building"    column="building"    />
+        <result property="floor"    column="floor"    />
+        <result property="thirdOaType"    column="third_oa_type"    />
+        <result property="thirdRoomId"    column="third_room_id"    />
+        <result property="roomLevel"    column="room_level"    />
+        <result property="userId"    column="user_id"    />
+    </resultMap>
+
+    <sql id="selectBusiSmartRoomVo">
+        select id, room_name, room_status, room_type, create_time, create_by, update_time, update_by, remark, city, building, floor, third_oa_type, third_room_id, room_level, user_id from busi_smart_room
+    </sql>
+
+    <select id="selectBusiSmartRoomList" parameterType="BusiSmartRoom" resultMap="BusiSmartRoomResult">
+        <include refid="selectBusiSmartRoomVo"/>
+        <where>
+            <if test="roomName != null  and roomName != ''"> and room_name like concat('%', #{roomName}, '%')</if>
+            <if test="roomStatus != null "> and room_status = #{roomStatus}</if>
+            <if test="roomType != null "> and room_type = #{roomType}</if>
+            <if test="roomLevel != null "> and room_level = #{roomLevel}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+        </where>
+    </select>
+
+    <select id="selectBusiSmartRoomById" parameterType="Long" resultMap="BusiSmartRoomResult">
+        <include refid="selectBusiSmartRoomVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertBusiSmartRoom" parameterType="BusiSmartRoom" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_smart_room
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="roomName != null and roomName != ''">room_name,</if>
+            <if test="roomStatus != null">room_status,</if>
+            <if test="roomType != null">room_type,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="remark != null">remark,</if>
+            <if test="city != null">city,</if>
+            <if test="building != null">building,</if>
+            <if test="floor != null">floor,</if>
+            <if test="thirdOaType != null">third_oa_type,</if>
+            <if test="thirdRoomId != null">third_room_id,</if>
+            <if test="roomLevel != null">room_level,</if>
+            <if test="userId != null">user_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="roomName != null and roomName != ''">#{roomName},</if>
+            <if test="roomStatus != null">#{roomStatus},</if>
+            <if test="roomType != null">#{roomType},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="city != null">#{city},</if>
+            <if test="building != null">#{building},</if>
+            <if test="floor != null">#{floor},</if>
+            <if test="thirdOaType != null">#{thirdOaType},</if>
+            <if test="thirdRoomId != null">#{thirdRoomId},</if>
+            <if test="roomLevel != null">#{roomLevel},</if>
+            <if test="userId != null">#{userId},</if>
+        </trim>
+    </insert>
+
+    <update id="updateBusiSmartRoom" parameterType="BusiSmartRoom">
+        update busi_smart_room
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="roomName != null and roomName != ''">room_name = #{roomName},</if>
+            <if test="roomStatus != null">room_status = #{roomStatus},</if>
+            <if test="roomType != null">room_type = #{roomType},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null and createBy != ''">create_by = #{createBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            remark = #{remark},
+            <if test="city != null">city = #{city},</if>
+            <if test="building != null">building = #{building},</if>
+            <if test="floor != null">floor = #{floor},</if>
+            <if test="thirdOaType != null">third_oa_type = #{thirdOaType},</if>
+            <if test="thirdRoomId != null">third_room_id = #{thirdRoomId},</if>
+            <if test="roomLevel != null">room_level = #{roomLevel},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiSmartRoomById" parameterType="Long">
+        delete from busi_smart_room where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiSmartRoomByIds" parameterType="String">
+        delete from busi_smart_room where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectBusiSmartRoomListForDoorplateNotBound" parameterType="Long" resultMap="BusiSmartRoomResult">
+        <include refid="selectBusiSmartRoomVo"/>
+        where
+        not exists (select 1 from busi_smart_room_device_map map WHERE map.room_id = busi_smart_room.id AND map.device_type = 0)
+        <if test="doorplateId != null"> OR
+            exists (select 1 from busi_smart_room_device_map map WHERE map.room_id = busi_smart_room.id AND map.device_id = #{doorplateId} AND map.device_type = 0)</if>
+    </select>
+</mapper>

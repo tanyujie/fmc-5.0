@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiOpsInfoMapper">
+    
+    <resultMap type="BusiOpsInfo" id="BusiOpsInfoResult">
+        <result property="id"    column="id"    />
+        <result property="ipAddress"    column="ip_address"    />
+        <result property="subnetMask"    column="subnet_mask"    />
+        <result property="gatewayName"    column="gateway_name"    />
+        <result property="password"    column="password"    />
+        <result property="fmeIp"    column="fme_ip"    />
+        <result property="sn"    column="sn"    />
+        <result property="publicIp"    column="public_ip"    />
+    </resultMap>
+
+    <sql id="selectBusiOpsInfoVo">
+        select id, ip_address, subnet_mask, gateway_name, password ,fme_ip ,sn,public_ip from busi_ops_info
+    </sql>
+
+    <select id="selectBusiOpsInfoList" parameterType="BusiOpsInfo" resultMap="BusiOpsInfoResult">
+        <include refid="selectBusiOpsInfoVo"/>
+        <where>  
+            <if test="ipAddress != null  and ipAddress != ''"> and ip_address = #{ipAddress}</if>
+            <if test="subnetMask != null  and subnetMask != ''"> and subnet_mask = #{subnetMask}</if>
+            <if test="gatewayName != null  and gatewayName != ''"> and gateway_name like concat('%', #{gatewayName}, '%')</if>
+            <if test="password != null  and password != ''"> and password = #{password}</if>
+            <if test="fmeIp != null  and fmeIp != ''"> and fme_ip = #{fmeIp}</if>
+            <if test="sn != null  and sn != ''"> and sn = #{sn}</if>
+            <if test="publicIp != null  and publicIp != ''"> and public_ip = #{publicIp}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiOpsInfoById" parameterType="Integer" resultMap="BusiOpsInfoResult">
+        <include refid="selectBusiOpsInfoVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiOpsInfo" parameterType="BusiOpsInfo">
+        insert into busi_ops_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="ipAddress != null">ip_address,</if>
+            <if test="subnetMask != null">subnet_mask,</if>
+            <if test="gatewayName != null">gateway_name,</if>
+            <if test="password != null">password,</if>
+            <if test="fmeIp != null">fme_ip,</if>
+            <if test="sn != null">sn,</if>
+            <if test="publicIp != null">public_ip,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="ipAddress != null">#{ipAddress},</if>
+            <if test="subnetMask != null">#{subnetMask},</if>
+            <if test="gatewayName != null">#{gatewayName},</if>
+            <if test="password != null">#{password},</if>
+            <if test="fmeIp != null">#{fmeIp},</if>
+            <if test="sn != null">#{sn},</if>
+            <if test="publicIp != null">#{publicIp},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiOpsInfo" parameterType="BusiOpsInfo">
+        update busi_ops_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="ipAddress != null">ip_address = #{ipAddress},</if>
+            <if test="subnetMask != null">subnet_mask = #{subnetMask},</if>
+            <if test="gatewayName != null">gateway_name = #{gatewayName},</if>
+            <if test="password != null">password = #{password},</if>
+            <if test="fmeIp != null">fme_ip = #{fmeIp},</if>
+            <if test="sn != null">sn = #{sn},</if>
+            <if test="publicIp != null">public_ip = #{publicIp},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiOpsInfoById" parameterType="Integer">
+        delete from busi_ops_info where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiOpsInfoByIds" parameterType="String">
+        delete from busi_ops_info where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

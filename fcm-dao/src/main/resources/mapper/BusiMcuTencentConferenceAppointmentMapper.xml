@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 2.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiMcuTencentConferenceAppointmentMapper">
+    
+    <resultMap type="BusiMcuTencentConferenceAppointment" id="BusiMcuTencentConferenceAppointmentResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="templateId"    column="template_id"    />
+        <result property="isAutoCreateTemplate"    column="is_auto_create_template"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="endTime"    column="end_time"    />
+        <result property="extendMinutes"    column="extend_minutes"    />
+        <result property="isHangUp"    column="is_hang_up"    />
+        <result property="status"    column="status"    />
+        <result property="isStart"    column="is_start"    />
+        <result property="startFailedReason"    column="start_failed_reason"    />
+        <result property="repeatRate"    column="repeat_rate"    />
+        <result property="repeatDate"    column="repeat_date"    />
+        <result property="password"    column="password"    />
+        <result property="attendeeLimit"    column="attendee_limit"    />
+        <result property="type"    column="type"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="approvalId"    column="approval_id"    />
+        <result property="roomBookId"    column="room_book_id"    />
+        <result property="opsId"    column="ops_id"    />
+        <result property="isCloudConference"    column="is_cloud_conference"    />
+        <result property="cloudConferenceId"    column="cloud_conference_id"    />
+    </resultMap>
+
+    <sql id="selectBusiMcuTencentConferenceAppointmentVo">
+        select id, create_time, update_time, dept_id, template_id, is_auto_create_template, start_time, end_time, extend_minutes, is_hang_up, status, is_start, start_failed_reason, repeat_rate, repeat_date, password, attendee_limit, `type`, create_by, approval_id, room_book_id, ops_id, is_cloud_conference, cloud_conference_id from busi_mcu_tencent_conference_appointment
+    </sql>
+
+    <select id="selectBusiMcuTencentConferenceAppointmentList" parameterType="BusiMcuTencentConferenceAppointment" resultMap="BusiMcuTencentConferenceAppointmentResult">
+        <include refid="selectBusiMcuTencentConferenceAppointmentVo"/>
+        <where>  
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="templateId != null "> and template_id = #{templateId}</if>
+            <if test="isAutoCreateTemplate != null "> and is_auto_create_template = #{isAutoCreateTemplate}</if>
+            <if test="startTime != null  and startTime != ''"> and start_time = #{startTime}</if>
+            <if test="endTime != null  and endTime != ''"> and end_time = #{endTime}</if>
+            <if test="extendMinutes != null "> and extend_minutes = #{extendMinutes}</if>
+            <if test="isHangUp != null "> and is_hang_up = #{isHangUp}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="isStart != null "> and is_start = #{isStart}</if>
+            <if test="startFailedReason != null  and startFailedReason != ''"> and start_failed_reason = #{startFailedReason}</if>
+            <if test="repeatRate != null "> and repeat_rate = #{repeatRate}</if>
+            <if test="repeatDate != null "> and repeat_date = #{repeatDate}</if>
+            <if test="password != null  and password != ''"> and password = #{password}</if>
+            <if test="attendeeLimit != null "> and attendee_limit = #{attendeeLimit}</if>
+            <if test="type != null "> and type = #{type}</if>
+            <if test="createBy != null "> and create_by = #{createBy}</if>
+            <if test="approvalId != null "> and approval_id = #{approvalId}</if>
+            <if test="roomBookId != null "> and room_book_id = #{roomBookId}</if>
+            <if test="opsId != null "> and ops_id = #{opsId}</if>
+            <if test="isCloudConference != null "> and is_cloud_conference = #{isCloudConference}</if>
+            <if test="cloudConferenceId != null "> and cloud_conference_id = #{cloudConferenceId}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiMcuTencentConferenceAppointmentById" parameterType="Long" resultMap="BusiMcuTencentConferenceAppointmentResult">
+        <include refid="selectBusiMcuTencentConferenceAppointmentVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiMcuTencentConferenceAppointment" parameterType="BusiMcuTencentConferenceAppointment" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_mcu_tencent_conference_appointment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="templateId != null">template_id,</if>
+            <if test="isAutoCreateTemplate != null">is_auto_create_template,</if>
+            <if test="startTime != null">start_time,</if>
+            <if test="endTime != null">end_time,</if>
+            <if test="extendMinutes != null">extend_minutes,</if>
+            <if test="isHangUp != null">is_hang_up,</if>
+            <if test="status != null">status,</if>
+            <if test="isStart != null">is_start,</if>
+            <if test="startFailedReason != null">start_failed_reason,</if>
+            <if test="repeatRate != null">repeat_rate,</if>
+            <if test="repeatDate != null">repeat_date,</if>
+            <if test="password != null">password,</if>
+            <if test="attendeeLimit != null">attendee_limit,</if>
+            <if test="type != null">type,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="approvalId != null">approval_id,</if>
+            <if test="roomBookId != null">room_book_id,</if>
+            <if test="opsId != null">ops_id,</if>
+            <if test="isCloudConference != null">is_cloud_conference,</if>
+            <if test="cloudConferenceId != null">cloud_conference_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="templateId != null">#{templateId},</if>
+            <if test="isAutoCreateTemplate != null">#{isAutoCreateTemplate},</if>
+            <if test="startTime != null">#{startTime},</if>
+            <if test="endTime != null">#{endTime},</if>
+            <if test="extendMinutes != null">#{extendMinutes},</if>
+            <if test="isHangUp != null">#{isHangUp},</if>
+            <if test="status != null">#{status},</if>
+            <if test="isStart != null">#{isStart},</if>
+            <if test="startFailedReason != null">#{startFailedReason},</if>
+            <if test="repeatRate != null">#{repeatRate},</if>
+            <if test="repeatDate != null">#{repeatDate},</if>
+            <if test="password != null">#{password},</if>
+            <if test="attendeeLimit != null">#{attendeeLimit},</if>
+            <if test="type != null">#{type},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="approvalId != null">#{approvalId},</if>
+            <if test="roomBookId != null">#{roomBookId},</if>
+            <if test="opsId != null">#{opsId},</if>
+            <if test="isCloudConference != null">#{isCloudConference},</if>
+            <if test="cloudConferenceId != null">#{cloudConferenceId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiMcuTencentConferenceAppointment" parameterType="BusiMcuTencentConferenceAppointment">
+        update busi_mcu_tencent_conference_appointment
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="templateId != null">template_id = #{templateId},</if>
+            <if test="isAutoCreateTemplate != null">is_auto_create_template = #{isAutoCreateTemplate},</if>
+            <if test="startTime != null">start_time = #{startTime},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+            extend_minutes = #{extendMinutes},
+            is_hang_up = #{isHangUp},
+            <if test="status != null">status = #{status},</if>
+            is_start = #{isStart},
+            <if test="startFailedReason != null">start_failed_reason = #{startFailedReason},</if>
+            <if test="repeatRate != null">repeat_rate = #{repeatRate},</if>
+            <if test="repeatDate != null">repeat_date = #{repeatDate},</if>
+            <if test="password != null">password = #{password},</if>
+            <if test="attendeeLimit != null">attendee_limit = #{attendeeLimit},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="approvalId != null">approval_id = #{approvalId},</if>
+            <if test="roomBookId != null">room_book_id = #{roomBookId},</if>
+            <if test="opsId != null">ops_id = #{opsId},</if>
+            <if test="isCloudConference != null">is_cloud_conference = #{isCloudConference},</if>
+            <if test="cloudConferenceId != null">cloud_conference_id = #{cloudConferenceId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiMcuTencentConferenceAppointmentById" parameterType="Long">
+        delete from busi_mcu_tencent_conference_appointment where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiMcuTencentConferenceAppointmentByIds" parameterType="String">
+        delete from busi_mcu_tencent_conference_appointment where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <resultMap type="DeptRecordCount" id="DeptRecordCountMap">
+        <result property="deptId"    column="dept_id"    />
+        <result property="count"    column="appointment_count"    />
+    </resultMap>
+
+    <select id="getDeptRecordCounts" parameterType="Integer" resultMap="DeptRecordCountMap">
+        SELECT
+            a.dept_id,
+            count(*) appointment_count
+        FROM
+            busi_mcu_tencent_conference_appointment a LEFT JOIN busi_mcu_tencent_template_conference c ON a.template_id = c.id
+        WHERE
+            business_field_type = #{businessFieldType}
+        GROUP BY
+            a.dept_id
+        ORDER BY
+            a.dept_id ASC
+    </select>
+
+    <select id="selectBusiMcuTencentConferenceAppointmentByTemplateId" parameterType="Long" resultMap="BusiMcuTencentConferenceAppointmentResult">
+        <include refid="selectBusiMcuTencentConferenceAppointmentVo"/>
+        where template_id = #{templateId}
+    </select>
+
+    <select id="selectBusiMcuTencentConferenceAppointmentListByKey"  resultMap="BusiMcuTencentConferenceAppointmentResult">
+        select ca.*,tc.business_field_type,tc.business_properties,tc.name as conference_name,tc.conference_number,tc.create_user_id,tc.create_user_name,tc.tenant_id from busi_mcu_tencent_conference_appointment
+        ca left join busi_mcu_tencent_template_conference tc on ca.template_id = tc.id
+        <where>
+            <if test="deptId != null "> and ca.dept_id = #{deptId}</if>
+            <if test="searchKey != null "> and tc.name like  concat('%',#{searchKey},'%') or concat(tc.tenant_id,tc.conference_number)=#{searchKey}</if>
+        </where>
+    </select>
+</mapper>

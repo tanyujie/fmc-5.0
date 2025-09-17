@@ -1,0 +1,41 @@
+CREATE TABLE `busi_client` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `sn` varchar(100) NOT NULL COMMENT '序列号',
+  `name` varchar(100) NOT NULL COMMENT '名称',
+  `ip` varchar(50) DEFAULT NULL COMMENT 'IP',
+  `mqtt_online_status` int(11) DEFAULT '2' COMMENT 'MQTT在线状态',
+  `app_version_code` varchar(50) DEFAULT NULL COMMENT 'APP版本号',
+  `app_version_name` varchar(50) DEFAULT NULL COMMENT 'APP版本名',
+  `connect_ip` varchar(50) DEFAULT NULL COMMENT '连接IP',
+  `expired_date` date DEFAULT NULL COMMENT '过期时间',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `create_user_id` bigint(20) DEFAULT NULL COMMENT '创建用户Id',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `update_user_id` bigint(20) DEFAULT NULL COMMENT '更新用户ID',
+  `user_id` bigint(20) DEFAULT NULL COMMENT '用户ID',
+  `source_id` bigint(20) DEFAULT NULL COMMENT '资源ID',
+  `last_online_time` datetime DEFAULT NULL COMMENT '最后在线时间',
+  `remark` varchar(500) DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `sn` (`sn`),
+  KEY `user_id` (`user_id`),
+  KEY `source_id` (`source_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='客户端表';
+
+CREATE TABLE `busi_client_resource` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `sn` varchar(255) DEFAULT NULL COMMENT '序列号',
+  `free_minutes` int(11) DEFAULT '10' COMMENT '免费时长',
+  `conference_number` int(11) DEFAULT '1' COMMENT '会议个数',
+  `purchase_duration` int(11) DEFAULT '0' COMMENT '购买时长',
+  `purchase_quantity` int(11) DEFAULT '0' COMMENT '购买个数',
+  `using_number` int(11) DEFAULT '0' COMMENT '正在使用会议个数',
+  `user_id` int(11) DEFAULT NULL COMMENT '用户ID',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '修改时间',
+  `purchase_type` varchar(50) DEFAULT NULL COMMENT '购买类型',
+  `enable_type` varchar(50) DEFAULT NULL COMMENT '启用类型TIME,NUMBER',
+  `used_time` int(11) DEFAULT '0' COMMENT '已使用时间',
+  `mcu_type` varchar(255) DEFAULT NULL COMMENT 'MCU类型',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='客户端资源表';

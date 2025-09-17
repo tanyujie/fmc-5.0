@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiTerminalMeetingJoinSettingsMapper">
+    
+    <resultMap type="BusiTerminalMeetingJoinSettings" id="BusiTerminalMeetingJoinSettingsResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="qualityMain"    column="quality_main"    />
+        <result property="qualityPresentation"    column="quality_presentation"    />
+        <result property="bandwidth"    column="bandwidth"    />
+        <result property="presentationContributionAllowed"    column="presentation_contribution_allowed"    />
+        <result property="presentationViewingAllowed"    column="presentation_viewing_allowed"    />
+        <result property="presentationDisplayMode"    column="presentation_display_mode"    />
+        <result property="sipMediaEncryption"    column="sip_media_encryption"    />
+        <result property="defaultLayout"    column="default_layout"    />
+        <result property="bfcpMode"    column="bfcp_mode"    />
+        <result property="rxAudioMute"    column="rx_audio_mute"    />
+        <result property="txAudioMute"    column="tx_audio_mute"    />
+        <result property="rxVideoMute"    column="rx_video_mute"    />
+        <result property="txVideoMute"    column="tx_video_mute"    />
+        <result property="audioGainMode"    column="audio_gain_mode"    />
+        <result property="participantLabels"    column="participant_labels"    />
+        <result property="dtmfSequence"    column="dtmf_sequence"    />
+        <result property="deactivated"    column="deactivated"    />
+        <result property="endCallAllowed"    column="end_call_allowed"    />
+        <result property="disconnectOthersAllowed"    column="disconnect_others_allowed"    />
+        <result property="addParticipantAllowed"    column="add_participant_allowed"    />
+        <result property="muteOthersAllowed"    column="mute_others_allowed"    />
+        <result property="videoMuteOthersAllowed"    column="video_mute_others_allowed"    />
+        <result property="muteSelfAllowed"    column="mute_self_allowed"    />
+        <result property="videoMuteSelfAllowed"    column="video_mute_self_allowed"    />
+        <result property="changeLayoutAllowed"    column="change_layout_allowed"    />
+        <result property="allowAllMuteSelfAllowed"    column="allow_all_mute_self_allowed"    />
+    </resultMap>
+
+    <sql id="selectBusiTerminalMeetingJoinSettingsVo">
+        select id, create_time, update_time, quality_main, quality_presentation, bandwidth, presentation_contribution_allowed, presentation_viewing_allowed, presentation_display_mode, sip_media_encryption, default_layout, bfcp_mode, rx_audio_mute, tx_audio_mute, rx_video_mute, tx_video_mute, audio_gain_mode, participant_labels, dtmf_sequence, deactivated, end_call_allowed, disconnect_others_allowed, add_participant_allowed, mute_others_allowed, video_mute_others_allowed, mute_self_allowed, video_mute_self_allowed, change_layout_allowed, allow_all_mute_self_allowed from busi_terminal_meeting_join_settings
+    </sql>
+
+    <select id="selectBusiTerminalMeetingJoinSettingsList" parameterType="BusiTerminalMeetingJoinSettings" resultMap="BusiTerminalMeetingJoinSettingsResult">
+        <include refid="selectBusiTerminalMeetingJoinSettingsVo"/>
+        <where>  
+            <if test="qualityMain != null  and qualityMain != ''"> and quality_main = #{qualityMain}</if>
+            <if test="qualityPresentation != null  and qualityPresentation != ''"> and quality_presentation = #{qualityPresentation}</if>
+            <if test="bandwidth != null "> and bandwidth = #{bandwidth}</if>
+            <if test="presentationContributionAllowed != null "> and presentation_contribution_allowed = #{presentationContributionAllowed}</if>
+            <if test="presentationViewingAllowed != null "> and presentation_viewing_allowed = #{presentationViewingAllowed}</if>
+            <if test="presentationDisplayMode != null  and presentationDisplayMode != ''"> and presentation_display_mode = #{presentationDisplayMode}</if>
+            <if test="sipMediaEncryption != null  and sipMediaEncryption != ''"> and sip_media_encryption = #{sipMediaEncryption}</if>
+            <if test="defaultLayout != null  and defaultLayout != ''"> and default_layout = #{defaultLayout}</if>
+            <if test="bfcpMode != null  and bfcpMode != ''"> and bfcp_mode = #{bfcpMode}</if>
+            <if test="rxAudioMute != null "> and rx_audio_mute = #{rxAudioMute}</if>
+            <if test="txAudioMute != null "> and tx_audio_mute = #{txAudioMute}</if>
+            <if test="rxVideoMute != null "> and rx_video_mute = #{rxVideoMute}</if>
+            <if test="txVideoMute != null "> and tx_video_mute = #{txVideoMute}</if>
+            <if test="audioGainMode != null  and audioGainMode != ''"> and audio_gain_mode = #{audioGainMode}</if>
+            <if test="participantLabels != null "> and participant_labels = #{participantLabels}</if>
+            <if test="dtmfSequence != null  and dtmfSequence != ''"> and dtmf_sequence = #{dtmfSequence}</if>
+            <if test="deactivated != null "> and deactivated = #{deactivated}</if>
+            <if test="endCallAllowed != null "> and end_call_allowed = #{endCallAllowed}</if>
+            <if test="disconnectOthersAllowed != null "> and disconnect_others_allowed = #{disconnectOthersAllowed}</if>
+            <if test="addParticipantAllowed != null "> and add_participant_allowed = #{addParticipantAllowed}</if>
+            <if test="muteOthersAllowed != null "> and mute_others_allowed = #{muteOthersAllowed}</if>
+            <if test="videoMuteOthersAllowed != null "> and video_mute_others_allowed = #{videoMuteOthersAllowed}</if>
+            <if test="muteSelfAllowed != null "> and mute_self_allowed = #{muteSelfAllowed}</if>
+            <if test="videoMuteSelfAllowed != null "> and video_mute_self_allowed = #{videoMuteSelfAllowed}</if>
+            <if test="changeLayoutAllowed != null "> and change_layout_allowed = #{changeLayoutAllowed}</if>
+            <if test="allowAllMuteSelfAllowed != null "> and allow_all_mute_self_allowed = #{allowAllMuteSelfAllowed}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiTerminalMeetingJoinSettingsById" parameterType="Long" resultMap="BusiTerminalMeetingJoinSettingsResult">
+        <include refid="selectBusiTerminalMeetingJoinSettingsVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiTerminalMeetingJoinSettings" parameterType="BusiTerminalMeetingJoinSettings">
+        insert into busi_terminal_meeting_join_settings
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="qualityMain != null">quality_main,</if>
+            <if test="qualityPresentation != null">quality_presentation,</if>
+            <if test="bandwidth != null">bandwidth,</if>
+            <if test="presentationContributionAllowed != null">presentation_contribution_allowed,</if>
+            <if test="presentationViewingAllowed != null">presentation_viewing_allowed,</if>
+            <if test="presentationDisplayMode != null">presentation_display_mode,</if>
+            <if test="sipMediaEncryption != null">sip_media_encryption,</if>
+            <if test="defaultLayout != null">default_layout,</if>
+            <if test="bfcpMode != null">bfcp_mode,</if>
+            <if test="rxAudioMute != null">rx_audio_mute,</if>
+            <if test="txAudioMute != null">tx_audio_mute,</if>
+            <if test="rxVideoMute != null">rx_video_mute,</if>
+            <if test="txVideoMute != null">tx_video_mute,</if>
+            <if test="audioGainMode != null">audio_gain_mode,</if>
+            <if test="participantLabels != null">participant_labels,</if>
+            <if test="dtmfSequence != null">dtmf_sequence,</if>
+            <if test="deactivated != null">deactivated,</if>
+            <if test="endCallAllowed != null">end_call_allowed,</if>
+            <if test="disconnectOthersAllowed != null">disconnect_others_allowed,</if>
+            <if test="addParticipantAllowed != null">add_participant_allowed,</if>
+            <if test="muteOthersAllowed != null">mute_others_allowed,</if>
+            <if test="videoMuteOthersAllowed != null">video_mute_others_allowed,</if>
+            <if test="muteSelfAllowed != null">mute_self_allowed,</if>
+            <if test="videoMuteSelfAllowed != null">video_mute_self_allowed,</if>
+            <if test="changeLayoutAllowed != null">change_layout_allowed,</if>
+            <if test="allowAllMuteSelfAllowed != null">allow_all_mute_self_allowed,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="qualityMain != null">#{qualityMain},</if>
+            <if test="qualityPresentation != null">#{qualityPresentation},</if>
+            <if test="bandwidth != null">#{bandwidth},</if>
+            <if test="presentationContributionAllowed != null">#{presentationContributionAllowed},</if>
+            <if test="presentationViewingAllowed != null">#{presentationViewingAllowed},</if>
+            <if test="presentationDisplayMode != null">#{presentationDisplayMode},</if>
+            <if test="sipMediaEncryption != null">#{sipMediaEncryption},</if>
+            <if test="defaultLayout != null">#{defaultLayout},</if>
+            <if test="bfcpMode != null">#{bfcpMode},</if>
+            <if test="rxAudioMute != null">#{rxAudioMute},</if>
+            <if test="txAudioMute != null">#{txAudioMute},</if>
+            <if test="rxVideoMute != null">#{rxVideoMute},</if>
+            <if test="txVideoMute != null">#{txVideoMute},</if>
+            <if test="audioGainMode != null">#{audioGainMode},</if>
+            <if test="participantLabels != null">#{participantLabels},</if>
+            <if test="dtmfSequence != null">#{dtmfSequence},</if>
+            <if test="deactivated != null">#{deactivated},</if>
+            <if test="endCallAllowed != null">#{endCallAllowed},</if>
+            <if test="disconnectOthersAllowed != null">#{disconnectOthersAllowed},</if>
+            <if test="addParticipantAllowed != null">#{addParticipantAllowed},</if>
+            <if test="muteOthersAllowed != null">#{muteOthersAllowed},</if>
+            <if test="videoMuteOthersAllowed != null">#{videoMuteOthersAllowed},</if>
+            <if test="muteSelfAllowed != null">#{muteSelfAllowed},</if>
+            <if test="videoMuteSelfAllowed != null">#{videoMuteSelfAllowed},</if>
+            <if test="changeLayoutAllowed != null">#{changeLayoutAllowed},</if>
+            <if test="allowAllMuteSelfAllowed != null">#{allowAllMuteSelfAllowed},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiTerminalMeetingJoinSettings" parameterType="BusiTerminalMeetingJoinSettings">
+        update busi_terminal_meeting_join_settings
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            quality_main = #{qualityMain},
+            quality_presentation = #{qualityPresentation},
+            bandwidth = #{bandwidth},
+            presentation_contribution_allowed = #{presentationContributionAllowed},
+            presentation_viewing_allowed = #{presentationViewingAllowed},
+            presentation_display_mode = #{presentationDisplayMode},
+            sip_media_encryption = #{sipMediaEncryption},
+            default_layout = #{defaultLayout},
+            bfcp_mode = #{bfcpMode},
+            rx_audio_mute = #{rxAudioMute},
+            tx_audio_mute = #{txAudioMute},
+            rx_video_mute = #{rxVideoMute},
+            tx_video_mute = #{txVideoMute},
+            audio_gain_mode = #{audioGainMode},
+            participant_labels = #{participantLabels},
+            dtmf_sequence = #{dtmfSequence},
+            deactivated = #{deactivated},
+            end_call_allowed = #{endCallAllowed},
+            disconnect_others_allowed = #{disconnectOthersAllowed},
+            add_participant_allowed = #{addParticipantAllowed},
+            mute_others_allowed = #{muteOthersAllowed},
+            video_mute_others_allowed = #{videoMuteOthersAllowed},
+            mute_self_allowed = #{muteSelfAllowed},
+            video_mute_self_allowed = #{videoMuteSelfAllowed},
+            change_layout_allowed = #{changeLayoutAllowed},
+            allow_all_mute_self_allowed = #{allowAllMuteSelfAllowed}
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiTerminalMeetingJoinSettingsById" parameterType="Long">
+        delete from busi_terminal_meeting_join_settings where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiTerminalMeetingJoinSettingsByIds" parameterType="String">
+        delete from busi_terminal_meeting_join_settings where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

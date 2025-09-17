@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.CdrCallLegEndMapper">
+    
+    <resultMap type="CdrCallLegEnd" id="CdrCallLegEndResult">
+        <result property="cdrId"    column="cdr_id"    />
+        <result property="id"    column="id"    />
+        <result property="session"    column="session"    />
+        <result property="callBridge"    column="call_bridge"    />
+        <result property="recordIndex"    column="record_index"    />
+        <result property="correlatorIndex"    column="correlator_index"    />
+        <result property="cdrTag"    column="cdr_tag"    />
+        <result property="reason"    column="reason"  typeHandler="com.paradisecloud.fcm.dao.enums.EnumHandler"  />
+        <result property="remoteTeardown"    column="remote_teardown"    />
+        <result property="encryptedMedia"    column="encrypted_media"    />
+        <result property="unencryptedMedia"    column="unencrypted_media"    />
+        <result property="durationSeconds"    column="duration_seconds"    />
+        <result property="activatedDuration"    column="activated_duration"    />
+        <result property="mainVideoViewer"    column="main_video_viewer"    />
+        <result property="mainVideoContributor"    column="main_video_contributor"    />
+        <result property="presentationViewer"    column="presentation_viewer"    />
+        <result property="presentationContributor"    column="presentation_contributor"    />
+        <result property="multistreamVideo"    column="multistream_video"    />
+        <result property="maxScreens"    column="max_screens"    />
+        <result property="ownerId"    column="owner_id"    />
+        <result property="sipCallId"    column="sip_call_id"    />
+        <result property="time"    column="time"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="createUserId"    column="create_user_id"    />
+        <result property="createUserName"    column="create_user_name"    />
+    </resultMap>
+
+    <sql id="selectCdrCallLegEndVo">
+        select cdr_id, id, session, call_bridge, record_index, correlator_index, cdr_tag, reason, remote_teardown, encrypted_media, unencrypted_media, duration_seconds, activated_duration, main_video_viewer, main_video_contributor, presentation_viewer, presentation_contributor, multistream_video, max_screens, owner_id, sip_call_id, time from cdr_call_leg_end
+    </sql>
+
+    <select id="selectCdrCallLegEndList" parameterType="CdrCallLegEnd" resultMap="CdrCallLegEndResult">
+        <include refid="selectCdrCallLegEndVo"/>
+        <where>
+            <if test="cdrId != null  and cdrId != ''"> and cdr_id = #{cdrId}</if>
+            <if test="session != null  and session != ''"> and session = #{session}</if>
+            <if test="callBridge != null  and callBridge != ''"> and call_bridge = #{callBridge}</if>
+            <if test="recordIndex != null "> and record_index = #{recordIndex}</if>
+            <if test="correlatorIndex != null "> and correlator_index = #{correlatorIndex}</if>
+            <if test="cdrTag != null  and cdrTag != ''"> and cdr_tag = #{cdrTag}</if>
+            <if test="reason != null  and reason != ''"> and reason = #{reason}</if>
+            <if test="remoteTeardown != null "> and remote_teardown = #{remoteTeardown}</if>
+            <if test="encryptedMedia != null "> and encrypted_media = #{encryptedMedia}</if>
+            <if test="unencryptedMedia != null "> and unencrypted_media = #{unencryptedMedia}</if>
+            <if test="durationSeconds != null "> and duration_seconds = #{durationSeconds}</if>
+            <if test="activatedDuration != null "> and activated_duration = #{activatedDuration}</if>
+            <if test="mainVideoViewer != null "> and main_video_viewer = #{mainVideoViewer}</if>
+            <if test="mainVideoContributor != null "> and main_video_contributor = #{mainVideoContributor}</if>
+            <if test="presentationViewer != null "> and presentation_viewer = #{presentationViewer}</if>
+            <if test="presentationContributor != null "> and presentation_contributor = #{presentationContributor}</if>
+            <if test="multistreamVideo != null "> and multistream_video = #{multistreamVideo}</if>
+            <if test="maxScreens != null "> and max_screens = #{maxScreens}</if>
+            <if test="ownerId != null  and ownerId != ''"> and owner_id = #{ownerId}</if>
+            <if test="sipCallId != null  and sipCallId != ''"> and sip_call_id = #{sipCallId}</if>
+            <if test="time != null "> and time = #{time}</if>
+        </where>
+    </select>
+    
+    <select id="selectCdrCallLegEndById" parameterType="Integer" resultMap="CdrCallLegEndResult">
+        <include refid="selectCdrCallLegEndVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertCdrCallLegEnd" parameterType="CdrCallLegEnd">
+        insert into cdr_call_leg_end
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="cdrId != null">cdr_id,</if>
+            <if test="id != null">id,</if>
+            <if test="session != null">session,</if>
+            <if test="callBridge != null">call_bridge,</if>
+            <if test="recordIndex != null">record_index,</if>
+            <if test="correlatorIndex != null">correlator_index,</if>
+            <if test="cdrTag != null">cdr_tag,</if>
+            <if test="reason != null">reason,</if>
+            <if test="remoteTeardown != null">remote_teardown,</if>
+            <if test="encryptedMedia != null">encrypted_media,</if>
+            <if test="unencryptedMedia != null">unencrypted_media,</if>
+            <if test="durationSeconds != null">duration_seconds,</if>
+            <if test="activatedDuration != null">activated_duration,</if>
+            <if test="mainVideoViewer != null">main_video_viewer,</if>
+            <if test="mainVideoContributor != null">main_video_contributor,</if>
+            <if test="presentationViewer != null">presentation_viewer,</if>
+            <if test="presentationContributor != null">presentation_contributor,</if>
+            <if test="multistreamVideo != null">multistream_video,</if>
+            <if test="maxScreens != null">max_screens,</if>
+            <if test="ownerId != null">owner_id,</if>
+            <if test="sipCallId != null">sip_call_id,</if>
+            <if test="time != null">time,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="createUserId != null">create_user_id,</if>
+            <if test="createUserName != null">create_user_name,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="cdrId != null">#{cdrId},</if>
+            <if test="id != null">#{id},</if>
+            <if test="session != null">#{session},</if>
+            <if test="callBridge != null">#{callBridge},</if>
+            <if test="recordIndex != null">#{recordIndex},</if>
+            <if test="correlatorIndex != null">#{correlatorIndex},</if>
+            <if test="cdrTag != null">#{cdrTag},</if>
+            <if test="reason != null">#{reason,jdbcType=INTEGER,typeHandler=com.paradisecloud.fcm.dao.enums.EnumHandler},</if>
+            <if test="remoteTeardown != null">#{remoteTeardown},</if>
+            <if test="encryptedMedia != null">#{encryptedMedia},</if>
+            <if test="unencryptedMedia != null">#{unencryptedMedia},</if>
+            <if test="durationSeconds != null">#{durationSeconds},</if>
+            <if test="activatedDuration != null">#{activatedDuration},</if>
+            <if test="mainVideoViewer != null">#{mainVideoViewer},</if>
+            <if test="mainVideoContributor != null">#{mainVideoContributor},</if>
+            <if test="presentationViewer != null">#{presentationViewer},</if>
+            <if test="presentationContributor != null">#{presentationContributor},</if>
+            <if test="multistreamVideo != null">#{multistreamVideo},</if>
+            <if test="maxScreens != null">#{maxScreens},</if>
+            <if test="ownerId != null">#{ownerId},</if>
+            <if test="sipCallId != null">#{sipCallId},</if>
+            <if test="time != null">#{time},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="createUserId != null">#{createUserId},</if>
+            <if test="createUserName != null">#{createUserName},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCdrCallLegEnd" parameterType="CdrCallLegEnd">
+        update cdr_call_leg_end
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="cdrId != null">cdr_id = #{cdrId},</if>
+            <if test="session != null">session = #{session},</if>
+            <if test="callBridge != null">call_bridge = #{callBridge},</if>
+            <if test="recordIndex != null">record_index = #{recordIndex},</if>
+            <if test="correlatorIndex != null">correlator_index = #{correlatorIndex},</if>
+            <if test="cdrTag != null">cdr_tag = #{cdrTag},</if>
+            <if test="reason != null">reason = #{reason,typeHandler="com.paradisecloud.fcm.dao.enums.EnumHandler"},</if>
+            <if test="remoteTeardown != null">remote_teardown = #{remoteTeardown},</if>
+            <if test="encryptedMedia != null">encrypted_media = #{encryptedMedia},</if>
+            <if test="unencryptedMedia != null">unencrypted_media = #{unencryptedMedia},</if>
+            <if test="durationSeconds != null">duration_seconds = #{durationSeconds},</if>
+            <if test="activatedDuration != null">activated_duration = #{activatedDuration},</if>
+            <if test="mainVideoViewer != null">main_video_viewer = #{mainVideoViewer},</if>
+            <if test="mainVideoContributor != null">main_video_contributor = #{mainVideoContributor},</if>
+            <if test="presentationViewer != null">presentation_viewer = #{presentationViewer},</if>
+            <if test="presentationContributor != null">presentation_contributor = #{presentationContributor},</if>
+            <if test="multistreamVideo != null">multistream_video = #{multistreamVideo},</if>
+            <if test="maxScreens != null">max_screens = #{maxScreens},</if>
+            <if test="ownerId != null">owner_id = #{ownerId},</if>
+            <if test="sipCallId != null">sip_call_id = #{sipCallId},</if>
+            <if test="time != null">time = #{time},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="createUserId != null">create_user_id = #{createUserId},</if>
+            <if test="createUserName != null">create_user_name = #{createUserName},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCdrCallLegEndById" parameterType="Integer">
+        delete from cdr_call_leg_end where id = #{id}
+    </delete>
+
+    <delete id="deleteCdrCallLegEndByIds" parameterType="String">
+        delete from cdr_call_leg_end where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectCallLegEndListForConferenceTerminalById" resultMap="CdrCallLegEndResult">
+        select a.cdr_id, a.id, a.session, a.call_bridge, a.record_index, a.correlator_index, a.cdr_tag, a.reason, a.remote_teardown, a.encrypted_media, a.unencrypted_media, a.duration_seconds, a.activated_duration, a.main_video_viewer, a.main_video_contributor, a.presentation_viewer, a.presentation_contributor, a.multistream_video, a.max_screens, a.owner_id, a.sip_call_id, a.time
+        from cdr_call_leg_end a
+        inner join busi_history_participant p on p.call_leg_id = a.cdr_id
+        inner join busi_history_participant_terminal pt on pt.history_conference_id = p.history_conference_id and pt.terminal_id = p.terminal_id and pt.terminal_id = #{terminalId} and pt.history_conference_id = #{historyConferenceId}
+        order by a.id desc
+    </select>
+
+    <select id="selectCallLegEndListForConferenceTerminalByRemoteParty" resultMap="CdrCallLegEndResult">
+        select a.cdr_id, a.id, a.session, a.call_bridge, a.record_index, a.correlator_index, a.cdr_tag, a.reason, a.remote_teardown, a.encrypted_media, a.unencrypted_media, a.duration_seconds, a.activated_duration, a.main_video_viewer, a.main_video_contributor, a.presentation_viewer, a.presentation_contributor, a.multistream_video, a.max_screens, a.owner_id, a.sip_call_id, a.time
+        from cdr_call_leg_end a
+        inner join busi_history_participant p on p.call_leg_id = a.cdr_id
+        inner join busi_history_participant_terminal pt on pt.history_conference_id = p.history_conference_id and pt.remote_party = p.remote_party and pt.remote_party = #{remoteParty} and pt.history_conference_id = #{historyConferenceId}
+        order by a.id desc
+    </select>
+
+    <select id="selectCallLegEndForConferenceTerminalById" resultMap="CdrCallLegEndResult">
+        select a.cdr_id, a.id, a.session, a.call_bridge, a.record_index, a.correlator_index, a.cdr_tag, a.reason, a.remote_teardown, a.encrypted_media, a.unencrypted_media, sum(a.duration_seconds) duration_seconds, sum(a.activated_duration) activated_duration, format(sum((ifnull(a.main_video_viewer, 0) * a.duration_seconds) /100) / sum(a.duration_seconds) * 100, 2) main_video_viewer, format(sum((ifnull(a.main_video_contributor, 0) * a.duration_seconds) /100) / sum(a.duration_seconds) * 100, 2) main_video_contributor, format(sum((ifnull(a.presentation_viewer, 0) * a.duration_seconds) /100) / sum(a.duration_seconds) * 100, 2) presentation_viewer, format(sum((ifnull(a.presentation_contributor, 0) * a.duration_seconds) /100) / sum(a.duration_seconds) * 100, 2) presentation_contributor, a.multistream_video, a.max_screens, a.owner_id, a.sip_call_id, a.time
+        from cdr_call_leg_end a
+        inner join busi_history_participant p on p.call_leg_id = a.cdr_id
+        inner join busi_history_participant_terminal pt on pt.history_conference_id = p.history_conference_id and pt.terminal_id = p.terminal_id and pt.terminal_id = #{terminalId} and pt.history_conference_id = #{historyConferenceId}
+    </select>
+
+    <select id="selectCallLegEndForConferenceTerminalByRemoteParty" resultMap="CdrCallLegEndResult">
+        select a.cdr_id, a.id, a.session, a.call_bridge, a.record_index, a.correlator_index, a.cdr_tag, a.reason, a.remote_teardown, a.encrypted_media, a.unencrypted_media, sum(a.duration_seconds) duration_seconds, sum(a.activated_duration) activated_duration, format(sum((ifnull(a.main_video_viewer, 0) * a.duration_seconds) /100) / sum(a.duration_seconds) * 100, 2) main_video_viewer, format(sum((ifnull(a.main_video_contributor, 0) * a.duration_seconds) /100) / sum(a.duration_seconds) * 100, 2) main_video_contributor, format(sum((ifnull(a.presentation_viewer, 0) * a.duration_seconds) /100) / sum(a.duration_seconds) * 100, 2) presentation_viewer, format(sum((ifnull(a.presentation_contributor, 0) * a.duration_seconds) /100) / sum(a.duration_seconds) * 100, 2) presentation_contributor, a.multistream_video, a.max_screens, a.owner_id, a.sip_call_id, a.time
+        from cdr_call_leg_end a
+        inner join busi_history_participant p on p.call_leg_id = a.cdr_id
+        inner join busi_history_participant_terminal pt on pt.history_conference_id = p.history_conference_id and pt.remote_party = p.remote_party and pt.remote_party = #{remoteParty} and pt.history_conference_id = #{historyConferenceId}
+    </select>
+
+    <delete id="deleteHistory">
+        delete from cdr_call_leg_end where create_time &lt; #{beforeDate}
+    </delete>
+</mapper>

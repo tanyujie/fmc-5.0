@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiMcuZjResourceTemplateMapper">
+    
+    <resultMap type="BusiMcuZjResourceTemplate" id="BusiMcuZjResourceTemplateResult">
+        <result property="id"    column="id"    />
+        <result property="mcuZjServerId"    column="mcu_zj_server_id"    />
+        <result property="name"    column="name"    />
+        <result property="hasRecord"    column="has_record"    />
+        <result property="hasMosic"    column="has_mosic"    />
+        <result property="maxMosic"    column="max_mosic"    />
+        <result property="maxSpkMosic"    column="max_spk_mosic"    />
+        <result property="maxGuestMosic"    column="max_guest_mosic"    />
+        <result property="maxChairMosic"    column="max_chair_mosic"    />
+        <result property="chairCopy"    column="chair_copy"    />
+        <result property="resBw"    column="res_bw"    />
+        <result property="singleView"    column="single_view"    />
+        <result property="isDefault"    column="is_default"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createUserId"    column="create_user_id"    />
+    </resultMap>
+
+    <sql id="selectBusiMcuZjResourceTemplateVo">
+        select id, mcu_zj_server_id, name, has_record, has_mosic, max_mosic, max_spk_mosic, max_guest_mosic, max_chair_mosic, chair_copy, res_bw, single_view, is_default, create_time, create_user_id from busi_mcu_zj_resource_template
+    </sql>
+
+    <select id="selectBusiMcuZjResourceTemplateList" parameterType="BusiMcuZjResourceTemplate" resultMap="BusiMcuZjResourceTemplateResult">
+        <include refid="selectBusiMcuZjResourceTemplateVo"/>
+        <where>  
+            <if test="mcuZjServerId != null "> and mcu_zj_server_id = #{mcuZjServerId}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="hasRecord != null "> and has_record = #{hasRecord}</if>
+            <if test="hasMosic != null "> and has_mosic = #{hasMosic}</if>
+            <if test="maxMosic != null "> and max_mosic = #{maxMosic}</if>
+            <if test="maxSpkMosic != null "> and max_spk_mosic = #{maxSpkMosic}</if>
+            <if test="maxGuestMosic != null "> and max_guest_mosic = #{maxGuestMosic}</if>
+            <if test="maxChairMosic != null "> and max_chair_mosic = #{maxChairMosic}</if>
+            <if test="chairCopy != null  and chairCopy != ''"> and chair_copy = #{chairCopy}</if>
+            <if test="resBw != null  and resBw != ''"> and res_bw = #{resBw}</if>
+            <if test="singleView != null "> and single_view = #{singleView}</if>
+            <if test="isDefault != null "> and is_default = #{isDefault}</if>
+            <if test="createUserId != null "> and create_user_id = #{createUserId}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiMcuZjResourceTemplateById" parameterType="Long" resultMap="BusiMcuZjResourceTemplateResult">
+        <include refid="selectBusiMcuZjResourceTemplateVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiMcuZjResourceTemplate" parameterType="BusiMcuZjResourceTemplate" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_mcu_zj_resource_template
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="mcuZjServerId != null">mcu_zj_server_id,</if>
+            <if test="name != null and name != ''">name,</if>
+            <if test="hasRecord != null">has_record,</if>
+            <if test="hasMosic != null">has_mosic,</if>
+            <if test="maxMosic != null">max_mosic,</if>
+            <if test="maxSpkMosic != null">max_spk_mosic,</if>
+            <if test="maxGuestMosic != null">max_guest_mosic,</if>
+            <if test="maxChairMosic != null">max_chair_mosic,</if>
+            <if test="chairCopy != null and chairCopy != ''">chair_copy,</if>
+            <if test="resBw != null and resBw != ''">res_bw,</if>
+            <if test="singleView != null">single_view,</if>
+            <if test="isDefault != null">is_default,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createUserId != null">create_user_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="mcuZjServerId != null">#{mcuZjServerId},</if>
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="hasRecord != null">#{hasRecord},</if>
+            <if test="hasMosic != null">#{hasMosic},</if>
+            <if test="maxMosic != null">#{maxMosic},</if>
+            <if test="maxSpkMosic != null">#{maxSpkMosic},</if>
+            <if test="maxGuestMosic != null">#{maxGuestMosic},</if>
+            <if test="maxChairMosic != null">#{maxChairMosic},</if>
+            <if test="chairCopy != null and chairCopy != ''">#{chairCopy},</if>
+            <if test="resBw != null and resBw != ''">#{resBw},</if>
+            <if test="singleView != null">#{singleView},</if>
+            <if test="isDefault != null">#{isDefault},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createUserId != null">#{createUserId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiMcuZjResourceTemplate" parameterType="BusiMcuZjResourceTemplate">
+        update busi_mcu_zj_resource_template
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="mcuZjServerId != null">mcu_zj_server_id = #{mcuZjServerId},</if>
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="hasRecord != null">has_record = #{hasRecord},</if>
+            <if test="hasMosic != null">has_mosic = #{hasMosic},</if>
+            <if test="maxMosic != null">max_mosic = #{maxMosic},</if>
+            <if test="maxSpkMosic != null">max_spk_mosic = #{maxSpkMosic},</if>
+            <if test="maxGuestMosic != null">max_guest_mosic = #{maxGuestMosic},</if>
+            <if test="maxChairMosic != null">max_chair_mosic = #{maxChairMosic},</if>
+            <if test="chairCopy != null and chairCopy != ''">chair_copy = #{chairCopy},</if>
+            <if test="resBw != null and resBw != ''">res_bw = #{resBw},</if>
+            <if test="singleView != null">single_view = #{singleView},</if>
+            <if test="isDefault != null">is_default = #{isDefault},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createUserId != null">create_user_id = #{createUserId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiMcuZjResourceTemplateById" parameterType="Long">
+        delete from busi_mcu_zj_resource_template where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiMcuZjResourceTemplateByIds" parameterType="String">
+        delete from busi_mcu_zj_resource_template where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiTerminalUpgradeMapper">
+    
+     <resultMap type="BusiTerminalUpgrade" id="BusiTerminalUpgradeResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="terminalType"    column="terminal_type"    />
+        <result property="serverUrl"    column="server_url"    />
+        <result property="versionNum"    column="version_num"    />
+         <result property="versionName"    column="version_name"    />
+         <result property="versionDescription"    column="version_description"    />
+    </resultMap>
+
+    <sql id="selectBusiTerminalUpgradeVo">
+        select id, create_time, update_time, terminal_type, server_url, version_num, version_name, version_description from busi_terminal_upgrade
+    </sql>
+
+    <sql id="selectBusiTerminalUpgradeEliasVo">
+        select tu.id, tu.create_time, tu.update_time, tu.terminal_type, tu.server_url, tu.version_num, tu.version_name, tu.version_description from busi_terminal_upgrade tu
+    </sql>
+
+    <select id="selectBusiTerminalUpgradeList" parameterType="BusiTerminalUpgrade" resultMap="BusiTerminalUpgradeResult">
+        <include refid="selectBusiTerminalUpgradeVo"/>
+        <where>  
+            <if test="terminalType != null "> and terminal_type = #{terminalType}</if>
+            <if test="serverUrl != null  and serverUrl != ''"> and server_url = #{serverUrl}</if>
+            <if test="versionNum != null  and versionNum != ''"> and version_num = #{versionNum}</if>
+            <if test="versionName != null  and versionName != ''"> and version_name = #{versionName}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiTerminalUpgradeById" parameterType="Long" resultMap="BusiTerminalUpgradeResult">
+        <include refid="selectBusiTerminalUpgradeVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiTerminalUpgrade" parameterType="BusiTerminalUpgrade" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_terminal_upgrade
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="terminalType != null">terminal_type,</if>
+            <if test="serverUrl != null">server_url,</if>
+            <if test="versionNum != null">version_num,</if>
+            <if test="versionName != null">version_name,</if>
+            <if test="versionDescription != null">version_description,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="terminalType != null">#{terminalType},</if>
+            <if test="serverUrl != null">#{serverUrl},</if>
+            <if test="versionNum != null">#{versionNum},</if>
+            <if test="versionName != null">#{versionName},</if>
+            <if test="versionDescription != null">#{versionDescription},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiTerminalUpgrade" parameterType="BusiTerminalUpgrade">
+        update busi_terminal_upgrade
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="terminalType != null">terminal_type = #{terminalType},</if>
+            <if test="serverUrl != null">server_url = #{serverUrl},</if>
+            <if test="versionNum != null">version_num = #{versionNum},</if>
+            <if test="versionName != null">version_name = #{versionName},</if>
+            <if test="versionDescription != null">version_description = #{versionDescription},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiTerminalUpgradeById" parameterType="Long">
+        delete from busi_terminal_upgrade where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiTerminalUpgradeByIds" parameterType="String">
+        delete from busi_terminal_upgrade where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectBusiTerminalUpgradeLatestByTerminalType" resultMap="BusiTerminalUpgradeResult">
+        <include refid="selectBusiTerminalUpgradeEliasVo"/>
+        , (select tut.terminal_type, max(tut.version_num) version_num from busi_terminal_upgrade tut where tut.terminal_type = #{terminalType}) tum
+        where tu.terminal_type = tum.terminal_type
+        and tu.version_num = tum.version_num
+    </select>
+</mapper>

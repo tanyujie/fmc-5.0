@@ -1,0 +1,3 @@
+# wxzqh应用自身业务配置区
+business: 
+  cacheType: JAVA

@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiConferenceApprovalMapper">
+    
+    <resultMap type="BusiConferenceApproval" id="BusiConferenceApprovalResult">
+        <result property="id"    column="id"    />
+        <result property="appointmentConferenceId"    column="appointment_conference_id"    />
+        <result property="mcuType"    column="mcu_type"    />
+        <result property="conferenceName"    column="conference_name"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="approvalStatus"    column="approval_status"    />
+        <result property="approvalFailReason"    column="approval_fail_reason"    />
+        <result property="approvalUserId"    column="approval_user_id"    />
+        <result property="approvalBy"    column="approval_by"    />
+        <result property="approvalTime"    column="approval_time"    />
+        <result property="createUserId"    column="create_user_id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="conferenceDetail"    column="conference_detail" typeHandler="com.paradisecloud.fcm.dao.typehandler.JSONTypeMapHandler" jdbcType="OTHER"    />
+    </resultMap>
+
+    <sql id="selectBusiConferenceApprovalVo">
+        select id, appointment_conference_id, mcu_type, conference_name, dept_id, approval_status, approval_fail_reason, approval_user_id, approval_by, approval_time, create_user_id, create_by, create_time, conference_detail from busi_conference_approval
+    </sql>
+
+    <select id="selectBusiConferenceApprovalList" parameterType="BusiConferenceApproval" resultMap="BusiConferenceApprovalResult">
+        <include refid="selectBusiConferenceApprovalVo"/>
+        <where>  
+            <if test="appointmentConferenceId != null "> and appointment_conference_id = #{appointmentConferenceId}</if>
+            <if test="mcuType != null  and mcuType != ''"> and mcu_type = #{mcuType}</if>
+            <if test="conferenceName != null  and conferenceName != ''"> and conference_name = #{conferenceName}</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="approvalStatus != null "> and approval_status = #{approvalStatus}</if>
+            <if test="approvalFailReason != null  and approvalFailReason != ''"> and approval_fail_reason = #{approvalFailReason}</if>
+            <if test="approvalUserId != null "> and approval_user_id = #{approvalUserId}</if>
+            <if test="approvalBy != null  and approvalBy != ''"> and approval_by = #{approvalBy}</if>
+            <if test="approvalTime != null "> and approval_time = #{approvalTime}</if>
+            <if test="createUserId != null  and createUserId != ''"> and create_user_id = #{createUserId}</if>
+            <if test="createBy != null  and approvalBy != ''"> and create_by = #{createBy}</if>
+            <if test="createTime != null "> and create_time = #{createTime}</if>
+            <if test="conferenceDetail != null  and conferenceDetail != ''"> and conference_detail = #{conferenceDetail}</if>
+        </where>
+    </select>
+
+    <resultMap type="DeptRecordCount" id="DeptRecordCountMap">
+        <result property="deptId"    column="dept_id"    />
+        <result property="count"    column="ct"    />
+    </resultMap>
+
+    <select id="getDeptRecordCounts" parameterType="Integer"  resultMap="DeptRecordCountMap">
+        SELECT
+        	a.dept_id,
+        	count(*) ct
+        FROM
+        	busi_conference_approval a
+        GROUP BY
+        	a.dept_id
+        ORDER BY
+        	a.dept_id ASC
+    </select>
+
+    <select id="searchBusiConferenceApprovalList" parameterType="ConferenceApprovalSearchVo" resultMap="BusiConferenceApprovalResult">
+        <include refid="selectBusiConferenceApprovalVo"/>
+        <where>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="approvalStatus != null "> and approval_status = #{approvalStatus}</if>
+            <if test="name != null and name != ''"> and (conference_name like concat('%', #{name},'%') or create_by like concat('%', #{name},'%') or approval_by like concat('%', #{name},'%'))</if>
+            <if test="createStartTime != null "> and create_time <![CDATA[>=]]> #{createStartTime}</if>
+            <if test="createEndTime != null "> and create_time <![CDATA[<=]]> #{createEndTime}</if>
+            <if test="approvalStartTime != null "> and approval_time <![CDATA[>=]]> #{approvalStartTime}</if>
+            <if test="approvalEndTime != null "> and approval_time <![CDATA[<=]]> #{approvalEndTime}</if>
+        </where>
+        order by create_time desc
+    </select>
+    
+    <select id="selectBusiConferenceApprovalById" parameterType="Long" resultMap="BusiConferenceApprovalResult">
+        <include refid="selectBusiConferenceApprovalVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiConferenceApproval" parameterType="BusiConferenceApproval" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_conference_approval
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="appointmentConferenceId != null">appointment_conference_id,</if>
+            <if test="mcuType != null ">mcu_type,</if>
+            <if test="conferenceName != null">conference_name,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="approvalStatus != null">approval_status,</if>
+            <if test="approvalFailReason != null">approval_fail_reason,</if>
+            <if test="approvalUserId != null">approval_user_id,</if>
+            <if test="approvalBy != null">approval_by,</if>
+            <if test="approvalTime != null">approval_time,</if>
+            <if test="createUserId != null">create_user_id,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="conferenceDetail != null">conference_detail,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="appointmentConferenceId != null">#{appointmentConferenceId},</if>
+            <if test="mcuType != null ">#{mcuType},</if>
+            <if test="conferenceName != null">#{conferenceName},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="approvalStatus != null">#{approvalStatus},</if>
+            <if test="approvalFailReason != null">#{approvalFailReason},</if>
+            <if test="approvalUserId != null">#{approvalUserId},</if>
+            <if test="approvalBy != null">#{approvalBy},</if>
+            <if test="approvalTime != null">#{approvalTime},</if>
+            <if test="createUserId != null">#{createUserId},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="conferenceDetail != null">#{conferenceDetail, typeHandler=com.paradisecloud.fcm.dao.typehandler.JSONTypeMapHandler},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiConferenceApproval" parameterType="BusiConferenceApproval">
+        update busi_conference_approval
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="appointmentConferenceId != null">appointment_conference_id = #{appointmentConferenceId},</if>
+            <if test="mcuType != null ">mcu_type = #{mcuType},</if>
+            <if test="conferenceName != null">conference_name = #{conferenceName},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="approvalStatus != null">approval_status = #{approvalStatus},</if>
+            approval_fail_reason = #{approvalFailReason},
+            <if test="approvalUserId != null">approval_user_id = #{approvalUserId},</if>
+            <if test="approvalBy != null">approval_by = #{approvalBy},</if>
+            <if test="approvalTime != null">approval_time = #{approvalTime},</if>
+            <if test="createUserId != null">create_user_id = #{createUserId},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="conferenceDetail != null">conference_detail = #{conferenceDetail, typeHandler=com.paradisecloud.fcm.dao.typehandler.JSONTypeMapHandler},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiConferenceApprovalById" parameterType="Long">
+        delete from busi_conference_approval where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiConferenceApprovalByIds" parameterType="String">
+        delete from busi_conference_approval where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 日志级别以及优先级排序: OFF > FATAL > ERROR > WARN > INFO > DEBUG > TRACE > ALL -->
+<!-- status="WARN" :用于设置log4j2自身内部日志的信息输出级别，默认是OFF -->
+<!-- monitorInterval="30"  :间隔秒数,自动检测配置文件的变更和重新配置本身 -->
+<Configuration status="WARN">
+
+    <!-- Properties自定义一些常量，之后使用引用-->
+    <Properties>
+        <Property name="HIGHLIGHT_LOG_PATTERN">%highlight{[%d][%48.48c{1.}][%5p][%t] : %m%n}{FATAL=bright magenta, ERROR=bright red, WARN=dim red, INFO=black, DEBUG=bright black, TRACE=bright black}</Property>
+        <Property name="COMMON_LOG_PATTERN">[%d][%48.48c{1.}][%5p][%t] : %m%n</Property>
+        
+        <!-- 日志输出目录 -->
+        <Property name="logDir">${sys:LOG4J2_LOGS_HOME}</Property>
+        
+        <!-- INFO日志 -->
+        <Property name="rootInfoLogFile">application-info</Property>
+        
+        <!-- ERROR日志 -->
+        <Property name="rootErrorLogFile">application-error</Property>
+    </Properties>
+    
+    <!-- Appenders:定义输出内容,输出格式,输出方式,日志保存策略等,常用其下三种标签[console,File,RollingFile] -->
+    <Appenders>
+        <!-- INFO级别及以下控制台普通默认颜色输出 -->
+        <Console name="ConsoleAppender" target="SYSTEM_OUT" follow="true">
+            <!-- PatternLayout :输出日志的格式,LOG4J2定义了输出代码,详见第二部分 -->
+            <PatternLayout pattern="${sys:HIGHLIGHT_LOG_PATTERN}" />
+            <ThresholdFilter level="error" onMatch="DENY" onMismatch="ACCEPT"/>
+        </Console>
+        
+        <!-- ERROR级别及以上错误日志，控制台红色输出 -->
+        <Console name="ErrConsoleAppender" target="SYSTEM_ERR" follow="true">
+            <PatternLayout pattern="${sys:COMMON_LOG_PATTERN}" />
+            <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY"/>
+        </Console>
+        
+        <!-- fileName：当前正在写入的文件名；filePattern：压缩备份的文件名  -->
+        <RollingFile name="InfoRollingFileAppender" fileName="${logDir}/${rootInfoLogFile}.log" filePattern="${logDir}/${rootInfoLogFile}-archives/$${date:yyyy-MM}/${rootInfoLogFile}__%d{yyyy-MM}__archive%i.log.gz" immediateFlush="false">
+            <PatternLayout pattern="${sys:COMMON_LOG_PATTERN}" />
+            
+            <!-- ThresholdFilter :日志输出过滤 -->
+            <!-- level="debug": 日志级别, onMatch="ACCEPT": 级别在debug之上则接受, onMismatch="DENY": 级别在info之下则拒绝 -->
+            <ThresholdFilter level="debug" onMatch="ACCEPT" onMismatch="DENY"/>
+            
+            <!-- Policies :日志滚动策略-->
+            <Policies>
+                <!-- 每到64生成一个日志文件 -->
+                <SizeBasedTriggeringPolicy size="64MB" />
+                <TimeBasedTriggeringPolicy interval="1" modulate="true" />
+            </Policies>
+            
+            <!-- DefaultRolloverStrategy属性如不设置，则默认为最多同一文件夹下7个文件，这里设置了200000 -->
+            <DefaultRolloverStrategy max="200000">
+                <Delete basePath="${logDir}/${rootInfoLogFile}-archives" maxDepth="2">
+                    <IfAny>
+                        <IfAccumulatedFileCount exceeds="100" />
+                        <IfAccumulatedFileSize exceeds="500 MB" />
+                    </IfAny>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+        
+        <RollingFile name="ErrorRollingFileAppender" fileName="${logDir}/${rootErrorLogFile}.log" filePattern="${logDir}/${rootErrorLogFile}-archives/$${date:yyyy-MM}/${rootErrorLogFile}__%d{yyyy-MM}__archive%i.log.gz" immediateFlush="false">
+            <PatternLayout pattern="${sys:COMMON_LOG_PATTERN}" />
+            <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="64MB" />
+                <TimeBasedTriggeringPolicy interval="1" modulate="true" />
+            </Policies>
+            <DefaultRolloverStrategy max="200000">
+                <Delete basePath="${logDir}/${rootErrorLogFile}-archives" maxDepth="2">
+                    <IfAny>
+                        <IfAccumulatedFileCount exceeds="100" />
+                        <IfAccumulatedFileSize exceeds="500 MB" />
+                    </IfAny>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+
+        <Async name="AsyncInfoRollingFileAppender">
+            <AppenderRef ref="InfoRollingFileAppender" />
+        </Async>
+        <Async name="AsyncErrorRollingFileAppender">
+            <AppenderRef ref="ErrorRollingFileAppender" />
+        </Async>
+    </Appenders>
+    <Loggers>
+        <!-- 将logger中的 additivity 属性配置为 false，则这个logger不会将日志流反馈到root中，但是这里是开发环境，需要反馈到root中，故设置未true -->
+        <Logger name="com.paradisecloud.fcm.dao.mapper" level="DEBUG" additivity="true" />
+        <Root level="INFO">
+            <AppenderRef ref="AsyncInfoRollingFileAppender" />
+            <AppenderRef ref="AsyncErrorRollingFileAppender" />
+            <AppenderRef ref="ConsoleAppender" />
+            <AppenderRef ref="ErrConsoleAppender" />
+        </Root>
+    </Loggers>
+</Configuration>

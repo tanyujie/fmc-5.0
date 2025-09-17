@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiMcuKdcMapper">
+    
+    <resultMap type="BusiMcuKdc" id="BusiMcuKdcResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="username"    column="username"    />
+        <result property="password"    column="password"    />
+        <result property="adminUsername"    column="admin_username"    />
+        <result property="adminPassword"    column="admin_password"    />
+        <result property="name"    column="name"    />
+        <result property="ip"    column="ip"    />
+        <result property="cucmIp"    column="cucm_ip"    />
+        <result property="port"    column="port"    />
+        <result property="status"    column="status"    />
+        <result property="capacity"    column="capacity"    />
+        <result property="spareMcuId"    column="spare_mcu_id"    />
+        <result property="devKey"    column="dev_key"    />
+        <result property="devValue"    column="dev_value"    />
+        <result property="mcuDomain"    column="mcu_domain"    />
+        <result property="callPort"    column="call_port"    />
+    </resultMap>
+
+    <sql id="selectBusiMcuKdcVo">
+        select id, create_time, update_time, username, password, admin_username, admin_password, name, ip, cucm_ip, port, status, capacity, spare_mcu_id, dev_key, dev_value, mcu_domain, call_port from busi_mcu_kdc
+    </sql>
+
+    <select id="selectBusiMcuKdcList" parameterType="BusiMcuKdc" resultMap="BusiMcuKdcResult">
+        <include refid="selectBusiMcuKdcVo"/>
+        <where>  
+            <if test="username != null  and username != ''"> and username like concat('%', #{username}, '%')</if>
+            <if test="password != null  and password != ''"> and password = #{password}</if>
+            <if test="adminUsername != null  and adminUsername != ''"> and admin_username like concat('%', #{adminUsername}, '%')</if>
+            <if test="adminPassword != null  and adminPassword != ''"> and admin_password = #{adminPassword}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="ip != null  and ip != ''"> and ip = #{ip}</if>
+            <if test="cucmIp != null  and cucmIp != ''"> and cucm_ip = #{cucmIp}</if>
+            <if test="port != null "> and port = #{port}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="capacity != null "> and capacity = #{capacity}</if>
+            <if test="spareMcuId != null "> and spare_mcu_id = #{spareMcuId}</if>
+            <if test="devKey != null  and devKey != ''"> and dev_key = #{devKey}</if>
+            <if test="devValue != null  and devValue != ''"> and dev_value = #{devValue}</if>
+            <if test="mcuDomain != null  and mcuDomain != ''"> and mcu_domain = #{mcuDomain}</if>
+            <if test="callPort != null "> and call_port = #{callPort}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiMcuKdcById" parameterType="Long" resultMap="BusiMcuKdcResult">
+        <include refid="selectBusiMcuKdcVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiMcuKdc" parameterType="BusiMcuKdc" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_mcu_kdc
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="username != null">username,</if>
+            <if test="password != null">password,</if>
+            <if test="adminUsername != null">admin_username,</if>
+            <if test="adminPassword != null">admin_password,</if>
+            <if test="name != null">name,</if>
+            <if test="ip != null and ip != ''">ip,</if>
+            <if test="cucmIp != null">cucm_ip,</if>
+            <if test="port != null">port,</if>
+            <if test="status != null">status,</if>
+            <if test="capacity != null">capacity,</if>
+            <if test="spareMcuId != null">spare_mcu_id,</if>
+            <if test="devKey != null">dev_key,</if>
+            <if test="devValue != null">dev_value,</if>
+            <if test="mcuDomain != null">mcu_domain,</if>
+            <if test="callPort != null">call_port,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="username != null">#{username},</if>
+            <if test="password != null">#{password},</if>
+            <if test="adminUsername != null">#{adminUsername},</if>
+            <if test="adminPassword != null">#{adminPassword},</if>
+            <if test="name != null">#{name},</if>
+            <if test="ip != null and ip != ''">#{ip},</if>
+            <if test="cucmIp != null">#{cucmIp},</if>
+            <if test="port != null">#{port},</if>
+            <if test="status != null">#{status},</if>
+            <if test="capacity != null">#{capacity},</if>
+            <if test="spareMcuId != null">#{spareMcuId},</if>
+            <if test="devKey != null">#{devKey},</if>
+            <if test="devValue != null">#{devValue},</if>
+            <if test="mcuDomain != null">#{mcuDomain},</if>
+            <if test="callPort != null">#{callPort},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiMcuKdc" parameterType="BusiMcuKdc">
+        update busi_mcu_kdc
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="username != null">username = #{username},</if>
+            <if test="password != null">password = #{password},</if>
+            <if test="adminUsername != null">admin_username = #{adminUsername},</if>
+            <if test="adminPassword != null">admin_password = #{adminPassword},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="ip != null and ip != ''">ip = #{ip},</if>
+            <if test="cucmIp != null">cucm_ip = #{cucmIp},</if>
+            <if test="port != null">port = #{port},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="capacity != null">capacity = #{capacity},</if>
+            <if test="spareMcuId != null">spare_mcu_id = #{spareMcuId},</if>
+            <if test="devKey != null">dev_key = #{devKey},</if>
+            <if test="devValue != null">dev_value = #{devValue},</if>
+            <if test="mcuDomain != null">mcu_domain = #{mcuDomain},</if>
+            <if test="callPort != null">call_port = #{callPort},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiMcuKdcById" parameterType="Long">
+        delete from busi_mcu_kdc where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiMcuKdcByIds" parameterType="String">
+        delete from busi_mcu_kdc where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

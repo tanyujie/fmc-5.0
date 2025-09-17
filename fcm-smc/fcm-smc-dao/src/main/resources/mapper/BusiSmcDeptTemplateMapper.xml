@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.smc.dao.model.mapper.BusiSmcDeptTemplateMapper">
+    
+    <resultMap type="com.paradisecloud.smc.dao.model.BusiSmcDeptTemplate" id="BusiSmcDeptTemplateResult">
+        <result property="id"    column="id"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="smcTemplateId"    column="smc_template_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="templateName"    column="template_name"    />
+        <result property="duration"    column="duration"    />
+        <result property="type"    column="type"    />
+        <result property="rate"    column="rate"    />
+        <result property="supportLive"    column="support_live"    />
+        <result property="supportRecord"    column="support_record"    />
+        <result property="amcRecord"    column="amc_record"    />
+        <result property="autoMute"    column="auto_mute"    />
+        <result property="chairmanPassword"    column="chairman_password"    />
+        <result property="guestPassword"    column="guest_password"    />
+        <result property="vmrNumber"    column="vmr_number"    />
+        <result property="maxParticipantNum"    column="max_participant_num"    />
+        <result property="masterTerminalId"    column="master_terminal_id"    />
+        <result property="enableDataConf"    column="enable_data_conf"    />
+    </resultMap>
+
+    <sql id="selectBusiSmcDeptTemplateVo">
+        select id, dept_id, smc_template_id, create_time, template_name, duration, type, rate, support_live, support_record, amc_record, auto_mute, chairman_password, guest_password, vmr_number, max_participant_num,master_terminal_id,enable_data_conf from busi_smc_dept_template
+    </sql>
+
+    <select id="selectBusiSmcDeptTemplateList" parameterType="com.paradisecloud.smc.dao.model.BusiSmcDeptTemplate" resultMap="BusiSmcDeptTemplateResult">
+        <include refid="selectBusiSmcDeptTemplateVo"/>
+        <where>  
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="smcTemplateId != null  and smcTemplateId != ''"> and smc_template_id = #{smcTemplateId}</if>
+            <if test="templateName != null  and templateName != ''"> and template_name like concat('%', #{templateName}, '%')</if>
+            <if test="duration != null "> and duration = #{duration}</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="rate != null "> and rate = #{rate}</if>
+            <if test="supportLive != null "> and support_live = #{supportLive}</if>
+            <if test="supportRecord != null "> and support_record = #{supportRecord}</if>
+            <if test="amcRecord != null "> and amc_record = #{amcRecord}</if>
+            <if test="autoMute != null "> and auto_mute = #{autoMute}</if>
+            <if test="chairmanPassword != null  and chairmanPassword != ''"> and chairman_password = #{chairmanPassword}</if>
+            <if test="guestPassword != null  and guestPassword != ''"> and guest_password = #{guestPassword}</if>
+            <if test="vmrNumber != null  and vmrNumber != ''"> and vmr_number = #{vmrNumber}</if>
+            <if test="maxParticipantNum != null "> and max_participant_num = #{maxParticipantNum}</if>
+            <if test="masterTerminalId != null "> and master_terminal_id = #{masterTerminalId}</if>
+            <if test="enableDataConf != null "> and enable_data_conf = #{enableDataConf}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiSmcDeptTemplateById"  resultMap="BusiSmcDeptTemplateResult">
+        <include refid="selectBusiSmcDeptTemplateVo"/>
+        where id = #{id}
+    </select>
+
+
+
+    <select id="selectBusiSmcDeptTemplateByTemplateId" resultMap="BusiSmcDeptTemplateResult">
+        <include refid="selectBusiSmcDeptTemplateVo"/>
+        where smc_template_id = #{templateId}
+    </select>
+
+    <select id="selectBusiSmcDeptTemplate"  parameterType="com.paradisecloud.smc.dao.model.BusiSmcDeptTemplate" resultMap="BusiSmcDeptTemplateResult">
+        <include refid="selectBusiSmcDeptTemplateVo"/>
+        <where>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="smcTemplateId != null  and smcTemplateId != ''"> and smc_template_id = #{smcTemplateId}</if>
+            <if test="templateName != null  and templateName != ''"> and template_name like concat('%', #{templateName}, '%')</if>
+            <if test="duration != null "> and duration = #{duration}</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="rate != null "> and rate = #{rate}</if>
+            <if test="supportLive != null "> and support_live = #{supportLive}</if>
+            <if test="supportRecord != null "> and support_record = #{supportRecord}</if>
+            <if test="amcRecord != null "> and amc_record = #{amcRecord}</if>
+            <if test="autoMute != null "> and auto_mute = #{autoMute}</if>
+            <if test="chairmanPassword != null  and chairmanPassword != ''"> and chairman_password = #{chairmanPassword}</if>
+            <if test="guestPassword != null  and guestPassword != ''"> and guest_password = #{guestPassword}</if>
+            <if test="vmrNumber != null  and vmrNumber != ''"> and vmr_number = #{vmrNumber}</if>
+            <if test="maxParticipantNum != null "> and max_participant_num = #{maxParticipantNum}</if>
+            <if test="enableDataConf != null "> and enable_data_conf = #{enableDataConf}</if>
+        </where>
+        limit 1
+    </select>
+        
+    <insert id="insertBusiSmcDeptTemplate" parameterType="com.paradisecloud.smc.dao.model.BusiSmcDeptTemplate" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_smc_dept_template
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="deptId != null">dept_id,</if>
+            <if test="smcTemplateId != null and smcTemplateId != ''">smc_template_id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="templateName != null and templateName != ''">template_name,</if>
+            <if test="duration != null">duration,</if>
+            <if test="type != null">type,</if>
+            <if test="rate != null">rate,</if>
+            <if test="supportLive != null">support_live,</if>
+            <if test="supportRecord != null">support_record,</if>
+            <if test="amcRecord != null">amc_record,</if>
+            <if test="autoMute != null">auto_mute,</if>
+            <if test="chairmanPassword != null">chairman_password,</if>
+            <if test="guestPassword != null">guest_password,</if>
+            <if test="vmrNumber != null">vmr_number,</if>
+            <if test="maxParticipantNum != null">max_participant_num,</if>
+            <if test="masterTerminalId != null">master_terminal_id,</if>
+            <if test="enableDataConf != null">enable_data_conf,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="deptId != null">#{deptId},</if>
+            <if test="smcTemplateId != null and smcTemplateId != ''">#{smcTemplateId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="templateName != null and templateName != ''">#{templateName},</if>
+            <if test="duration != null">#{duration},</if>
+            <if test="type != null">#{type},</if>
+            <if test="rate != null">#{rate},</if>
+            <if test="supportLive != null">#{supportLive},</if>
+            <if test="supportRecord != null">#{supportRecord},</if>
+            <if test="amcRecord != null">#{amcRecord},</if>
+            <if test="autoMute != null">#{autoMute},</if>
+            <if test="chairmanPassword != null">#{chairmanPassword},</if>
+            <if test="guestPassword != null">#{guestPassword},</if>
+            <if test="vmrNumber != null">#{vmrNumber},</if>
+            <if test="maxParticipantNum != null">#{maxParticipantNum},</if>
+            <if test="masterTerminalId != null">#{masterTerminalId},</if>
+            <if test="enableDataConf != null">#{enableDataConf},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiSmcDeptTemplate" parameterType="com.paradisecloud.smc.dao.model.BusiSmcDeptTemplate">
+        update busi_smc_dept_template
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="smcTemplateId != null and smcTemplateId != ''">smc_template_id = #{smcTemplateId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="templateName != null and templateName != ''">template_name = #{templateName},</if>
+            <if test="duration != null">duration = #{duration},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="rate != null">rate = #{rate},</if>
+            <if test="supportLive != null">support_live = #{supportLive},</if>
+            <if test="supportRecord != null">support_record = #{supportRecord},</if>
+            <if test="amcRecord != null">amc_record = #{amcRecord},</if>
+            <if test="autoMute != null">auto_mute = #{autoMute},</if>
+            <if test="chairmanPassword != null">chairman_password = #{chairmanPassword},</if>
+            <if test="guestPassword != null">guest_password = #{guestPassword},</if>
+            <if test="vmrNumber != null">vmr_number = #{vmrNumber},</if>
+            <if test="maxParticipantNum != null">max_participant_num = #{maxParticipantNum},</if>
+            <if test="masterTerminalId != null">master_terminal_id = #{masterTerminalId},</if>
+            <if test="enableDataConf != null">enable_data_conf = #{enableDataConf},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiSmcDeptTemplate" parameterType="Long">
+        delete from busi_smc_dept_template where id = #{id}
+    </delete>
+
+
+</mapper>

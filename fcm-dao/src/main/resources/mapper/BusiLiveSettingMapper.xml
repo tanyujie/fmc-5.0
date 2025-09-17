@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiLiveSettingMapper">
+    
+    <resultMap type="BusiLiveSetting" id="BusiLiveSettingResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="url"    column="url"    />
+        <result property="status"    column="status"    />
+        <result property="description"    column="description"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remoteParty"    column="remote_party"    />
+    </resultMap>
+
+    <sql id="selectBusiLiveSettingVo">
+        select id, name, url, status, description,dept_id,create_time, update_time, remote_party from busi_live_setting
+    </sql>
+
+    <select id="selectBusiLiveSettingList" parameterType="BusiLiveSetting" resultMap="BusiLiveSettingResult">
+        <include refid="selectBusiLiveSettingVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="url != null  and url != ''"> and url = #{url}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="description != null  and description != ''"> and description = #{description}</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="remoteParty != null  and remoteParty != ''"> and remote_party = #{remoteParty}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiLiveSettingById" parameterType="Long" resultMap="BusiLiveSettingResult">
+        <include refid="selectBusiLiveSettingVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiLiveSetting" parameterType="BusiLiveSetting" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_live_setting
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="url != null">url,</if>
+            <if test="status != null">status,</if>
+            <if test="description != null">description,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remoteParty != null">remote_party,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="url != null">#{url},</if>
+            <if test="status != null">#{status},</if>
+            <if test="description != null">#{description},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remoteParty != null">#{remoteParty},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiLiveSetting" parameterType="BusiLiveSetting">
+        update busi_live_setting
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="url != null">url = #{url},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remoteParty != null">remote_party = #{remoteParty},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiLiveSettingById" parameterType="Long">
+        delete from busi_live_setting where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiLiveSettingByIds" parameterType="String">
+        delete from busi_live_setting where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

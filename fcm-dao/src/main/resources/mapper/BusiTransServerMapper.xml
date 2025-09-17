@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiTransServerMapper">
+
+    <resultMap type="BusiTransServer" id="BusiTransServerResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="userName"    column="user_name"    />
+        <result property="password"    column="password"    />
+        <result property="ip"    column="ip"    />
+        <result property="port"    column="port"    />
+    </resultMap>
+
+    <sql id="selectBusiTransServerVo">
+        select id, create_time, update_time, user_name, password, ip, port from busi_trans_server
+    </sql>
+
+    <select id="selectBusiTransServerList" parameterType="BusiTransServer" resultMap="BusiTransServerResult">
+        <include refid="selectBusiTransServerVo"/>
+        <where>
+            <if test="userName != null  and userName != ''"> and user_name like concat('%', #{userName}, '%')</if>
+            <if test="password != null  and password != ''"> and password = #{password}</if>
+            <if test="ip != null  and ip != ''"> and ip = #{ip}</if>
+            <if test="port != null "> and port = #{port}</if>
+        </where>
+    </select>
+
+    <select id="selectBusiTransServerById" parameterType="Long" resultMap="BusiTransServerResult">
+        <include refid="selectBusiTransServerVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertBusiTransServer" parameterType="BusiTransServer" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_trans_server
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="userName != null">user_name,</if>
+            <if test="password != null">password,</if>
+            <if test="ip != null">ip,</if>
+            <if test="port != null">port,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="userName != null">#{userName},</if>
+            <if test="password != null">#{password},</if>
+            <if test="ip != null">#{ip},</if>
+            <if test="port != null">#{port},</if>
+        </trim>
+    </insert>
+
+    <update id="updateBusiTransServer" parameterType="BusiTransServer">
+        update busi_trans_server
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="userName != null">user_name = #{userName},</if>
+            <if test="password != null">password = #{password},</if>
+            <if test="ip != null">ip = #{ip},</if>
+            <if test="port != null">port = #{port},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiTransServerById" parameterType="Long">
+        delete from busi_trans_server where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiTransServerByIds" parameterType="String">
+        delete from busi_trans_server where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

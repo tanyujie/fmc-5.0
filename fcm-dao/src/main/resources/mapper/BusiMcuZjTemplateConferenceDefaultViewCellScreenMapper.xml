@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiMcuZjTemplateConferenceDefaultViewCellScreenMapper">
+    
+    <resultMap type="BusiMcuZjTemplateConferenceDefaultViewCellScreen" id="BusiMcuZjTemplateConferenceDefaultViewCellScreenResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="templateConferenceId"    column="template_conference_id"    />
+        <result property="cellSequenceNumber"    column="cell_sequence_number"    />
+        <result property="operation"    column="operation"    />
+        <result property="isFixed"    column="is_fixed"    />
+        <result property="type"    column="type"    />
+    </resultMap>
+
+    <sql id="selectBusiMcuZjTemplateConferenceDefaultViewCellScreenVo">
+        select id, create_time, update_time, template_conference_id, cell_sequence_number, operation, is_fixed, type from busi_mcu_zj_template_conference_default_view_cell_screen
+    </sql>
+
+    <select id="selectBusiMcuZjTemplateConferenceDefaultViewCellScreenList" parameterType="BusiMcuZjTemplateConferenceDefaultViewCellScreen" resultMap="BusiMcuZjTemplateConferenceDefaultViewCellScreenResult">
+        <include refid="selectBusiMcuZjTemplateConferenceDefaultViewCellScreenVo"/>
+        <where>  
+            <if test="templateConferenceId != null "> and template_conference_id = #{templateConferenceId}</if>
+            <if test="cellSequenceNumber != null "> and cell_sequence_number = #{cellSequenceNumber}</if>
+            <if test="operation != null "> and operation = #{operation}</if>
+            <if test="isFixed != null "> and is_fixed = #{isFixed}</if>
+            <if test="type != null "> and type = #{type}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiMcuZjTemplateConferenceDefaultViewCellScreenById" parameterType="Long" resultMap="BusiMcuZjTemplateConferenceDefaultViewCellScreenResult">
+        <include refid="selectBusiMcuZjTemplateConferenceDefaultViewCellScreenVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiMcuZjTemplateConferenceDefaultViewCellScreen" parameterType="BusiMcuZjTemplateConferenceDefaultViewCellScreen" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_mcu_zj_template_conference_default_view_cell_screen
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="templateConferenceId != null">template_conference_id,</if>
+            <if test="cellSequenceNumber != null">cell_sequence_number,</if>
+            <if test="operation != null">operation,</if>
+            <if test="isFixed != null">is_fixed,</if>
+            <if test="type != null">type,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="templateConferenceId != null">#{templateConferenceId},</if>
+            <if test="cellSequenceNumber != null">#{cellSequenceNumber},</if>
+            <if test="operation != null">#{operation},</if>
+            <if test="isFixed != null">#{isFixed},</if>
+            <if test="type != null">#{type},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiMcuZjTemplateConferenceDefaultViewCellScreen" parameterType="BusiMcuZjTemplateConferenceDefaultViewCellScreen">
+        update busi_mcu_zj_template_conference_default_view_cell_screen
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="templateConferenceId != null">template_conference_id = #{templateConferenceId},</if>
+            <if test="cellSequenceNumber != null">cell_sequence_number = #{cellSequenceNumber},</if>
+            <if test="operation != null">operation = #{operation},</if>
+            <if test="isFixed != null">is_fixed = #{isFixed},</if>
+            <if test="type != null">type = #{type},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiMcuZjTemplateConferenceDefaultViewCellScreenById" parameterType="Long">
+        delete from busi_mcu_zj_template_conference_default_view_cell_screen where id = #{id}
+    </delete>
+    
+    <delete id="deleteBusiMcuZjTemplateConferenceDefaultViewCellScreenByTemplateConferenceId" parameterType="Long">
+        delete from busi_mcu_zj_template_conference_default_view_cell_screen where template_conference_id = #{templateConferenceId}
+    </delete>
+
+    <delete id="deleteBusiMcuZjTemplateConferenceDefaultViewCellScreenByIds" parameterType="String">
+        delete from busi_mcu_zj_template_conference_default_view_cell_screen where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

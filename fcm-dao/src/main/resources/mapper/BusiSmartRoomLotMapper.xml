@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiSmartRoomLotMapper">
+
+    <resultMap type="BusiSmartRoomLot" id="BusiSmartRoomLotResult">
+        <result property="id"    column="id"    />
+        <result property="lotName"    column="lot_name"    />
+        <result property="lotType"    column="lot_type"    />
+        <result property="lotPosition"    column="lot_position"    />
+        <result property="mqttOnlineStatus"    column="mqtt_online_status"    />
+        <result property="brand"    column="brand"    />
+        <result property="lotModel"    column="lot_model"    />
+        <result property="clientId"    column="client_id"    />
+        <result property="pubTopic"    column="pub_topic"    />
+        <result property="subTopic"    column="sub_topic"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="remark"    column="remark"    />
+        <result property="details"    column="details" typeHandler="com.paradisecloud.fcm.dao.typehandler.JSONTypeMapHandler" jdbcType="OTHER"   />
+    </resultMap>
+
+    <sql id="selectBusiSmartRoomLotVo">
+        select id, lot_name, lot_type, lot_position, mqtt_online_status, brand, lot_model, client_id, pub_topic, sub_topic, create_time, create_by, update_time, update_by, remark, details from busi_smart_room_lot
+    </sql>
+
+    <select id="selectBusiSmartRoomLotList" parameterType="BusiSmartRoomLot" resultMap="BusiSmartRoomLotResult">
+        <include refid="selectBusiSmartRoomLotVo"/>
+        <where>
+            <if test="lotName != null  and lotName != ''"> and lot_name like concat('%', #{lotName}, '%')</if>
+            <if test="lotType != null "> and lot_type = #{lotType}</if>
+            <if test="lotPosition != null  and lotPosition != ''"> and lot_position = #{lotPosition}</if>
+            <if test="mqttOnlineStatus != null "> and mqtt_online_status = #{mqttOnlineStatus}</if>
+            <if test="brand != null  and brand != ''"> and brand = #{brand}</if>
+            <if test="lotModel != null  and lotModel != ''"> and lot_model = #{lotModel}</if>
+            <if test="clientId != null  and clientId != ''"> and client_id = #{clientId}</if>
+            <if test="pubTopic != null  and pubTopic != ''"> and pub_topic = #{pubTopic}</if>
+            <if test="subTopic != null  and subTopic != ''"> and sub_topic = #{subTopic}</if>
+            <if test="details != null  and details != ''"> and details = #{details}</if>
+        </where>
+    </select>
+
+    <select id="selectBusiSmartRoomLotById" parameterType="Long" resultMap="BusiSmartRoomLotResult">
+        <include refid="selectBusiSmartRoomLotVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertBusiSmartRoomLot" parameterType="BusiSmartRoomLot" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_smart_room_lot
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="lotName != null and lotName != ''">lot_name,</if>
+            <if test="lotType != null">lot_type,</if>
+            <if test="lotPosition != null">lot_position,</if>
+            <if test="mqttOnlineStatus != null">mqtt_online_status,</if>
+            <if test="brand != null">brand,</if>
+            <if test="lotModel != null">lot_model,</if>
+            <if test="clientId != null and clientId != ''">client_id,</if>
+            <if test="pubTopic != null and pubTopic != ''">pub_topic,</if>
+            <if test="subTopic != null and subTopic != ''">sub_topic,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="remark != null">remark,</if>
+            <if test="details != null">details,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="lotName != null and lotName != ''">#{lotName},</if>
+            <if test="lotType != null">#{lotType},</if>
+            <if test="lotPosition != null">#{lotPosition},</if>
+            <if test="mqttOnlineStatus != null">#{mqttOnlineStatus},</if>
+            <if test="brand != null">#{brand},</if>
+            <if test="lotModel != null">#{lotModel},</if>
+            <if test="clientId != null and clientId != ''">#{clientId},</if>
+            <if test="pubTopic != null and pubTopic != ''">#{pubTopic},</if>
+            <if test="subTopic != null and subTopic != ''">#{subTopic},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="details != null">#{details, typeHandler=com.paradisecloud.fcm.dao.typehandler.JSONTypeMapHandler},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiSmartRoomLot" parameterType="BusiSmartRoomLot">
+        update busi_smart_room_lot
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="lotName != null and lotName != ''">lot_name = #{lotName},</if>
+            <if test="lotType != null">lot_type = #{lotType},</if>
+            <if test="lotPosition != null">lot_position = #{lotPosition},</if>
+            <if test="mqttOnlineStatus != null">mqtt_online_status = #{mqttOnlineStatus},</if>
+            <if test="brand != null">brand = #{brand},</if>
+            <if test="lotModel != null">lot_model = #{lotModel},</if>
+            <if test="clientId != null and clientId != ''">client_id = #{clientId},</if>
+            <if test="pubTopic != null and pubTopic != ''">pub_topic = #{pubTopic},</if>
+            <if test="subTopic != null and subTopic != ''">sub_topic = #{subTopic},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null and createBy != ''">create_by = #{createBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            details = #{details, typeHandler=com.paradisecloud.fcm.dao.typehandler.JSONTypeMapHandler},
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiSmartRoomLotById" parameterType="Long">
+        delete from busi_smart_room_lot where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiSmartRoomLotByIds" parameterType="String">
+        delete from busi_smart_room_lot where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectBusiSmartRoomLotListForUnbind" resultMap="BusiSmartRoomLotResult">
+        <include refid="selectBusiSmartRoomLotVo"/>
+        where not exists (select 1 from busi_smart_room_device_map srdp where srdp.device_type = 1 and srdp.device_id = busi_smart_room_lot.id)
+        and not exists (select 1 from busi_smart_room_device_map srdp, busi_smart_room_device srd where srdp.device_type = 2 and srdp.device_id = srd.id and srd.lot_id = busi_smart_room_lot.id)
+    </select>
+</mapper>

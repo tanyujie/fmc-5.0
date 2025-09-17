@@ -1,0 +1,466 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiHistoryParticipantMapper">
+    
+    <resultMap type="BusiHistoryParticipant" id="BusiHistoryParticipantResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="historyConferenceId"    column="history_conference_id"    />
+        <result property="weight"    column="weight"    />
+        <result property="coSpace"    column="co_space"    />
+        <result property="callId"    column="call_id"    />
+        <result property="callLegId"    column="call_leg_id"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="remoteParty"    column="remote_party"    />
+        <result property="name"    column="name"    />
+        <result property="joinTime"    column="join_time"    />
+        <result property="outgoingTime"    column="outgoing_time"    />
+        <result property="durationSeconds"    column="duration_seconds"    />
+        <result property="joined"    column="joined"    />
+        <result property="mediaInfo"    column="media_info" typeHandler="com.paradisecloud.fcm.dao.typehandler.JSONTypeMapHandler" jdbcType="OTHER"   />
+        <result property="terminalId"    column="terminal_id"    />
+    </resultMap>
+
+    <sql id="selectBusiHistoryParticipantVo">
+        select id, create_time, update_time, history_conference_id, weight,co_space, call_id, call_leg_id, dept_id, remote_party, name, join_time, outgoing_time,duration_seconds,joined,media_info,terminal_id from busi_history_participant
+    </sql>
+
+    <select id="selectBusiHistoryParticipantList" parameterType="BusiHistoryParticipant" resultMap="BusiHistoryParticipantResult">
+        <include refid="selectBusiHistoryParticipantVo"/>
+        <where>  
+            <if test="historyConferenceId != null "> and history_conference_id = #{historyConferenceId}</if>
+            <if test="coSpace != null "> and co_space = #{coSpace}</if>
+            <if test="weight != null "> and weight = #{weight}</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="remoteParty != null  and remoteParty != ''"> and remote_party = #{remoteParty}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="joinTime != null "> and join_time = #{joinTime}</if>
+            <if test="outgoingTime != null "> and outgoing_time = #{outgoingTime}</if>
+            <if test="durationSeconds != null"> and duration_seconds = #{durationSeconds}</if>
+            <if test="joined != null"> and joined = #{joined}</if>
+            <if test="terminalId != null"> and terminal_id = #{terminalId}</if>
+        </where>
+    </select>
+    
+    <select id="selectNotEndHistoryParticipantList" resultMap="BusiHistoryParticipantResult">
+        <include refid="selectBusiHistoryParticipantVo"/>
+        <where>  
+           joined = true and outgoing_time is null 
+        </where>
+    </select>
+    
+    <select id="selectBusiHistoryParticipantById" parameterType="Long" resultMap="BusiHistoryParticipantResult">
+        <include refid="selectBusiHistoryParticipantVo"/>
+        where id = #{id}
+    </select>
+    
+    <select id="selectBusiHistoryParticipantByCallLegId" parameterType="String" resultMap="BusiHistoryParticipantResult">
+        <include refid="selectBusiHistoryParticipantVo"/>
+        where call_leg_id = #{callLegId}
+    </select>
+        
+    <insert id="insertBusiHistoryParticipant" parameterType="BusiHistoryParticipant" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_history_participant
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="historyConferenceId != null">history_conference_id,</if>
+            <if test="weight != null">weight,</if>
+            <if test="coSpace != null">co_space,</if>
+            <if test="callId != null">call_id,</if>
+            <if test="callLegId != null">call_leg_id,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="remoteParty != null">remote_party,</if>
+            <if test="name != null">name,</if>
+            <if test="joinTime != null">join_time,</if>
+            <if test="outgoingTime != null">outgoing_time,</if>
+            <if test="durationSeconds != null">duration_seconds,</if>
+            <if test="joined != null">joined,</if>
+            <if test="mediaInfo != null">media_info,</if>
+            <if test="terminalId != null">terminal_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="historyConferenceId != null">#{historyConferenceId},</if>
+            <if test="weight != null">#{weight},</if>
+            <if test="coSpace != null">#{coSpace},</if>
+            <if test="callId != null">#{callId},</if>
+            <if test="callLegId != null">#{callLegId},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="remoteParty != null">#{remoteParty},</if>
+            <if test="name != null">#{name},</if>
+            <if test="joinTime != null">#{joinTime},</if>
+            <if test="outgoingTime != null">#{outgoingTime},</if>
+            <if test="durationSeconds != null">#{durationSeconds},</if>
+            <if test="joined != null">#{joined},</if>
+            <if test="mediaInfo != null">#{mediaInfo, typeHandler=com.paradisecloud.fcm.dao.typehandler.JSONTypeMapHandler},</if>
+            <if test="terminalId != null">#{terminalId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiHistoryParticipant" parameterType="BusiHistoryParticipant">
+        update busi_history_participant
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="historyConferenceId != null">history_conference_id = #{historyConferenceId},</if>
+            <if test="weight != null">weight = #{weight},</if>
+            <if test="coSpace != null">co_space = #{coSpace},</if>
+            <if test="callId != null">call_id = #{callId},</if>
+            <if test="callLegId != null">call_leg_id = #{callLegId},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="remoteParty != null">remote_party = #{remoteParty},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="joinTime != null">join_time = #{joinTime},</if>
+            <if test="outgoingTime != null">outgoing_time = #{outgoingTime},</if>
+            <if test="durationSeconds != null">duration_seconds = #{durationSeconds},</if>
+            <if test="joined != null">joined = #{joined},</if>
+            <if test="mediaInfo != null">media_info = #{mediaInfo, typeHandler=com.paradisecloud.fcm.dao.typehandler.JSONTypeMapHandler},</if>
+            <if test="terminalId != null">terminal_id = #{terminalId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiHistoryParticipantById" parameterType="Long">
+        delete from busi_history_participant where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiHistoryParticipantByIds" parameterType="String">
+        delete from busi_history_participant where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <!-- 批量添加记录 -->
+    <insert id="batchInsertBusiHistoryParticipant" parameterType="BusiHistoryParticipant" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_history_participant (create_time,update_time,history_conference_id,weight,call_id,call_leg_id,dept_id) values
+        <foreach collection="busiHistoryParticipantList" item="busiHistoryParticipant" separator=",">
+            (#{busiHistoryParticipant.createTime},#{busiHistoryParticipant.updateTime},#{busiHistoryParticipant.historyConferenceId},#{busiHistoryParticipant.weight},
+            #{busiHistoryParticipant.callId},#{busiHistoryParticipant.callLegId},#{busiHistoryParticipant.deptId})
+        </foreach>
+    </insert>
+
+    <update id="updateHistoryParticipantByCallLegId">
+        update busi_history_participant
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="outgoingTime != null">outgoing_time = #{outgoingTime},</if>
+            <if test="durationSeconds != null ">duration_seconds = #{durationSeconds},</if>
+            <if test="joined != null ">joined = #{joined},</if>
+        </trim>
+        where call_leg_id = #{callLegId}
+    </update>
+
+    <resultMap id="historyParticipantDetailResult" type="BusiHistoryParticipant">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="historyConferenceId"    column="history_conference_id"    />
+        <result property="weight"    column="weight"    />
+        <result property="coSpace"    column="co_space"    />
+        <result property="callId"    column="call_id"    />
+        <result property="callLegId"    column="call_leg_id"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="remoteParty"    column="remote_party"    />
+        <result property="name"    column="name"    />
+        <result property="joinTime"    column="join_time"    />
+        <result property="outgoingTime"    column="outgoing_time"    />
+        <result property="durationSeconds"    column="duration_seconds"    />
+        <result property="joined"    column="joined"    />
+        <result property="mediaInfo"    column="media_info" typeHandler="com.paradisecloud.fcm.dao.typehandler.JSONTypeMapHandler" jdbcType="OTHER"   />
+        <result property="terminalId"    column="terminal_id"    />
+        <association property="cdrCallLegEnd">
+            <result property="cdrId"    column="cdr_id"    />
+            <result property="id"    column="id"    />
+            <result property="cdrTag"    column="cdr_tag"    />
+            <result property="reason"    column="reason"  typeHandler="com.paradisecloud.fcm.dao.enums.EnumHandler"  />
+            <result property="remoteTeardown"    column="remote_teardown"    />
+            <result property="encryptedMedia"    column="encrypted_media"    />
+            <result property="unencryptedMedia"    column="unencrypted_media"    />
+            <result property="durationSeconds"    column="duration_seconds"    />
+            <result property="activatedDuration"    column="activated_duration"    />
+            <result property="mainVideoViewer"    column="main_video_viewer"    />
+            <result property="mainVideoContributor"    column="main_video_contributor"    />
+            <result property="presentationViewer"    column="presentation_viewer"    />
+            <result property="presentationContributor"    column="presentation_contributor"    />
+            <result property="multistreamVideo"    column="multistream_video"    />
+            <result property="maxScreens"    column="max_screens"    />
+            <result property="ownerId"    column="owner_id"    />
+            <result property="sipCallId"    column="sip_call_id"    />
+            <result property="time"    column="time"    />
+        </association>
+        <association property="cdrCallLegStart">
+            <result property="displayName"    column="display_name"    />
+            <result property="localAddress"    column="local_address"    />
+            <result property="remoteAddress"    column="remote_address"    />
+            <result property="remoteParty"    column="remote_party"    />
+            <result property="cdrTag"    column="cdr_tag"    />
+            <result property="guestConnection"    column="guest_connection"    />
+            <result property="recording"    column="recording"    />
+            <result property="streaming"    column="streaming"    />
+            <result property="type"    column="type"    />
+            <result property="subType"    column="sub_type"    />
+            <result property="lyncSubType"    column="lync_sub_type"    />
+            <result property="direction"    column="direction"    />
+            <result property="call"    column="call_id"    />
+            <result property="ownerId"    column="owner_id"    />
+            <result property="sipCallId"    column="sip_call_id"    />
+            <result property="groupId"    column="group_id"    />
+            <result property="replacesSipCallId"    column="replaces_sip_call_id"    />
+            <result property="canMove"    column="can_move"    />
+            <result property="movedCallLeg"    column="moved_call_leg"    />
+            <result property="movedCallLegCallBridge"    column="moved_call_leg_call_bridge"    />
+            <result property="time"    column="time"    />
+        </association>
+    </resultMap>
+    <sql id="selectHistoryParticipantDetailVo">
+        select p.id, p.create_time, p.update_time, p.history_conference_id, p.weight, p.call_id, p.call_leg_id, p.dept_id, p.remote_party, p.name, p.join_time, p.outgoing_time,p.duration_seconds,p.co_space,
+        s.type,s.direction,e.reason
+        from busi_history_participant p
+        left join cdr_call_leg_start s on s.call_id= p.call_id and p.call_leg_id = s.cdr_id
+        left join cdr_call_leg_end e on p.call_leg_id = e.cdr_id
+    </sql>
+    <sql id="selectDetailVoByConferenceId">
+        select p.id, p.create_time, p.update_time, p.history_conference_id, p.weight, p.call_id, p.call_leg_id, p.dept_id, p.remote_party, p.name, p.join_time, p.outgoing_time,p.duration_seconds,p.co_space,p.joined,p.media_info,p.terminal_id,
+        s.type,s.direction,s.display_name,s.local_address,s.remote_address,s.remote_party,s.cdr_tag,s.guest_connection,s.recording,s.streaming,s.sub_type,s.lync_sub_type,s.owner_id,s.sip_call_id,s.group_id,
+        s.replaces_sip_call_id,s.can_move,s.moved_call_leg,s.moved_call_leg_call_bridge,s.time,
+        e.reason,e.remote_teardown,e.encrypted_media,e.unencrypted_media,e.activated_duration,e.main_video_viewer,e.main_video_contributor,e.presentation_viewer,e.presentation_contributor,
+		e.multistream_video,e.max_screens
+        from busi_history_participant p
+        left join cdr_call_leg_start s on p.call_leg_id = s.cdr_id
+        left join cdr_call_leg_end e on p.call_leg_id = e.cdr_id
+    </sql>
+    <select id="selectHistoryParticipantDetailList" resultMap="historyParticipantDetailResult">
+        <include refid="selectDetailVoByConferenceId"/>
+        <where>
+            <if test="historyConferenceId != null "> and p.history_conference_id = #{historyConferenceId}</if>
+            <if test="isJoin != null "> and p.joined = #{isJoin}</if>
+        </where>
+        order by p.join_time desc
+    </select>
+
+    <select id="selectParticipantByDeptAndTime" resultMap="BusiHistoryParticipantResult">
+        <include refid="selectBusiHistoryParticipantVo"/>
+        <where>
+            <if test="deptId !=null"> and dept_id=#{deptId}</if>
+            <if test="startTime != null "> and join_time <![CDATA[>=]]> #{startTime}</if>
+            <if test="endTime != null "> and outgoing_time <![CDATA[<=]]> #{endTime}</if>
+        </where>
+    </select>
+    <select id="selectParticipantDetailListByDeptAndTime" resultMap="historyParticipantDetailResult">
+        <include refid="selectHistoryParticipantDetailVo"/>
+        <where>
+            <if test="deptId !=null"> and p.dept_id=#{deptId}</if>
+            <if test="startTime != null "> and p.join_time <![CDATA[>=]]> #{startTime}</if>
+            <if test="endTime != null "> and p.outgoing_time <![CDATA[<=]]> #{endTime}</if>
+        </where>
+    </select>
+
+    <select id="reportOrderByDuration" resultType="map">
+        select ifnull(name,remote_party) name,sum(duration_seconds) totalDuration  from busi_history_participant
+        <where>
+            duration_seconds>0
+            <if test="deptId !=null"> and dept_id=#{deptId}</if>
+            <if test="startTime != null "> and join_time <![CDATA[>=]]> #{startTime}</if>
+            <if test="endTime != null "> and outgoing_time <![CDATA[<=]]> #{endTime}</if>
+        </where>
+        group by remote_party
+        order by totalDuration desc limit 5;
+    </select>
+
+    <select id="selectHistoryParticipantDetailListByTerminal" resultMap="historyParticipantDetailResult">
+        <include refid="selectDetailVoByConferenceId"/>
+        <where>
+            <if test="historyConferenceId != null "> and p.history_conference_id = #{historyConferenceId}</if>
+            <if test="terminalId != null "> and p.terminal_id = #{terminalId}</if>
+            <if test="remoteParty != null "> and p.remote_party = #{remoteParty}</if>
+        </where>
+        order by p.join_time desc
+    </select>
+
+    <resultMap type="TerminalJoinedCount" id="JoinedCountMap">
+        <result property="joinedTimes"    column="joined_times"    />
+        <result property="durationSeconds"    column="duration_seconds"    />
+    </resultMap>
+
+    <select id="getTerminalJoinedCount"  resultMap="JoinedCountMap">
+        SELECT
+        	count(*) joined_times,
+        	sum(duration_seconds) duration_seconds
+        FROM
+        	busi_history_participant
+        <where>
+            <if test="historyConferenceId != null "> and history_conference_id = #{historyConferenceId}</if>
+            <if test="terminalId != null "> and terminal_id = #{terminalId}</if>
+            <if test="remoteParty != null "> and remote_party = #{remoteParty}</if>
+        </where>
+    </select>
+
+    <select id="selectEndedHistoryParticipantListForTerminal" resultMap="BusiHistoryParticipantResult">
+        <include refid="selectBusiHistoryParticipantVo"/>
+        <where>
+            <if test="terminalId != null "> and terminal_id = #{terminalId}</if>
+            <if test="terminalId == null "> and terminal_id is not null </if>
+            and outgoing_time between #{startTime} and #{endTime}
+        </where>
+        <if test="terminalId == null ">limit ${startIndex}, ${maxCount}</if>
+    </select>
+
+    <select id="selectNotEndHistoryParticipantListForTerminal" resultMap="BusiHistoryParticipantResult">
+        <include refid="selectBusiHistoryParticipantVo"/>
+        <where>
+            <if test="terminalId != null "> and terminal_id = #{terminalId}</if>
+            <if test="terminalId == null "> and terminal_id is not null </if>
+            and outgoing_time is null
+        </where>
+        <if test="terminalId == null ">limit ${startIndex}, ${maxCount}</if>
+    </select>
+
+    <select id="selectBusiHistoryParticipantLastForConferenceTerminal" resultMap="BusiHistoryParticipantResult">
+        <include refid="selectBusiHistoryParticipantVo"/>
+        where history_conference_id = #{historyConferenceId}
+        <if test="terminalId != null "> and terminal_id = #{terminalId}</if>
+        <if test="remoteParty != null "> and remote_party = #{remoteParty}</if>
+        order by id desc
+        limit 1
+    </select>
+
+    <update id="updateBusiHistoryParticipantForJoin" parameterType="BusiHistoryParticipant">
+        update busi_history_participant
+        <trim prefix="SET" suffixOverrides=",">
+            outgoing_time = null,
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="mediaInfo != null">media_info = #{mediaInfo, typeHandler=com.paradisecloud.fcm.dao.typehandler.JSONTypeMapHandler},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <select id="selectBusiHistoryParticipantListForTodayNotEndTerminal" resultMap="BusiHistoryParticipantResult">
+        <include refid="selectBusiHistoryParticipantVo"/>
+        where id > #{startId}
+        and terminal_id is not null
+        and join_time <![CDATA[<]]> #{startTime}
+        and (outgoing_time is null or outgoing_time <![CDATA[>=]]> #{startTime})
+        order by id
+        limit 1000
+    </select>
+
+    <select id="getConferenceDateTerminalJoinedCount"  resultType="Long">
+        SELECT
+        count(*)
+        FROM
+        busi_history_participant
+        <where>
+            history_conference_id = #{historyConferenceId}
+            and join_time <![CDATA[<=]]> #{endTime}
+            and (outgoing_time is null or (outgoing_time <![CDATA[>=]]> #{startTime} and outgoing_time <![CDATA[<=]]> #{endTime}))
+        </where>
+    </select>
+
+    <resultMap id="historyParticipantTerminalDetailResult" type="BusiHistoryParticipantConferenceVo">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="historyConferenceId"    column="history_conference_id"    />
+        <result property="weight"    column="weight"    />
+        <result property="coSpace"    column="co_space"    />
+        <result property="callId"    column="call_id"    />
+        <result property="callLegId"    column="call_leg_id"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="remoteParty"    column="remote_party"    />
+        <result property="name"    column="name"    />
+        <result property="joinTime"    column="join_time"    />
+        <result property="outgoingTime"    column="outgoing_time"    />
+        <result property="durationSeconds"    column="duration_seconds"    />
+        <result property="joined"    column="joined"    />
+        <result property="mediaInfo"    column="media_info" typeHandler="com.paradisecloud.fcm.dao.typehandler.JSONTypeMapHandler" jdbcType="OTHER"   />
+        <result property="terminalId"    column="terminal_id"    />
+        <result property="historyConferenceName"    column="history_conference_name"    />
+        <result property="historyConferenceNumber"    column="history_conference_number"    />
+        <association property="cdrCallLegEnd">
+            <result property="cdrId"    column="cdr_id"    />
+            <result property="id"    column="id"    />
+            <result property="cdrTag"    column="cdr_tag"    />
+            <result property="reason"    column="reason"  typeHandler="com.paradisecloud.fcm.dao.enums.EnumHandler"  />
+            <result property="remoteTeardown"    column="remote_teardown"    />
+            <result property="encryptedMedia"    column="encrypted_media"    />
+            <result property="unencryptedMedia"    column="unencrypted_media"    />
+            <result property="durationSeconds"    column="duration_seconds"    />
+            <result property="activatedDuration"    column="activated_duration"    />
+            <result property="mainVideoViewer"    column="main_video_viewer"    />
+            <result property="mainVideoContributor"    column="main_video_contributor"    />
+            <result property="presentationViewer"    column="presentation_viewer"    />
+            <result property="presentationContributor"    column="presentation_contributor"    />
+            <result property="multistreamVideo"    column="multistream_video"    />
+            <result property="maxScreens"    column="max_screens"    />
+            <result property="ownerId"    column="owner_id"    />
+            <result property="sipCallId"    column="sip_call_id"    />
+            <result property="time"    column="time"    />
+        </association>
+        <association property="cdrCallLegStart">
+            <result property="displayName"    column="display_name"    />
+            <result property="localAddress"    column="local_address"    />
+            <result property="remoteAddress"    column="remote_address"    />
+            <result property="remoteParty"    column="remote_party"    />
+            <result property="cdrTag"    column="cdr_tag"    />
+            <result property="guestConnection"    column="guest_connection"    />
+            <result property="recording"    column="recording"    />
+            <result property="streaming"    column="streaming"    />
+            <result property="type"    column="type"    />
+            <result property="subType"    column="sub_type"    />
+            <result property="lyncSubType"    column="lync_sub_type"    />
+            <result property="direction"    column="direction"    />
+            <result property="call"    column="call_id"    />
+            <result property="ownerId"    column="owner_id"    />
+            <result property="sipCallId"    column="sip_call_id"    />
+            <result property="groupId"    column="group_id"    />
+            <result property="replacesSipCallId"    column="replaces_sip_call_id"    />
+            <result property="canMove"    column="can_move"    />
+            <result property="movedCallLeg"    column="moved_call_leg"    />
+            <result property="movedCallLegCallBridge"    column="moved_call_leg_call_bridge"    />
+            <result property="time"    column="time"    />
+        </association>
+    </resultMap>
+
+    <sql id="selectTerminalDetailVoByConferenceId">
+        select p.id, p.create_time, p.update_time, p.history_conference_id, p.weight, p.call_id, p.call_leg_id, p.dept_id, p.remote_party, p.name, p.join_time, p.outgoing_time,p.duration_seconds,p.co_space,p.joined,p.media_info,p.terminal_id, c.name history_conference_name, c.number history_conference_number,
+        s.type,s.direction,s.display_name,s.local_address,s.remote_address,s.remote_party,s.cdr_tag,s.guest_connection,s.recording,s.streaming,s.sub_type,s.lync_sub_type,s.owner_id,s.sip_call_id,s.group_id,
+        s.replaces_sip_call_id,s.can_move,s.moved_call_leg,s.moved_call_leg_call_bridge,s.time,
+        e.reason,e.remote_teardown,e.encrypted_media,e.unencrypted_media,e.activated_duration,e.main_video_viewer,e.main_video_contributor,e.presentation_viewer,e.presentation_contributor,
+		e.multistream_video,e.max_screens
+        from busi_history_participant p
+        left join busi_history_conference c on p.history_conference_id = c.id
+        left join cdr_call_leg_start s on p.call_leg_id = s.cdr_id
+        left join cdr_call_leg_end e on p.call_leg_id = e.cdr_id
+    </sql>
+    <select id="selectHistoryParticipantTerminalDetailListByTerminal" resultMap="historyParticipantTerminalDetailResult">
+        <include refid="selectTerminalDetailVoByConferenceId"/>
+        <where>
+            <if test="startTime != null "> and join_time <![CDATA[>=]]> #{startTime}</if>
+            <if test="endTime != null "> and join_time <![CDATA[<=]]> #{endTime}</if>
+            <if test="historyConferenceId != null "> and p.history_conference_id = #{historyConferenceId}</if>
+            <if test="terminalId != null "> and p.terminal_id = #{terminalId}</if>
+            <if test="remoteParty != null "> and p.remote_party = #{remoteParty}</if>
+            <if test="isJoin != null "> and p.joined = #{isJoin}</if>
+        </where>
+        order by p.join_time desc
+    </select>
+
+    <select id="selectHistoryParticipantListForTerminal" resultMap="BusiHistoryParticipantResult">
+        <include refid="selectBusiHistoryParticipantVo"/>
+        <where>
+            <if test="terminalId != null "> and terminal_id = #{terminalId}</if>
+            <if test="terminalId == null "> and terminal_id is not null </if>
+            and join_time between #{startTime} and #{endTime}
+        </where>
+        <if test="terminalId == null ">limit ${startIndex}, ${maxCount}</if>
+    </select>
+
+    <delete id="deleteHistory">
+        delete from busi_history_participant where create_time &lt; #{beforeDate}
+    </delete>
+</mapper>

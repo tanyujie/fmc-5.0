@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiSmartRoomDoorplateRegisterMapper">
+
+    <resultMap type="BusiSmartRoomDoorplateRegister" id="BusiSmartRoomDoorplateRegisterResult">
+        <result property="id"    column="id"    />
+        <result property="sn"    column="sn"    />
+        <result property="ip"    column="ip"    />
+        <result property="appVersionCode"    column="app_version_code"    />
+        <result property="appVersionName"    column="app_version_name"    />
+        <result property="connectIp"    column="connect_ip"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectBusiSmartRoomDoorplateRegisterVo">
+        select id, sn, ip, app_version_code, app_version_name, connect_ip, create_time, update_time from busi_smart_room_doorplate_register
+    </sql>
+
+    <select id="selectBusiSmartRoomDoorplateRegisterList" parameterType="BusiSmartRoomDoorplateRegister" resultMap="BusiSmartRoomDoorplateRegisterResult">
+        <include refid="selectBusiSmartRoomDoorplateRegisterVo"/>
+        <where>
+            <if test="sn != null  and sn != ''"> and sn like concat('%', #{sn}, '%')</if>
+            <if test="ip != null  and ip != ''"> and ip = #{ip}</if>
+            <if test="appVersionCode != null  and appVersionCode != ''"> and app_version_code = #{appVersionCode}</if>
+            <if test="appVersionName != null  and appVersionName != ''"> and app_version_name like concat('%', #{appVersionName}, '%')</if>
+            <if test="connectIp != null  and connectIp != ''"> and connect_ip = #{connectIp}</if>
+
+            <if test="params.searchKey != null and params.searchKey != ''">
+                and (sn like concat('%', #{params.searchKey}, '%'))
+            </if>
+        </where>
+    </select>
+
+    <select id="selectBusiSmartRoomDoorplateRegisterById" parameterType="Long" resultMap="BusiSmartRoomDoorplateRegisterResult">
+        <include refid="selectBusiSmartRoomDoorplateRegisterVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertBusiSmartRoomDoorplateRegister" parameterType="BusiSmartRoomDoorplateRegister" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_smart_room_doorplate_register
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="sn != null and sn != ''">sn,</if>
+            <if test="ip != null and ip != ''">ip,</if>
+            <if test="appVersionCode != null">app_version_code,</if>
+            <if test="appVersionName != null">app_version_name,</if>
+            <if test="connectIp != null">connect_ip,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="sn != null and sn != ''">#{sn},</if>
+            <if test="ip != null and ip != ''">#{ip},</if>
+            <if test="appVersionCode != null">#{appVersionCode},</if>
+            <if test="appVersionName != null">#{appVersionName},</if>
+            <if test="connectIp != null">#{connectIp},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateBusiSmartRoomDoorplateRegister" parameterType="BusiSmartRoomDoorplateRegister">
+        update busi_smart_room_doorplate_register
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="sn != null and sn != ''">sn = #{sn},</if>
+            <if test="ip != null and ip != ''">ip = #{ip},</if>
+            <if test="appVersionCode != null">app_version_code = #{appVersionCode},</if>
+            <if test="appVersionName != null">app_version_name = #{appVersionName},</if>
+            <if test="connectIp != null">connect_ip = #{connectIp},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiSmartRoomDoorplateRegisterById" parameterType="Long">
+        delete from busi_smart_room_doorplate_register where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiSmartRoomDoorplateRegisterByIds" parameterType="String">
+        delete from busi_smart_room_doorplate_register where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

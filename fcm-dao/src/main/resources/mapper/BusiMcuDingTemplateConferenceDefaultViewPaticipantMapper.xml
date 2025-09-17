@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 2.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiMcuDingTemplateConferenceDefaultViewPaticipantMapper">
+    
+    <resultMap type="BusiMcuDingTemplateConferenceDefaultViewPaticipant" id="BusiMcuDingTemplateConferenceDefaultViewPaticipantResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="templateConferenceId"    column="template_conference_id"    />
+        <result property="templateParticipantId"    column="template_participant_id"    />
+        <result property="weight"    column="weight"    />
+        <result property="cellSequenceNumber"    column="cell_sequence_number"    />
+        <result property="type"    column="type"    />
+    </resultMap>
+
+    <sql id="selectBusiMcuDingTemplateConferenceDefaultViewPaticipantVo">
+        select id, create_time, update_time, template_conference_id, template_participant_id, weight, cell_sequence_number, type from busi_mcu_ding_template_conference_default_view_paticipant
+    </sql>
+
+    <select id="selectBusiMcuDingTemplateConferenceDefaultViewPaticipantList" parameterType="BusiMcuDingTemplateConferenceDefaultViewPaticipant" resultMap="BusiMcuDingTemplateConferenceDefaultViewPaticipantResult">
+        <include refid="selectBusiMcuDingTemplateConferenceDefaultViewPaticipantVo"/>
+        <where>  
+            <if test="templateConferenceId != null "> and template_conference_id = #{templateConferenceId}</if>
+            <if test="templateParticipantId != null "> and template_participant_id = #{templateParticipantId}</if>
+            <if test="weight != null "> and weight = #{weight}</if>
+            <if test="cellSequenceNumber != null "> and cell_sequence_number = #{cellSequenceNumber}</if>
+            <if test="type != null "> and type = #{type}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiMcuDingTemplateConferenceDefaultViewPaticipantById" parameterType="Long" resultMap="BusiMcuDingTemplateConferenceDefaultViewPaticipantResult">
+        <include refid="selectBusiMcuDingTemplateConferenceDefaultViewPaticipantVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiMcuDingTemplateConferenceDefaultViewPaticipant" parameterType="BusiMcuDingTemplateConferenceDefaultViewPaticipant" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_mcu_ding_template_conference_default_view_paticipant
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="templateConferenceId != null">template_conference_id,</if>
+            <if test="templateParticipantId != null">template_participant_id,</if>
+            <if test="weight != null">weight,</if>
+            <if test="cellSequenceNumber != null">cell_sequence_number,</if>
+            <if test="type != null">type,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="templateConferenceId != null">#{templateConferenceId},</if>
+            <if test="templateParticipantId != null">#{templateParticipantId},</if>
+            <if test="weight != null">#{weight},</if>
+            <if test="cellSequenceNumber != null">#{cellSequenceNumber},</if>
+            <if test="type != null">#{type},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiMcuDingTemplateConferenceDefaultViewPaticipant" parameterType="BusiMcuDingTemplateConferenceDefaultViewPaticipant">
+        update busi_mcu_ding_template_conference_default_view_paticipant
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="templateConferenceId != null">template_conference_id = #{templateConferenceId},</if>
+            <if test="templateParticipantId != null">template_participant_id = #{templateParticipantId},</if>
+            <if test="weight != null">weight = #{weight},</if>
+            <if test="cellSequenceNumber != null">cell_sequence_number = #{cellSequenceNumber},</if>
+            <if test="type != null">type = #{type},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiMcuDingTemplateConferenceDefaultViewPaticipantById" parameterType="Long">
+        delete from busi_mcu_ding_template_conference_default_view_paticipant where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiMcuDingTemplateConferenceDefaultViewPaticipantByIds" parameterType="String">
+        delete from busi_mcu_ding_template_conference_default_view_paticipant where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <delete id="deleteBusiMcuDingTemplateConferenceDefaultViewPaticipantByTemplateConferenceId" parameterType="Long">
+        delete from busi_mcu_ding_template_conference_default_view_paticipant where template_conference_id = #{templateConferenceId}
+    </delete>
+
+    <delete id="deleteBusiMcuDingTemplateConferenceDefaultViewPaticipantByTemplateParticipantId" parameterType="Long">
+        delete from busi_mcu_zj_template_conference_default_view_paticipant where template_participant_id = #{templateParticipantId}
+    </delete>
+</mapper>

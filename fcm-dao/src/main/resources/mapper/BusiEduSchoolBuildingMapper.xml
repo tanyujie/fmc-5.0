@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiEduSchoolBuildingMapper">
+    
+    <resultMap type="BusiEduSchoolBuilding" id="BusiEduSchoolBuildingResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="name"    column="name"    />
+        <result property="remarks"    column="remarks"    />
+    </resultMap>
+
+    <sql id="selectBusiEduSchoolBuildingVo">
+        select id, create_time, update_time, dept_id, name, remarks from busi_edu_school_building
+    </sql>
+
+    <select id="selectBusiEduSchoolBuildingList" parameterType="BusiEduSchoolBuilding" resultMap="BusiEduSchoolBuildingResult">
+        <include refid="selectBusiEduSchoolBuildingVo"/>
+        <where>  
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="remarks != null  and remarks != ''"> and remarks = #{remarks}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiEduSchoolBuildingById" parameterType="Long" resultMap="BusiEduSchoolBuildingResult">
+        <include refid="selectBusiEduSchoolBuildingVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiEduSchoolBuilding" parameterType="BusiEduSchoolBuilding" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_edu_school_building
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="name != null">name,</if>
+            <if test="remarks != null">remarks,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="name != null">#{name},</if>
+            <if test="remarks != null">#{remarks},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiEduSchoolBuilding" parameterType="BusiEduSchoolBuilding">
+        update busi_edu_school_building
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="remarks != null">remarks = #{remarks},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiEduSchoolBuildingById" parameterType="Long">
+        delete from busi_edu_school_building where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiEduSchoolBuildingByIds" parameterType="String">
+        delete from busi_edu_school_building where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

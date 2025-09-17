@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiSmartRoomDeviceMapper">
+
+    <resultMap type="BusiSmartRoomDevice" id="BusiSmartRoomDeviceResult">
+        <result property="id"    column="id"    />
+        <result property="deviceName"    column="device_name"    />
+        <result property="deviceType"    column="device_type"    />
+        <result property="deviceClassify"    column="device_classify"    />
+        <result property="status"    column="status"    />
+        <result property="onlineStatus"    column="online_status"    />
+        <result property="brand"    column="brand"    />
+        <result property="deviceModel"    column="device_model"    />
+        <result property="appliedTime"    column="applied_time"    />
+        <result property="hardwareVersion"    column="hardware_version"    />
+        <result property="softwareVersion"    column="software_version"    />
+        <result property="remark"    column="remark"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="lotId"    column="lot_id"    />
+        <result property="lotChannel"    column="lot_channel"    />
+        <result property="lotDeviceType"    column="lot_device_type"    />
+        <result property="details"    column="details" typeHandler="com.paradisecloud.fcm.dao.typehandler.JSONTypeMapHandler" jdbcType="OTHER"   />
+        <result property="bindId"    column="bind_id"    />
+    </resultMap>
+
+    <sql id="selectBusiSmartRoomDeviceVo">
+        select id, device_name, device_type, device_classify, status, online_status, brand, device_model, applied_time, hardware_version, software_version, remark, create_time, create_by, update_time, update_by, lot_id, lot_channel, lot_device_type, details, bind_id from busi_smart_room_device
+    </sql>
+
+    <select id="selectBusiSmartRoomDeviceList" parameterType="BusiSmartRoomDevice" resultMap="BusiSmartRoomDeviceResult">
+        <include refid="selectBusiSmartRoomDeviceVo"/>
+        <where>
+            <if test="deviceName != null  and deviceName != ''"> and device_name like concat('%', #{deviceName}, '%')</if>
+            <if test="deviceType != null "> and device_type = #{deviceType}</if>
+            <if test="deviceClassify != null "> and device_classify = #{deviceClassify}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="onlineStatus != null "> and online_status = #{onlineStatus}</if>
+            <if test="brand != null  and brand != ''"> and brand = #{brand}</if>
+            <if test="deviceModel != null  and deviceModel != ''"> and device_model = #{deviceModel}</if>
+            <if test="appliedTime != null "> and applied_time = #{appliedTime}</if>
+            <if test="hardwareVersion != null  and hardwareVersion != ''"> and hardware_version = #{hardwareVersion}</if>
+            <if test="softwareVersion != null  and softwareVersion != ''"> and software_version = #{softwareVersion}</if>
+            <if test="lotId != null "> and lot_id = #{lotId}</if>
+            <if test="lotChannel != null "> and lot_channel = #{lotChannel}</if>
+            <if test="lotDeviceType != null "> and lot_device_type = #{lotDeviceType}</if>
+            <if test="bindId != null "> and bind_id = #{bindId}</if>
+        </where>
+    </select>
+
+    <select id="selectBusiSmartRoomDeviceById" parameterType="Long" resultMap="BusiSmartRoomDeviceResult">
+        <include refid="selectBusiSmartRoomDeviceVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertBusiSmartRoomDevice" parameterType="BusiSmartRoomDevice" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_smart_room_device
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="deviceName != null and deviceName != ''">device_name,</if>
+            <if test="deviceType != null">device_type,</if>
+            <if test="deviceClassify != null">device_classify,</if>
+            <if test="status != null">status,</if>
+            <if test="onlineStatus != null">online_status,</if>
+            <if test="brand != null">brand,</if>
+            <if test="deviceModel != null">device_model,</if>
+            <if test="appliedTime != null">applied_time,</if>
+            <if test="hardwareVersion != null">hardware_version,</if>
+            <if test="softwareVersion != null">software_version,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="lotId != null">lot_id,</if>
+            <if test="lotChannel != null">lot_channel,</if>
+            <if test="lotDeviceType != null">lot_device_type,</if>
+            <if test="details != null">details,</if>
+            <if test="bindId != null">bind_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="deviceName != null and deviceName != ''">#{deviceName},</if>
+            <if test="deviceType != null">#{deviceType},</if>
+            <if test="deviceClassify != null">#{deviceClassify},</if>
+            <if test="status != null">#{status},</if>
+            <if test="onlineStatus != null">#{onlineStatus},</if>
+            <if test="brand != null">#{brand},</if>
+            <if test="deviceModel != null">#{deviceModel},</if>
+            <if test="appliedTime != null">#{appliedTime},</if>
+            <if test="hardwareVersion != null">#{hardwareVersion},</if>
+            <if test="softwareVersion != null">#{softwareVersion},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="lotId != null">#{lotId},</if>
+            <if test="lotChannel != null">#{lotChannel},</if>
+            <if test="lotDeviceType != null">#{lotDeviceType},</if>
+            <if test="details != null">#{details, typeHandler=com.paradisecloud.fcm.dao.typehandler.JSONTypeMapHandler},</if>
+            <if test="bindId != null">#{bindId},</if>
+        </trim>
+    </insert>
+
+    <update id="updateBusiSmartRoomDevice" parameterType="BusiSmartRoomDevice">
+        update busi_smart_room_device
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="deviceName != null and deviceName != ''">device_name = #{deviceName},</if>
+            <if test="deviceType != null">device_type = #{deviceType},</if>
+            <if test="deviceClassify != null">device_classify = #{deviceClassify},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="onlineStatus != null">online_status = #{onlineStatus},</if>
+            <if test="brand != null">brand = #{brand},</if>
+            <if test="deviceModel != null">device_model = #{deviceModel},</if>
+            <if test="appliedTime != null">applied_time = #{appliedTime},</if>
+            <if test="hardwareVersion != null">hardware_version = #{hardwareVersion},</if>
+            <if test="softwareVersion != null">software_version = #{softwareVersion},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="lotId != null">lot_id = #{lotId},</if>
+            <if test="lotChannel != null">lot_channel = #{lotChannel},</if>
+            <if test="lotDeviceType != null">lot_device_type = #{lotDeviceType},</if>
+            details = #{details, typeHandler=com.paradisecloud.fcm.dao.typehandler.JSONTypeMapHandler},
+            <if test="bindId != null">bind_id = #{bindId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiSmartRoomDeviceById" parameterType="Long">
+        delete from busi_smart_room_device where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiSmartRoomDeviceByIds" parameterType="String">
+        delete from busi_smart_room_device where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectBusiSmartRoomDeviceListForUnbind" parameterType="BusiSmartRoomDevice" resultMap="BusiSmartRoomDeviceResult">
+        <include refid="selectBusiSmartRoomDeviceVo"/>
+        where device_type > 10
+        and device_type = #{deviceType}
+        and not exists (select 1 from busi_smart_room_device_map srdp where srdp.device_type > 10 and srdp.device_id = busi_smart_room_device.id)
+        and not exists (select 1 from busi_smart_room_device_map srdp, busi_smart_room_lot srl where srdp.device_type = 1 and srdp.device_id = srl.id and srl.id = busi_smart_room_device.lot_id)
+    </select>
+
+    <select id="selectBusiSmartRoomDeviceListForUnbindLotDevice" resultMap="BusiSmartRoomDeviceResult">
+        <include refid="selectBusiSmartRoomDeviceVo"/>
+        where device_type = 11
+        and not exists (select 1 from busi_smart_room_device_map srdp where srdp.device_type = 11 and srdp.device_id = busi_smart_room_device.id)
+        and not exists (select 1 from busi_smart_room_device_map srdp, busi_smart_room_lot srl where srdp.device_type = 1 and srdp.device_id = srl.id and srl.id = busi_smart_room_device.lot_id)
+    </select>
+</mapper>

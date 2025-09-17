@@ -1,0 +1,55 @@
+server: 
+  application: 
+    name: fcm
+  port: 18275                                           # Server HTTP port.
+  https-enable: false                                   # enable HTTPs
+  https-port: 18276                                     # Server HTTPs port.
+  https-key-store: classpath:server.pkcs12              # 对应刚才文件放置的路径
+  https-key-store-password: 123456                      # 对应生成证书时的密码
+  https-key-store-type: pkcs12
+  connection-timeout: 30000                             # Time that connectors wait for another HTTP request before closing the connection. When not set, the connector's container-specific default is used. Use a value of -1 to indicate no (that is, an infinite) timeout.
+    
+  # 响应内容压缩配置区
+  compression: 
+    # If response compression is enabled.
+    enabled: true
+    
+    # Comma-separated list of MIME types that should be compressed. For instance `text/html,text/css,application/json`
+    mime-types: "text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json,application/xml"
+    
+    # Minimum response size that is required for compression to be performed. For instance 2048
+    min-response-size: 2048
+  
+  # servlet配置区
+  servlet: 
+    path: "/"                                           # Path of the main dispatcher servlet.
+    context-path: "/fcm"                      # Context path of the application.
+    session: 
+      timeout: 300                                      # session timeout in seconds： 5min
+      cookie: 
+        http-only: true                                 # "HttpOnly" flag for the session cookie.
+    
+  # web容器配置区    
+  undertow:
+    # 设置IO线程数, 它主要执行非阻塞的任务,它们会负责多个连接, 默认设置每个CPU核心一个线程
+    # 不要设置过大，如果过大，启动项目会报错：打开文件数过多
+    #  官方解释：为工作者创建的I/O线程的数量。默认值是从可用处理器的数量导出的。 
+    io-threads: 16
+    
+    # 阻塞任务线程池, 当执行类似servlet请求阻塞IO操作, undertow会从这个线程池中取得线程
+    # 它的值设置取决于系统线程执行任务的阻塞系数，默认值是IO线程数*8
+    # 官方解释：Number of worker threads. The default is 8 times the number of I/O threads.
+    worker-threads: 1024
+    
+    # 以下的配置会影响buffer,这些buffer会用于服务器连接的IO操作,有点类似netty的池化内存管理
+    # 每块buffer的空间大小,越小的空间被利用越充分，不要设置太大，以免影响其他应用，合适即可
+    buffer-size: 1024
+    
+    # 每个区分配的buffer数量 , 所以pool的大小是buffer-size * buffers-per-region
+    buffers-per-region: 1024
+    
+    # Whether servlet filters should be initialized on startup.
+    eager-filter-init: true
+    
+    # 是否分配的直接内存(NIO直接分配的堆外内存)
+    direct-buffers: true

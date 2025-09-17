@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.ViewTemplateConferenceMapper">
+
+    <resultMap type="ViewTemplateConference" id="ViewTemplateConferenceResult">
+        <result property="mcuType"    column="mcu_type"    />
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="createUserId"    column="create_user_id"    />
+        <result property="name"    column="name"    />
+        <result property="createUserName"    column="create_user_name"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="callLegProfileId"    column="call_leg_profile_id"    />
+        <result property="bandwidth"    column="bandwidth"    />
+        <result property="isAutoCall"    column="is_auto_call"    />
+        <result property="conferenceNumber"    column="conference_number"    />
+        <result property="callProfileId"    column="call_profile_id"    />
+        <result property="callBrandingProfileId"    column="call_branding_profile_id"    />
+        <result property="streamUrl"    column="stream_url"    />
+        <result property="type"    column="type"    />
+        <result property="viewType"    column="view_type"    />
+        <result property="isAutoMonitor"    column="is_auto_monitor"    />
+        <result property="recordingEnabled"    column="recording_enabled"    />
+        <result property="isAutoCreateConferenceNumber"    column="is_auto_create_conference_number"    />
+        <result property="streamingEnabled"    column="streaming_enabled"    />
+        <result property="createType"    column="create_type"    />
+        <result property="defaultViewLayout"    column="default_view_layout"    />
+        <result property="masterParticipantId"    column="master_participant_id"    />
+        <result property="defaultViewIsBroadcast"    column="default_view_is_broadcast"    />
+        <result property="defaultViewIsDisplaySelf"    column="default_view_is_display_self"    />
+        <result property="defaultViewIsFill"    column="default_view_is_fill"    />
+        <result property="pollingInterval"    column="polling_interval"    />
+        <result property="conferencePassword"    column="conference_password"    />
+        <result property="businessFieldType"    column="business_field_type"    />
+        <result property="businessProperties"    column="business_properties"  typeHandler="com.paradisecloud.fcm.dao.typehandler.JSONTypeMapHandler" jdbcType="OTHER" />
+        <result property="remarks"    column="remarks"    />
+        <result property="cover"    column="cover"    />
+        <result property="durationEnabled"    column="duration_enabled"    />
+        <result property="durationTime"    column="duration_time"    />
+        <result property="isAutoCreateStreamUrl"    column="is_auto_create_stream_url"    />
+        <result property="presenter"    column="presenter"    />
+        <result property="tenantId"    column="tenant_id"    />
+        <result property="upCascadeId"    column="up_cascade_id"    />
+        <result property="upCascadeMcuType"    column="up_cascade_mcu_type"    />
+        <result property="upCascadeType"    column="up_cascade_type"    />
+        <result property="upCascadeIndex"    column="up_cascade_index"    />
+        <result property="conferenceMode"    column="conference_mode"    />
+
+    </resultMap>
+
+    <sql id="selectViewTemplateConferenceVo">
+        select mcu_type, id, create_time, update_time, name, create_user_id, create_user_name, dept_id, call_leg_profile_id, bandwidth, is_auto_call, conference_number, call_profile_id, call_branding_profile_id, type, view_type, is_auto_monitor, stream_url, is_auto_create_conference_number, recording_enabled, create_type, streaming_enabled, master_participant_id, default_view_layout, default_view_is_broadcast, default_view_is_display_self, default_view_is_fill, polling_interval, conference_password, business_field_type, remarks, business_properties, cover ,duration_enabled,duration_time, is_auto_create_stream_url, presenter, tenant_id, up_cascade_id, up_cascade_mcu_type, up_cascade_type, up_cascade_index, conference_mode from view_template_conference
+    </sql>
+    <sql id="selectViewTemplateConferenceCoverVo">
+        select mcu_type, id, cover from view_template_conference
+    </sql>
+    <resultMap type="DeptRecordCount" id="DeptRecordCountMap">
+        <result property="deptId"    column="dept_id"    />
+        <result property="count"    column="template_count"    />
+    </resultMap>
+
+    <select id="selectViewTemplateConferenceList" parameterType="ViewTemplateConference" resultMap="ViewTemplateConferenceResult">
+        <include refid="selectViewTemplateConferenceVo"/>
+        where not exists (select 1 from view_conference_appointment vcp where vcp.template_id = view_template_conference.id and vcp.mcu_type = view_template_conference.mcu_type and vcp.status=1)
+        and `name` !='本地录播'  and `name` !='会议预览'
+        <if test="mcuType != null and mcuType != ''"> and mcu_type = #{mcuType}</if>
+        <if test="createUserId != null "> and create_user_id = #{createUserId}</if>
+        <if test="name != null  and name != ''"> and (name like concat('%', #{name}, '%') or conference_number like concat('%', #{name}, '%'))</if>
+        <if test="createUserName != null  and createUserName != ''"> and create_user_name like concat('%', #{createUserName}, '%')</if>
+        <if test="deptId != null "> and dept_id = #{deptId}</if>
+        <if test="callLegProfileId != null and callLegProfileId != ''"> and call_leg_profile_id = #{callLegProfileId}</if>
+        <if test="callProfileId != null  and callProfileId != ''"> and call_profile_id = #{callProfileId}</if>
+        <if test="callBrandingProfileId != null  and callBrandingProfileId != ''"> and call_branding_profile_id = #{callBrandingProfileId}</if>
+        <if test="recordingEnabled != null "> and recording_enabled = #{recordingEnabled}</if>
+        <if test="streamingEnabled != null "> and streaming_enabled = #{streamingEnabled}</if>
+        <if test="streamUrl != null  and streamUrl != ''"> and stream_url = #{streamUrl}</if>
+        <if test="bandwidth != null "> and bandwidth = #{bandwidth}</if>
+        <if test="isAutoCall != null "> and is_auto_call = #{isAutoCall}</if>
+        <if test="conferenceNumber != null "> and conference_number = #{conferenceNumber}</if>
+        <if test="type != null "> and type = #{type}</if>
+        <if test="viewType != null "> and view_type = #{viewType}</if>
+        <if test="isAutoMonitor != null "> and is_auto_monitor = #{isAutoMonitor}</if>
+        <if test="isAutoCreateConferenceNumber != null "> and is_auto_create_conference_number = #{isAutoCreateConferenceNumber}</if>
+        <if test="createType != null "> and create_type = #{createType}</if>
+        <if test="masterParticipantId != null "> and master_participant_id = #{masterParticipantId}</if>
+        <if test="defaultViewLayout != null  and defaultViewLayout != ''"> and default_view_layout = #{defaultViewLayout}</if>
+        <if test="defaultViewIsBroadcast != null "> and default_view_is_broadcast = #{defaultViewIsBroadcast}</if>
+        <if test="defaultViewIsDisplaySelf != null "> and default_view_is_display_self = #{defaultViewIsDisplaySelf}</if>
+        <if test="defaultViewIsFill != null "> and default_view_is_fill = #{defaultViewIsFill}</if>
+        <if test="pollingInterval != null "> and polling_interval = #{pollingInterval}</if>
+        <if test="conferencePassword != null  and conferencePassword != ''"> and conference_password = #{conferencePassword}</if>
+        <if test="businessFieldType != null "> and business_field_type = #{businessFieldType}</if>
+        <if test="remarks != null  and remarks != ''"> and remarks = #{remarks}</if>
+        <if test="durationEnabled != null "> and duration_enabled = #{durationEnabled}</if>
+        <if test="durationTime!= null "> and duration_time = #{durationTime}</if>
+        <if test="isAutoCreateStreamUrl!= null "> and is_auto_create_stream_url = #{isAutoCreateStreamUrl}</if>
+        <if test="presenter!= null "> and presenter = #{presenter}</if>
+        <if test="tenantId != null "> and tenant_id = #{tenantId}</if>
+        <if test="upCascadeId != null"> and up_cascade_id = #{upCascadeId}</if>
+        <if test="upCascadeMcuType != null and upCascadeMcuType != ''"> and up_cascade_mcu_type = #{upCascadeMcuType}</if>
+        <if test="upCascadeType != null"> and up_cascade_type = #{upCascadeType}</if>
+        <if test="upCascadeIndex != null"> and up_cascade_index = #{upCascadeIndex}</if>
+        <if test="params.modeConference != null">
+            and conference_mode is not null
+        </if>
+    </select>
+
+    <select id="selectViewTemplateConferenceListByKey" resultMap="ViewTemplateConferenceResult">
+        <include refid="selectViewTemplateConferenceVo"/>
+        where id not in (select vcp.template_id from view_conference_appointment vcp where vcp.mcu_type = view_template_conference.mcu_type and vcp.status=1)
+        and `name` !='本地录播' and `name` !='会议预览'
+        <if test="deptId != null "> and dept_id = #{deptId}</if>
+        <if test="searchKey != null "> and name like  concat('%',#{searchKey},'%') or conference_number=#{searchKey}</if>
+    </select>
+
+    <select id="selectAllViewTemplateConferenceListByKey" resultMap="ViewTemplateConferenceResult">
+        <include refid="selectViewTemplateConferenceVo"/>
+        <where>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="searchKey != null "> and name like  concat('%',#{searchKey},'%') or conference_number=#{searchKey}</if>
+        </where>
+    </select>
+
+    <select id="selectAllViewTemplateConferenceList" parameterType="ViewTemplateConference" resultMap="ViewTemplateConferenceResult">
+        <include refid="selectViewTemplateConferenceVo"/>
+        <where>
+            <if test="mcuType != null and mcuType != ''"> and mcu_type = #{mcuType}</if>
+            <if test="createUserId != null "> and create_user_id = #{createUserId}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="createUserName != null  and createUserName != ''"> and create_user_name like concat('%', #{createUserName}, '%')</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="callLegProfileId != null and callLegProfileId != ''"> and call_leg_profile_id = #{callLegProfileId}</if>
+            <if test="callProfileId != null  and callProfileId != ''"> and call_profile_id = #{callProfileId}</if>
+            <if test="callBrandingProfileId != null  and callBrandingProfileId != ''"> and call_branding_profile_id = #{callBrandingProfileId}</if>
+            <if test="recordingEnabled != null "> and recording_enabled = #{recordingEnabled}</if>
+            <if test="streamingEnabled != null "> and streaming_enabled = #{streamingEnabled}</if>
+            <if test="streamUrl != null  and streamUrl != ''"> and stream_url = #{streamUrl}</if>
+            <if test="bandwidth != null "> and bandwidth = #{bandwidth}</if>
+            <if test="isAutoCall != null "> and is_auto_call = #{isAutoCall}</if>
+            <if test="conferenceNumber != null "> and conference_number = #{conferenceNumber}</if>
+            <if test="type != null "> and type = #{type}</if>
+            <if test="viewType != null "> and view_type = #{viewType}</if>
+            <if test="isAutoMonitor != null "> and is_auto_monitor = #{isAutoMonitor}</if>
+            <if test="isAutoCreateConferenceNumber != null "> and is_auto_create_conference_number = #{isAutoCreateConferenceNumber}</if>
+            <if test="createType != null "> and create_type = #{createType}</if>
+            <if test="masterParticipantId != null "> and master_participant_id = #{masterParticipantId}</if>
+            <if test="defaultViewLayout != null  and defaultViewLayout != ''"> and default_view_layout = #{defaultViewLayout}</if>
+            <if test="defaultViewIsBroadcast != null "> and default_view_is_broadcast = #{defaultViewIsBroadcast}</if>
+            <if test="defaultViewIsDisplaySelf != null "> and default_view_is_display_self = #{defaultViewIsDisplaySelf}</if>
+            <if test="defaultViewIsFill != null "> and default_view_is_fill = #{defaultViewIsFill}</if>
+            <if test="pollingInterval != null "> and polling_interval = #{pollingInterval}</if>
+            <if test="conferencePassword != null  and conferencePassword != ''"> and conference_password = #{conferencePassword}</if>
+            <if test="businessFieldType != null "> and business_field_type = #{businessFieldType}</if>
+            <if test="remarks != null  and remarks != ''"> and remarks = #{remarks}</if>
+            <if test="durationEnabled != null "> and duration_enabled = #{durationEnabled}</if>
+            <if test="durationTime!= null "> and duration_time = #{durationTime}</if>
+            <if test="presenter!= null "> and presenter = #{presenter}</if>
+            <if test="tenantId != null "> and tenant_id = #{tenantId}</if>
+            <if test="isAutoCreateStreamUrl!= null "> and is_auto_create_stream_url = #{isAutoCreateStreamUrl}</if>
+            <if test="params.conditionTerminalIds != null">
+                and id in (select distinct vtp.template_conference_id from view_template_participant vtp where vtp.mcu_type = view_template_conference.mcu_type and vtp.terminal_id in
+                <foreach collection="params.conditionTerminalIds" index="index" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>)
+            </if>
+            <if test="upCascadeId != null"> and up_cascade_id = #{upCascadeId}</if>
+            <if test="upCascadeMcuType != null and upCascadeMcuType != ''"> and up_cascade_mcu_type = #{upCascadeMcuType}</if>
+            <if test="upCascadeType != null"> and up_cascade_type = #{upCascadeType}</if>
+            <if test="upCascadeIndex != null"> and up_cascade_index = #{upCascadeIndex}</if>
+        </where>
+        <if test="upCascadeId != null"> order by up_cascade_index asc</if>
+    </select>
+
+    <select id="selectViewTemplateConferenceById" resultMap="ViewTemplateConferenceResult">
+        <include refid="selectViewTemplateConferenceVo"/>
+        where  `name` !='本地录播' and `name` !='会议预览' and mcu_type = #{mcuType} and id = #{id}
+    </select>
+
+    <!-- 单独查找会议封面 -->
+    <select id="selectViewTemplateConferenceCoverById" resultMap="ViewTemplateConferenceResult">
+        <include refid="selectViewTemplateConferenceCoverVo"/>
+        where mcu_type = #{mcuType} and id = #{id}
+    </select>
+
+    <select id="getDeptTemplateCount" parameterType="Integer" resultMap="DeptRecordCountMap">
+        SELECT dept_id, count(*) template_count FROM
+        (select * from `view_template_conference` where id not in (select template_id from view_conference_appointment) and business_field_type=#{businessFieldType} and create_type=2 and name != '本地录播' and `name` !='会议预览') t
+        GROUP BY dept_id ORDER BY dept_id asc
+    </select>
+
+    <select id="selectCanDownCascadeViewTemplateConferenceList" parameterType="ViewTemplateConference" resultMap="ViewTemplateConferenceResult">
+        <include refid="selectViewTemplateConferenceVo"/>
+        where
+        <if test="id != null ">(up_cascade_id is null or (up_cascade_id = #{id} and up_cascade_mcu_type = #{mcuType}))</if>
+        <if test="id == null ">up_cascade_id is null</if>
+        <if test="id != null "> and id != #{id}</if>
+        and not exists (select 1 from view_conference_appointment vcp where vcp.template_id = view_template_conference.id and vcp.mcu_type = view_template_conference.mcu_type and (vcp.status=2 or is_start=0 or is_start is null))
+        <if test="deptId != null "> and dept_id = #{deptId}</if>
+         and mcu_type !='mcu-hwcloud' and mcu_type !='ding'
+    </select>
+
+    <select id="selectCanDownCascadeViewTemplateConferenceListExcludeHasDownCascade" parameterType="ViewTemplateConference" resultMap="ViewTemplateConferenceResult">
+        <include refid="selectViewTemplateConferenceVo"/>
+        where
+        <if test="id != null ">(up_cascade_id is null or (up_cascade_id = #{id} and up_cascade_mcu_type = #{mcuType}))</if>
+        <if test="id == null ">up_cascade_id is null</if>
+        <if test="id != null and  mcuType  != null">
+            AND  CONCAT(mcu_type,id)  NOT IN  (SELECT CONCAT(mcu_type,id) FROM view_template_conference tmp WHERE tmp.id =#{id} and mcu_type=#{mcuType} )
+         </if>
+        and not exists (select 1 from view_conference_appointment vcp where vcp.template_id = view_template_conference.id and vcp.mcu_type = view_template_conference.mcu_type and (vcp.status=2 or is_start=0 or is_start is null ))
+        <if test="deptId != null "> and dept_id = #{deptId}</if>
+        and not exists (select 1 from view_template_conference vtc where vtc.up_cascade_id = view_template_conference.id and vtc.up_cascade_mcu_type = view_template_conference.mcu_type)
+        and mcu_type !='mcu-hwcloud' and mcu_type !='ding'
+    </select>
+</mapper>

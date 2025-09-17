@@ -1,0 +1,21 @@
+CREATE TABLE `fcmdb`.`busi_ops` (
+  `id` BIGINT(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `sn` VARCHAR(100) NOT NULL COMMENT '序列号',
+  `name` VARCHAR(100) NOT NULL COMMENT '名称',
+  `ip` VARCHAR(50) NULL COMMENT 'IP',
+  `mqtt_online_status` INT NULL DEFAULT 2 COMMENT 'MQTT在线状态',
+  `app_version_code` VARCHAR(50) DEFAULT NULL COMMENT 'APP版本号',
+  `app_version_name` VARCHAR(50) DEFAULT NULL COMMENT 'APP版本名',
+  `connect_ip` VARCHAR(50) NULL COMMENT '连接IP',
+  `expired_date` DATE NULL COMMENT '过期时间',
+  `create_time` DATETIME NOT NULL COMMENT '创建时间',
+  `create_user_id` BIGINT(20) NULL COMMENT '创建用户Id',
+  `update_time` DATETIME NULL COMMENT '更新时间',
+  `update_user_id` BIGINT(20) NULL COMMENT '更新用户ID',
+  `user_id` BIGINT(20) NULL COMMENT '用户ID',
+  `source_id` BIGINT(20) NULL COMMENT '资源ID',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `sn` (`sn`),
+  KEY `user_id` (`user_id`),
+  KEY `source_id` (`source_id`)
+) COMMENT = 'OPS表';

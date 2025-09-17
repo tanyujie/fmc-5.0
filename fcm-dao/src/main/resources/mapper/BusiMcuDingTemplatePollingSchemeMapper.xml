@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 2.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiMcuDingTemplatePollingSchemeMapper">
+    
+    <resultMap type="BusiMcuDingTemplatePollingScheme" id="BusiMcuDingTemplatePollingSchemeResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="templateConferenceId"    column="template_conference_id"    />
+        <result property="pollingInterval"    column="polling_interval"    />
+        <result property="pollingStrategy"    column="polling_strategy"    />
+        <result property="schemeName"    column="scheme_name"    />
+        <result property="enableStatus"    column="enable_status"    />
+        <result property="weight"    column="weight"    />
+        <result property="layout"    column="layout"    />
+        <result property="isBroadcast"    column="is_broadcast"    />
+        <result property="isDisplaySelf"    column="is_display_self"    />
+        <result property="isFill"    column="is_fill"    />
+    </resultMap>
+
+    <sql id="selectBusiMcuDingTemplatePollingSchemeVo">
+        select id, create_time, update_time, template_conference_id, polling_interval, polling_strategy, scheme_name, enable_status, weight, layout, is_broadcast, is_display_self, is_fill from busi_mcu_ding_template_polling_scheme
+    </sql>
+
+    <select id="selectBusiMcuDingTemplatePollingSchemeList" parameterType="BusiMcuDingTemplatePollingScheme" resultMap="BusiMcuDingTemplatePollingSchemeResult">
+        <include refid="selectBusiMcuDingTemplatePollingSchemeVo"/>
+        <where>  
+            <if test="templateConferenceId != null "> and template_conference_id = #{templateConferenceId}</if>
+            <if test="pollingInterval != null "> and polling_interval = #{pollingInterval}</if>
+            <if test="pollingStrategy != null "> and polling_strategy = #{pollingStrategy}</if>
+            <if test="schemeName != null  and schemeName != ''"> and scheme_name like concat('%', #{schemeName}, '%')</if>
+            <if test="enableStatus != null "> and enable_status = #{enableStatus}</if>
+            <if test="weight != null "> and weight = #{weight}</if>
+            <if test="layout != null  and layout != ''"> and layout = #{layout}</if>
+            <if test="isBroadcast != null "> and is_broadcast = #{isBroadcast}</if>
+            <if test="isDisplaySelf != null "> and is_display_self = #{isDisplaySelf}</if>
+            <if test="isFill != null "> and is_fill = #{isFill}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiMcuDingTemplatePollingSchemeById" parameterType="Long" resultMap="BusiMcuDingTemplatePollingSchemeResult">
+        <include refid="selectBusiMcuDingTemplatePollingSchemeVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiMcuDingTemplatePollingScheme" parameterType="BusiMcuDingTemplatePollingScheme" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_mcu_ding_template_polling_scheme
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="templateConferenceId != null">template_conference_id,</if>
+            <if test="pollingInterval != null">polling_interval,</if>
+            <if test="pollingStrategy != null">polling_strategy,</if>
+            <if test="schemeName != null">scheme_name,</if>
+            <if test="enableStatus != null">enable_status,</if>
+            <if test="weight != null">weight,</if>
+            <if test="layout != null">layout,</if>
+            <if test="isBroadcast != null">is_broadcast,</if>
+            <if test="isDisplaySelf != null">is_display_self,</if>
+            <if test="isFill != null">is_fill,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="templateConferenceId != null">#{templateConferenceId},</if>
+            <if test="pollingInterval != null">#{pollingInterval},</if>
+            <if test="pollingStrategy != null">#{pollingStrategy},</if>
+            <if test="schemeName != null">#{schemeName},</if>
+            <if test="enableStatus != null">#{enableStatus},</if>
+            <if test="weight != null">#{weight},</if>
+            <if test="layout != null">#{layout},</if>
+            <if test="isBroadcast != null">#{isBroadcast},</if>
+            <if test="isDisplaySelf != null">#{isDisplaySelf},</if>
+            <if test="isFill != null">#{isFill},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiMcuDingTemplatePollingScheme" parameterType="BusiMcuDingTemplatePollingScheme">
+        update busi_mcu_ding_template_polling_scheme
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="templateConferenceId != null">template_conference_id = #{templateConferenceId},</if>
+            <if test="pollingInterval != null">polling_interval = #{pollingInterval},</if>
+            <if test="pollingStrategy != null">polling_strategy = #{pollingStrategy},</if>
+            <if test="schemeName != null">scheme_name = #{schemeName},</if>
+            <if test="enableStatus != null">enable_status = #{enableStatus},</if>
+            <if test="weight != null">weight = #{weight},</if>
+            <if test="layout != null">layout = #{layout},</if>
+            <if test="isBroadcast != null">is_broadcast = #{isBroadcast},</if>
+            <if test="isDisplaySelf != null">is_display_self = #{isDisplaySelf},</if>
+            <if test="isFill != null">is_fill = #{isFill},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiMcuDingTemplatePollingSchemeById" parameterType="Long">
+        delete from busi_mcu_ding_template_polling_scheme where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiMcuDingTemplatePollingSchemeByIds" parameterType="String">
+        delete from busi_mcu_ding_template_polling_scheme where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiSmartRoomDeviceClassifyMapper">
+
+    <resultMap type="BusiSmartRoomDeviceClassify" id="BusiSmartRoomDeviceClassifyResult">
+        <result property="id"    column="id"    />
+        <result property="deviceType"    column="device_type"    />
+        <result property="deviceClassifyName"    column="device_classify_name"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+    </resultMap>
+
+    <sql id="selectBusiSmartRoomDeviceClassifyVo">
+        select id, device_type, device_classify_name, create_time, create_by, update_time, update_by from busi_smart_room_device_classify
+    </sql>
+
+    <select id="selectBusiSmartRoomDeviceClassifyList" parameterType="BusiSmartRoomDeviceClassify" resultMap="BusiSmartRoomDeviceClassifyResult">
+        <include refid="selectBusiSmartRoomDeviceClassifyVo"/>
+        <where>
+            <if test="deviceType != null "> and device_type = #{deviceType}</if>
+            <if test="deviceClassifyName != null  and deviceClassifyName != ''"> and device_classify_name like concat('%', #{deviceClassifyName}, '%')</if>
+        </where>
+    </select>
+
+    <select id="selectBusiSmartRoomDeviceClassifyById" parameterType="Long" resultMap="BusiSmartRoomDeviceClassifyResult">
+        <include refid="selectBusiSmartRoomDeviceClassifyVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertBusiSmartRoomDeviceClassify" parameterType="BusiSmartRoomDeviceClassify" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_smart_room_device_classify
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="deviceType != null">device_type,</if>
+            <if test="deviceClassifyName != null and deviceClassifyName != ''">device_classify_name,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="updateBy != null">update_by,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="deviceType != null">#{deviceType},</if>
+            <if test="deviceClassifyName != null and deviceClassifyName != ''">#{deviceClassifyName},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+        </trim>
+    </insert>
+
+    <update id="updateBusiSmartRoomDeviceClassify" parameterType="BusiSmartRoomDeviceClassify">
+        update busi_smart_room_device_classify
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="deviceType != null">device_type = #{deviceType},</if>
+            <if test="deviceClassifyName != null and deviceClassifyName != ''">device_classify_name = #{deviceClassifyName},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null and createBy != ''">create_by = #{createBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiSmartRoomDeviceClassifyById" parameterType="Long">
+        delete from busi_smart_room_device_classify where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiSmartRoomDeviceClassifyByIds" parameterType="String">
+        delete from busi_smart_room_device_classify where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

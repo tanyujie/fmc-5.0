@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 2.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiMcuSmc2DeptMapper">
+    
+    <resultMap type="BusiMcuSmc2Dept" id="BusiMcuSmc2DeptResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="mcuType"    column="mcu_type"    />
+        <result property="mcuId"    column="mcu_id"    />
+    </resultMap>
+
+    <sql id="selectBusiMcuSmc2DeptVo">
+        select id, create_time, update_time, dept_id, mcu_type, mcu_id from busi_mcu_smc2_dept
+    </sql>
+
+    <select id="selectBusiMcuSmc2DeptList" parameterType="BusiMcuSmc2Dept" resultMap="BusiMcuSmc2DeptResult">
+        <include refid="selectBusiMcuSmc2DeptVo"/>
+        <where>  
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="mcuType != null "> and mcu_type = #{mcuType}</if>
+            <if test="mcuId != null "> and mcu_id = #{mcuId}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiMcuSmc2DeptById" parameterType="Long" resultMap="BusiMcuSmc2DeptResult">
+        <include refid="selectBusiMcuSmc2DeptVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiMcuSmc2Dept" parameterType="BusiMcuSmc2Dept" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_mcu_smc2_dept
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="mcuType != null">mcu_type,</if>
+            <if test="mcuId != null">mcu_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="mcuType != null">#{mcuType},</if>
+            <if test="mcuId != null">#{mcuId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiMcuSmc2Dept" parameterType="BusiMcuSmc2Dept">
+        update busi_mcu_smc2_dept
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="mcuType != null">mcu_type = #{mcuType},</if>
+            <if test="mcuId != null">mcu_id = #{mcuId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiMcuSmc2DeptById" parameterType="Long">
+        delete from busi_mcu_smc2_dept where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiMcuSmc2DeptByIds" parameterType="String">
+        delete from busi_mcu_smc2_dept where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

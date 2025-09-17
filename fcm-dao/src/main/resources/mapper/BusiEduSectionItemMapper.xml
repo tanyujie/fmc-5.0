@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiEduSectionItemMapper">
+    
+    <resultMap type="BusiEduSectionItem" id="BusiEduSectionItemResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="sectionSchemeId"    column="section_scheme_id"    />
+        <result property="serialNumber"    column="serial_number"    />
+        <result property="beginTime"    column="begin_time"    />
+        <result property="endTime"    column="end_time"    />
+    </resultMap>
+
+    <sql id="selectBusiEduSectionItemVo">
+        select id, create_time, update_time, section_scheme_id, serial_number, begin_time, end_time from busi_edu_section_item
+    </sql>
+
+    <select id="selectBusiEduSectionItemList" parameterType="BusiEduSectionItem" resultMap="BusiEduSectionItemResult">
+        <include refid="selectBusiEduSectionItemVo"/>
+        <where>  
+            <if test="sectionSchemeId != null "> and section_scheme_id = #{sectionSchemeId}</if>
+            <if test="serialNumber != null "> and serial_number = #{serialNumber}</if>
+            <if test="beginTime != null  and beginTime != ''"> and begin_time = #{beginTime}</if>
+            <if test="endTime != null  and endTime != ''"> and end_time = #{endTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiEduSectionItemById" parameterType="Long" resultMap="BusiEduSectionItemResult">
+        <include refid="selectBusiEduSectionItemVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiEduSectionItem" parameterType="BusiEduSectionItem" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_edu_section_item
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="sectionSchemeId != null">section_scheme_id,</if>
+            <if test="serialNumber != null">serial_number,</if>
+            <if test="beginTime != null">begin_time,</if>
+            <if test="endTime != null">end_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="sectionSchemeId != null">#{sectionSchemeId},</if>
+            <if test="serialNumber != null">#{serialNumber},</if>
+            <if test="beginTime != null">#{beginTime},</if>
+            <if test="endTime != null">#{endTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiEduSectionItem" parameterType="BusiEduSectionItem">
+        update busi_edu_section_item
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="sectionSchemeId != null">section_scheme_id = #{sectionSchemeId},</if>
+            <if test="serialNumber != null">serial_number = #{serialNumber},</if>
+            <if test="beginTime != null">begin_time = #{beginTime},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiEduSectionItemById" parameterType="Long">
+        delete from busi_edu_section_item where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiEduSectionItemBuildingBySectionSchemeId" parameterType="Long">
+        delete from busi_edu_section_item where section_scheme_id = #{id}
+    </delete>
+
+    <delete id="deleteBusiEduSectionItemByIds" parameterType="String">
+        delete from busi_edu_section_item where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

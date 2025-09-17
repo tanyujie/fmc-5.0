@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiTerminalActionMapper">
+    
+    <resultMap type="BusiTerminalAction" id="BusiTerminalActionResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="terminalId"    column="terminal_id"    />
+        <result property="terminalSn"    column="terminal_sn"    />
+        <result property="conferenceNum"    column="conference_num"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="ip"    column="ip"    />
+        <result property="terminalName"    column="terminal_name"    />
+        <result property="actionType"    column="action_type"    />
+    </resultMap>
+
+    <sql id="selectBusiTerminalActionVo">
+        select id, create_time, update_time, terminal_id, terminal_sn, conference_num, dept_id, ip, terminal_name, action_type from busi_terminal_action
+    </sql>
+
+    <select id="selectBusiTerminalActionList" parameterType="BusiTerminalAction" resultMap="BusiTerminalActionResult">
+        <include refid="selectBusiTerminalActionVo"/>
+        <where>  
+            <if test="terminalId != null "> and terminal_id = #{terminalId}</if>
+            <if test="terminalSn != null  and terminalSn != ''"> and terminal_sn = #{terminalSn}</if>
+            <if test="conferenceNum != null "> and conference_num = #{conferenceNum}</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="ip != null  and ip != ''"> and ip = #{ip}</if>
+            <if test="terminalName != null  and terminalName != ''"> and terminal_name like concat('%', #{terminalName}, '%')</if>
+            <if test="actionType != null "> and action_type = #{actionType}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiTerminalActionById" parameterType="Long" resultMap="BusiTerminalActionResult">
+        <include refid="selectBusiTerminalActionVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiTerminalAction" parameterType="BusiTerminalAction" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_terminal_action
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="terminalId != null">terminal_id,</if>
+            <if test="terminalSn != null">terminal_sn,</if>
+            <if test="conferenceNum != null">conference_num,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="ip != null">ip,</if>
+            <if test="terminalName != null">terminal_name,</if>
+            <if test="actionType != null">action_type,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="terminalId != null">#{terminalId},</if>
+            <if test="terminalSn != null">#{terminalSn},</if>
+            <if test="conferenceNum != null">#{conferenceNum},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="ip != null">#{ip},</if>
+            <if test="terminalName != null">#{terminalName},</if>
+            <if test="actionType != null">#{actionType},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiTerminalAction" parameterType="BusiTerminalAction">
+        update busi_terminal_action
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="terminalId != null">terminal_id = #{terminalId},</if>
+            <if test="terminalSn != null">terminal_sn = #{terminalSn},</if>
+            <if test="conferenceNum != null">conference_num = #{conferenceNum},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="ip != null">ip = #{ip},</if>
+            <if test="terminalName != null">terminal_name = #{terminalName},</if>
+            <if test="actionType != null">action_type = #{actionType},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiTerminalActionById" parameterType="Long">
+        delete from busi_terminal_action where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiTerminalActionByIds" parameterType="String">
+        delete from busi_terminal_action where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

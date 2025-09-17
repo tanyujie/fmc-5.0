@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiTerminalLogMapper">
+    
+    <resultMap type="BusiTerminalLog" id="BusiTerminalLogResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="logFileName"    column="log_file_name"    />
+        <result property="logSize"    column="log_size"    />
+        <result property="sn"    column="sn"    />
+        <result property="terminalId"    column="terminal_id"    />
+        <result property="logFilePath"    column="log_file_path"    />
+    </resultMap>
+
+    <sql id="selectBusiTerminalLogVo">
+        select id, create_time, update_time, log_file_name, log_size, sn, terminal_id, log_file_path from busi_terminal_log
+    </sql>
+
+    <select id="selectBusiTerminalLogList" parameterType="BusiTerminalLog" resultMap="BusiTerminalLogResult">
+        <include refid="selectBusiTerminalLogVo"/>
+        <where>  
+            <if test="logFileName != null  and logFileName != ''"> and log_file_name like concat('%', #{logFileName}, '%')</if>
+            <if test="logSize != null "> and log_size = #{logSize}</if>
+            <if test="sn != null  and sn != ''"> and sn = #{sn}</if>
+            <if test="terminalId != null "> and terminal_id = #{terminalId}</if>
+            <if test="logFilePath != null  and logFilePath != ''"> and log_file_path = #{logFilePath}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiTerminalLogById" parameterType="Long" resultMap="BusiTerminalLogResult">
+        <include refid="selectBusiTerminalLogVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiTerminalLog" parameterType="BusiTerminalLog" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_terminal_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="logFileName != null">log_file_name,</if>
+            <if test="logSize != null">log_size,</if>
+            <if test="sn != null">sn,</if>
+            <if test="terminalId != null">terminal_id,</if>
+            <if test="logFilePath != null">log_file_path,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="logFileName != null">#{logFileName},</if>
+            <if test="logSize != null">#{logSize},</if>
+            <if test="sn != null">#{sn},</if>
+            <if test="terminalId != null">#{terminalId},</if>
+            <if test="logFilePath != null">#{logFilePath},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiTerminalLog" parameterType="BusiTerminalLog">
+        update busi_terminal_log
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="logFileName != null">log_file_name = #{logFileName},</if>
+            <if test="logSize != null">log_size = #{logSize},</if>
+            <if test="sn != null">sn = #{sn},</if>
+            <if test="terminalId != null">terminal_id = #{terminalId},</if>
+            <if test="logFilePath != null">log_file_path = #{logFilePath},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiTerminalLogById" parameterType="Long">
+        delete from busi_terminal_log where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiTerminalLogByIds" parameterType="String">
+        delete from busi_terminal_log where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

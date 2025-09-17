@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiFmeDeptMapper">
+    
+    <resultMap type="BusiFmeDept" id="BusiFmeDeptResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="fmeType"    column="fme_type"    />
+        <result property="fmeId"    column="fme_id"    />
+    </resultMap>
+
+    <sql id="selectBusiFmeDeptVo">
+        select id, create_time, update_time, dept_id, fme_type, fme_id from busi_fme_dept
+    </sql>
+
+    <select id="selectBusiFmeDeptList" parameterType="BusiFmeDept" resultMap="BusiFmeDeptResult">
+        <include refid="selectBusiFmeDeptVo"/>
+        <where>  
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="fmeType != null "> and fme_type = #{fmeType}</if>
+            <if test="fmeId != null "> and fme_id = #{fmeId}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiFmeDeptById" parameterType="Long" resultMap="BusiFmeDeptResult">
+        <include refid="selectBusiFmeDeptVo"/>
+        where id = #{id}
+    </select>
+    
+   <select id="selectBusiFmeDeptByDeptId" parameterType="Long" resultMap="BusiFmeDeptResult">
+        <include refid="selectBusiFmeDeptVo"/>
+        where dept_id = #{deptId}
+    </select>
+        
+    <insert id="insertBusiFmeDept" parameterType="BusiFmeDept" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_fme_dept
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="fmeType != null">fme_type,</if>
+            <if test="fmeId != null">fme_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="fmeType != null">#{fmeType},</if>
+            <if test="fmeId != null">#{fmeId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiFmeDept" parameterType="BusiFmeDept">
+        update busi_fme_dept
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="fmeType != null">fme_type = #{fmeType},</if>
+            <if test="fmeId != null">fme_id = #{fmeId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiFmeDeptById" parameterType="Long">
+        delete from busi_fme_dept where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiFmeDeptByIds" parameterType="String">
+        delete from busi_fme_dept where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

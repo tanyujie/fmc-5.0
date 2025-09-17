@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.smc.dao.model.mapper.BusiSmcTemplateConferenceMapper">
+
+    <resultMap type="com.paradisecloud.smc.dao.model.BusiSmcTemplateConference" id="BusiSmcTemplateConferenceResult">
+        <result property="id"    column="id"    />
+        <result property="smcTemplateId"    column="smc_template_id"    />
+        <result property="conferenceId"    column="conference_id"    />
+    </resultMap>
+
+    <sql id="selectBusiSmcTemplateConferenceVo">
+        select id, smc_template_id, conference_id from busi_smc_template_conference
+    </sql>
+
+    <select id="selectBusiSmcTemplateConferenceList" parameterType="com.paradisecloud.smc.dao.model.BusiSmcTemplateConference" resultMap="BusiSmcTemplateConferenceResult">
+        <include refid="selectBusiSmcTemplateConferenceVo"/>
+        <where>
+            <if test="smcTemplateId != null  and smcTemplateId != ''"> and smc_template_id = #{smcTemplateId}</if>
+            <if test="conferenceId != null  and conferenceId != ''"> and conference_id = #{conferenceId}</if>
+        </where>
+    </select>
+
+    <select id="selectBusiSmcTemplateConferenceById" parameterType="Integer" resultMap="BusiSmcTemplateConferenceResult">
+        <include refid="selectBusiSmcTemplateConferenceVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertBusiSmcTemplateConference" parameterType="com.paradisecloud.smc.dao.model.BusiSmcTemplateConference" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_smc_template_conference
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="smcTemplateId != null and smcTemplateId != ''">smc_template_id,</if>
+            <if test="conferenceId != null and conferenceId != ''">conference_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="smcTemplateId != null and smcTemplateId != ''">#{smcTemplateId},</if>
+            <if test="conferenceId != null and conferenceId != ''">#{conferenceId},</if>
+        </trim>
+    </insert>
+
+    <update id="updateBusiSmcTemplateConference" parameterType="com.paradisecloud.smc.dao.model.BusiSmcTemplateConference">
+        update busi_smc_template_conference
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="smcTemplateId != null and smcTemplateId != ''">smc_template_id = #{smcTemplateId},</if>
+            <if test="conferenceId != null and conferenceId != ''">conference_id = #{conferenceId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiSmcTemplateConferenceById" parameterType="Integer">
+        delete from busi_smc_template_conference where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiSmcTemplateConferenceByIds" parameterType="String">
+        delete from busi_smc_template_conference where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <delete id="deleteBusiSmcTemplateConferenceByConferenceId"  parameterType="String">
+        delete from busi_smc_template_conference where conference_id = #{conferenceId}
+    </delete>
+
+
+    <select id="selectTemplateConferenceList" resultMap="BusiSmcTemplateConferenceResult">
+        SELECT  tc.id, tc.smc_template_id, tc.conference_id FROM busi_smc_template_conference tc JOIN busi_smc_dept_template tm ON tc.smc_template_id=tm.smc_template_id
+        <where>
+            <if test="deptId != null  and deptId != ''"> and tm.dept_id = #{deptId}</if>
+        </where>
+    </select>
+</mapper>

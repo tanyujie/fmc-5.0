@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.CdrTaskResultMapper">
+
+    <resultMap type="CdrTaskResult" id="CdrTaskResultResult">
+        <result property="id" column="id"/>
+        <result property="deptId" column="dept_id"/>
+        <result property="reportType" column="report_type"/>
+        <result property="durationOrNum" column="duration_or_num"/>
+        <result property="date" column="date"/>
+        <result property="groupType" column="group_type"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <sql id="selectCdrTaskResultVo">
+        select id, dept_id, report_type, duration_or_num, date, group_type, create_time from cdr_task_result
+    </sql>
+
+    <select id="selectCdrTaskResultList" parameterType="CdrTaskResult" resultMap="CdrTaskResultResult">
+        <include refid="selectCdrTaskResultVo"/>
+        <where>
+            <if test="deptId != null ">and dept_id = #{deptId}</if>
+            <if test="reportType != null ">and report_type = #{reportType}</if>
+            <if test="durationOrNum != null ">and duration_or_num = #{durationOrNum}</if>
+            <if test="date != null ">and date = #{date}</if>
+            <if test="groupType != null ">and group_type = #{groupType}</if>
+        </where>
+    </select>
+
+    <select id="selectCdrTaskResultById" parameterType="Long" resultMap="CdrTaskResultResult">
+        <include refid="selectCdrTaskResultVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertCdrTaskResult" parameterType="CdrTaskResult" useGeneratedKeys="true" keyProperty="id">
+        insert into cdr_task_result
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="deptId != null">dept_id,</if>
+            <if test="reportType != null">report_type,</if>
+            <if test="durationOrNum != null">duration_or_num,</if>
+            <if test="date != null">date,</if>
+            <if test="groupType != null">group_type,</if>
+            <if test="createTime != null">create_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="deptId != null">#{deptId},</if>
+            <if test="reportType != null">#{reportType},</if>
+            <if test="durationOrNum != null">#{durationOrNum},</if>
+            <if test="date != null">#{date},</if>
+            <if test="groupType != null">#{groupType},</if>
+            <if test="createTime != null">#{createTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateCdrTaskResult" parameterType="CdrTaskResult">
+        update cdr_task_result
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="reportType != null">report_type = #{reportType},</if>
+            <if test="durationOrNum != null">duration_or_num = #{durationOrNum},</if>
+            <if test="date != null">date = #{date},</if>
+            <if test="groupType != null">group_type = #{groupType},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCdrTaskResultById" parameterType="Long">
+        delete from cdr_task_result where id = #{id}
+    </delete>
+
+    <delete id="deleteCdrTaskResultByIds" parameterType="String">
+        delete from cdr_task_result where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectByDateAndDeptAndReportType" resultMap="CdrTaskResultResult">
+        <include refid="selectCdrTaskResultVo"/>
+        <where>
+            <if test="deptId != null ">and dept_id = #{deptId}</if>
+            <if test="startDate != null ">and date <![CDATA[>=]]> #{startDate}</if>
+            <if test="endDate != null ">and date <![CDATA[<=]]> #{endDate}</if>
+            <if test="reportTypes != null ">
+                and report_type in
+                <foreach item="id" collection="reportTypes" open="(" separator="," close=")">
+                    #{id}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <update id="updateCurrentDateTaskResult" parameterType="CdrTaskResult">
+        update cdr_task_result
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="durationOrNum != null">duration_or_num = #{durationOrNum},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        <where>
+            <if test="deptId != null ">and dept_id = #{deptId}</if>
+            <if test="reportType != null ">and report_type = #{reportType}</if>
+            <if test="groupType != null ">and group_type = #{groupType}</if>
+            <if test="date != null">and date = #{date,jdbcType=DATE}</if>
+        </where>
+    </update>
+
+    <delete id="deleteHistory">
+        delete from cdr_task_result where create_time &lt; #{beforeDate}
+    </delete>
+</mapper>

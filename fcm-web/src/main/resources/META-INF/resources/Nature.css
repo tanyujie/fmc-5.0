@@ -1,0 +1,249 @@
+@CHARSET "UTF-8";
+
+html, body {
+	width: 100%;
+	height: 100%;
+}
+
+/* 使得表单元素，单行元素在 ie 下能继承字体大小 */
+html, body, button, input, select, textarea, label, span, a, th, td, p, code, kbd, pre, samp { 
+	font-size: 14px;
+	font-family: "Microsoft YaHei", "微软雅黑", Arial, sans-serif, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB";
+	font-style: normal;
+	font-weight: normal;
+}
+
+span, label, a {
+	vertical-align: middle;
+	display: inline-block;
+	line-height: 1;
+}
+
+html, body, button, input, select, textarea{
+	color: rgb(51, 51, 51);
+}
+
+* {
+	outline: none;
+	margin: 0px;
+	padding: 0px;
+	border: 0px;
+	text-align: left;
+	box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+}
+
+/** 块级元素只能用于布局，不能用于放字体，否则会影响布局 */
+header, section, footer, aside, nav, article, figure, hgroup, main, div {
+	display: block;
+	font-size: 0;
+}
+
+/** 重置列表元素 **/
+ul, ol { list-style: none; }
+
+/** 重置文本格式元素 **/
+a { text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/** 重置表格元素 **/
+table { border-collapse: collapse; border-spacing: 0; }
+
+/* 清除浮动 */
+.ks-clear:after, .clear:after {
+  content: '\20';
+  display: block;
+  height: 0;
+  clear: both;
+}
+.ks-clear, .clear {
+  *zoom: 1;
+}
+
+/* 统一等宽字体 */
+code, kbd, pre, samp { font-family: courier new, courier, monospace; }
+
+/* 小于 12px 的中文很难阅读，让 small 正常化 */
+small { font-size: 12px; } 
+
+address, caption, cite, code, dfn, em, strong, var {
+	font-style: normal;
+	font-weight: normal;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-size: 100%;
+}
+
+caption, th {
+	text-align: center;
+}
+
+.common-animation {
+	transition-property: all;
+	-moz-transition-property: all;
+	-webkit-transition-property: all;
+	-o-transition-property: all;
+	transition-duration: 0.5S;
+	-moz-transition-duration: 0.5S;
+	-webkit-transition-duration: 0.5S;
+	-o-transition-duration: 0.5S;
+	transition-timing-function: ease-out;
+	-moz-transition-timing-function: ease-out;
+	-webkit-transition-timing-function: ease-out;
+	-o-transition-timing-function: ease-out;
+}
+
+.common-box-shadow {
+	-moz-box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+	-webkit-box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+	box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+}
+
+.common-selection-banned {
+	-moz-user-select: none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+@keyframes nature-spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg); }
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg); } }
+
+.spin-1s {
+	-webkit-animation: nature-spin 1s infinite linear forwards;
+	animation: nature-spin 1s infinite linear;
+}
+
+.spin-2s {
+	-webkit-animation: nature-spin 2s infinite linear forwards;
+	animation: nature-spin 2s infinite linear;
+}
+
+.spin-3s {
+	-webkit-animation: nature-spin 3s infinite linear forwards;
+	animation: nature-spin 3s infinite linear;
+}
+
+.spin-4s {
+	-webkit-animation: nature-spin 4s infinite linear forwards;
+	animation: nature-spin 4s infinite linear;
+}
+
+.spin-5s {
+	-webkit-animation: nature-spin 5s infinite linear forwards;
+	animation: nature-spin 5s infinite linear;
+}
+
+.animation-play-paused {
+	animation-play-state: paused;
+}
+
+.animation-play-running {
+	animation-play-state: running;
+}
+
+@keyframes nature-reverse-spin {
+  0% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg); }
+  100% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg); } }
+
+.reverse-spin-1s {
+	-webkit-animation: nature-reverse-spin 1s infinite linear forwards;
+	animation: nature-reverse-spin 1s infinite linear;
+}
+
+.reverse-spin-2s {
+	-webkit-animation: nature-reverse-spin 2s infinite linear forwards;
+	animation: nature-reverse-spin 2s infinite linear;
+}
+
+.reverse-spin-3s {
+	-webkit-animation: nature-reverse-spin 3s infinite linear forwards;
+	animation: nature-reverse-spin 3s infinite linear;
+}
+
+.reverse-spin-4s {
+	-webkit-animation: nature-reverse-spin 4s infinite linear forwards;
+	animation: nature-reverse-spin 4s infinite linear;
+}
+
+.reverse-spin-5s {
+	-webkit-animation: nature-reverse-spin 5s infinite linear forwards;
+	animation: nature-reverse-spin 5s infinite linear;
+}
+
+::-webkit-input-placeholder { /* WebKit browsers */
+    color: #c5c8ce;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color: #c5c8ce;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color: #c5c8ce;
+}
+:-ms-input-placeholder { /* Internet Explorer 10+ */
+    color: #c5c8ce !important;
+}
+
+/* 框架顶级异常捕获样式 */
+div.nature-base-exception-catch {
+	position: absolute;
+	width: 90%;
+	height: 80%;
+	margin: auto;
+	top: 50%;
+	left: 50%;
+	-webkit-transform: translateX(-50%) translateY(-50%);
+	transform: translateX(-50%) translateY(-50%);
+	z-index: 2147483646;
+	background-color: white;
+	overflow: auto;
+	border-radius: 5px;
+	padding: 20px;
+}
+
+div.nature-base-exception-catch>error-title{
+	color: red;
+	font-weight: bold;
+	height: 50px;
+	line-height: 50px;
+	font-size: 30px;
+}
+
+div.nature-base-exception-catch>pre{
+	width: 100%;
+	padding-left: 40px;
+	margin-top: 20px;
+}
+
+div.nature-base-exception-catch>pre>error-msg{
+	color: red;
+	font-weight: bold;
+	height: 30px;
+	line-height: 30px;
+	font-size: 20px;
+}
+
+div.nature-base-exception-catch>pre>error-info, div.nature-base-exception-catch>pre>error-info>stack-info{
+	padding-left: 20px;
+	display: block;
+}
+
+div.nature-base-exception-catch>pre>error-info>stack-info {
+	color: #2e4ecb;
+	text-decoration: underline;
+	line-height: 24px;	
+}

@@ -1,0 +1,131 @@
+/* 
+ * Copyright   : LinHai Technologies Co., Ltd. Copyright 2015-2021, All right reserved.
+ * Description : <pre>TODO(用一句话描述该文件做什么)</pre>
+ * FileName    : DiscussAttendeeOperation.java
+ * Package     : com.paradisecloud.fcm.fme.attendee.model.operation
+ * @author lilinhai 
+ * @since 2021-04-25 14:18
+ * @version  V1.0
+ */ 
+package com.paradisecloud.fcm.fme.attendee.model.operation;
+
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.paradisecloud.fcm.common.enumer.ConferenceOpsModeEnum;
+import com.paradisecloud.fcm.common.enumer.PanePlacementSelfPaneMode;
+import com.paradisecloud.fcm.common.enumer.WebsocketMessageType;
+import com.paradisecloud.fcm.fme.apiservice.interfaces.ICoSpaceService;
+import com.paradisecloud.fcm.fme.attendee.interfaces.IAttendeeLayoutService;
+import com.paradisecloud.fcm.fme.attendee.interfaces.IAttendeeService;
+import com.paradisecloud.fcm.fme.attendee.model.busiprocessor.MixingAttendeeProcessor;
+import com.paradisecloud.fcm.fme.attendee.model.enumer.AttendeeImportance;
+import com.paradisecloud.fcm.fme.attendee.model.enumer.AttendeeLayoutSetMode;
+import com.paradisecloud.fcm.fme.cache.FmeBridgeCache;
+import com.paradisecloud.fcm.fme.cache.WebSocketMessagePusher;
+import com.paradisecloud.fcm.fme.cache.model.FmeBridge;
+import com.paradisecloud.fcm.fme.cache.model.SplitScreenCreaterMap;
+import com.paradisecloud.fcm.fme.model.busi.ConferenceContext;
+import com.paradisecloud.fcm.fme.model.busi.layout.creater.CustomScreenCreater;
+import com.paradisecloud.fcm.fme.model.busi.layout.splitscreen.CustomLayout;
+import com.paradisecloud.fcm.fme.model.busi.operation.AttendeeOperation;
+import com.paradisecloud.fcm.fme.model.cms.CoSpace;
+import com.paradisecloud.fcm.fme.model.parambuilder.CoSpaceParamBuilder;
+import com.paradisecloud.fcm.service.interfaces.IMqttService;
+import com.sinhy.spring.BeanFactory;
+import com.sinhy.utils.ThreadUtils;
+
+import java.util.List;
+
+/**  
+ * <pre>讨论操作 TODO </pre>
+ * @author lilinhai
+ * @since 2021-04-25 14:18
+ * @version V1.0  
+ */
+public class LectureAttendeeOperation extends AttendeeOperation
+{
+
+    /**
+     * <pre>用一句话描述这个变量的含义</pre>
+     * @since 2021-04-25 14:19
+     */
+    private static final long serialVersionUID = 1L;
+
+    private String defaultViewLayout = "1+1_B";
+
+    /**
+     * <pre>构造方法</pre>
+     * @author lilinhai
+     * @since 2021-04-25 14:19
+     * @param conferenceContext
+     */
+    public LectureAttendeeOperation(ConferenceContext conferenceContext)
+    {
+        super(conferenceContext);
+    }
+
+    @Override
+    public void operate()
+    {
+        List<FmeBridge> fbs = FmeBridgeCache.getInstance().getFmeBridgesByDept(conferenceContext.getDeptId());
+        CustomScreenCreater customScreenCreater = null;
+        if(SplitScreenCreaterMap.isCustomLayoutTemplate(defaultViewLayout)){
+            customScreenCreater = fbs.get(0).getDataCache().getSplitScreenCreaterMap().get(defaultViewLayout);
+        }
+        JSONObject json = customScreenCreater.getLayoutTemplate();
+        JSONArray panes = json.getJSONArray("panes");
+        if (panes != null && panes.size() > 0) {
+            CustomLayout customLayout = new CustomLayout(customScreenCreater.getLayout(), panes.toArray().length, AttendeeImportance.BROADCAST.getEndValue());
+            this.splitScreen = customLayout;
+        }
+        CoSpaceParamBuilder coSpaceParamBuilder = new CoSpaceParamBuilder();
+        // 设置窗格最高权重值
+        coSpaceParamBuilder.panePlacementHighestImportance();
+        coSpaceParamBuilder.defaultLayout("");
+        coSpaceParamBuilder.panePlacementSelfPaneMode(PanePlacementSelfPaneMode.OFF.getStringValue());
+
+        FmeBridge fmeBridge = FmeBridgeCache.getInstance().getFmeBridgeByConferenceContext(conferenceContext);
+        CoSpace cospace = fmeBridge.getDataCache().getCoSpaceByConferenceNumber(conferenceContext.getConferenceNumber());
+
+        BeanFactory.getBean(ICoSpaceService.class).updateCoSpace(fmeBridge, cospace,coSpaceParamBuilder);
+
+        StringBuilder messageTip1 = new StringBuilder();
+        messageTip1.append("当前已设置为" + defaultViewLayout + "分屏");
+        WebSocketMessagePusher.getInstance().pushSpecificConferenceMessage(conferenceContext, WebsocketMessageType.MESSAGE_TIP, messageTip1);
+
+        BeanFactory.getBean(IAttendeeLayoutService.class).setAttendeeLayout(conferenceContext, splitScreen.getLayout(), AttendeeLayoutSetMode.ALL);
+        BeanFactory.getBean(IAttendeeService.class).updateAttendeeImportance(conferenceContext, AttendeeImportance.COMMON);
+
+        conferenceContext.setConferenceMode(ConferenceOpsModeEnum.LECTURE.name());
+        
+        // 发送提示信息
+        WebSocketMessagePusher.getInstance().pushSpecificConferenceMessage(conferenceContext, WebsocketMessageType.MESSAGE_TIP, "会议已进入演讲模式！");
+        WebSocketMessagePusher.getInstance().pushSpecificConferenceMessage(conferenceContext, WebsocketMessageType.CONFERENCE_MODEL, ConferenceOpsModeEnum.LECTURE.name());
+
+        BeanFactory.getBean(IMqttService.class).sendConferenceInfoToPushTargetTerminal(conferenceContext);
+    }
+
+    @Override
+    public void cancel()
+    {
+        if (!conferenceContext.isEnd())
+        {
+//            conferenceContext.setConferenceModel(ConferenceOpsModeEnum.DIRECT.name());
+//
+            // 全体关闭麦克风
+            BeanFactory.getBean(IAttendeeService.class).closeMixing(conferenceContext, conferenceContext.getMasterAttendee());
+            if (conferenceContext.getMasterAttendee() != null && conferenceContext.getMasterAttendee().isMeetingJoined())
+            {
+                new Thread(()->{
+                    ThreadUtils.sleep(20);
+                    new MixingAttendeeProcessor(conferenceContext.getConferenceNumber(), conferenceContext.getMasterAttendee().getId(), false).process();
+                }).start();
+            }
+            
+            // 发送提示信息
+//            WebSocketMessagePusher.getInstance().pushSpecificConferenceMessage(conferenceContext, WebsocketMessageType.MESSAGE_TIP, "会议已退出演讲模式！");
+//            WebSocketMessagePusher.getInstance().pushSpecificConferenceMessage(conferenceContext, WebsocketMessageType.CONFERENCE_MODEL, "DIRECT");
+        }
+    }
+    
+}

@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiMtrMapper">
+    
+    <resultMap type="BusiMtr" id="BusiMtrResult">
+        <result property="id"    column="id"    />
+        <result property="sourceIp"    column="source_ip"    />
+        <result property="targetIp"    column="target_ip"    />
+        <result property="times"    column="times"    />
+        <result property="fileName"    column="file_name"    />
+        <result property="pid"    column="pid"    />
+        <result property="status"    column="status"    />
+        <result property="name"    column="name"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="deleteTime"    column="delete_time"    />
+    </resultMap>
+
+    <sql id="selectBusiMtrVo">
+        select id, source_ip, target_ip, times, file_name, pid, status, name, create_by, create_time, update_time, delete_time from busi_mtr
+    </sql>
+
+    <select id="selectBusiMtrList" parameterType="BusiMtr" resultMap="BusiMtrResult">
+        <include refid="selectBusiMtrVo"/>
+        <where>  
+            <if test="sourceIp != null  and sourceIp != ''"> and source_ip = #{sourceIp}</if>
+            <if test="targetIp != null  and targetIp != ''"> and target_ip = #{targetIp}</if>
+            <if test="times != null "> and times = #{times}</if>
+            <if test="fileName != null  and fileName != ''"> and file_name like concat('%', #{fileName}, '%')</if>
+            <if test="pid != null  and pid != ''"> and pid = #{pid}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="createBy != null  and createBy != ''"> and create_by like concat('%', #{name}, '%')</if>
+            and delete_time is null
+        </where>
+    </select>
+
+    <select id="selectBusiMtrListWithDeleted" parameterType="BusiMtr" resultMap="BusiMtrResult">
+        <include refid="selectBusiMtrVo"/>
+        <where>
+            <if test="sourceIp != null  and sourceIp != ''"> and source_ip = #{sourceIp}</if>
+            <if test="targetIp != null  and targetIp != ''"> and target_ip = #{targetIp}</if>
+            <if test="times != null "> and times = #{times}</if>
+            <if test="fileName != null  and fileName != ''"> and file_name like concat('%', #{fileName}, '%')</if>
+            <if test="pid != null  and pid != ''"> and pid = #{pid}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="createBy != null  and createBy != ''"> and create_by like concat('%', #{name}, '%')</if>
+            <if test="deleteTime != null "> and delete_time = #{deleteTime}</if>
+        </where>
+    </select>
+
+    <select id="selectBusiMtrListForLongNotEnd" resultMap="BusiMtrResult">
+        <include refid="selectBusiMtrVo"/>
+        where status = 0
+            and times <![CDATA[>]]> 10
+            and delete_time is null
+        order by id
+        limit 10
+    </select>
+
+    <select id="selectBusiMtrListForShortNotEnd" resultMap="BusiMtrResult">
+        <include refid="selectBusiMtrVo"/>
+        where status = 0
+            and times <![CDATA[<=]]> 10
+            and delete_time is null
+        order by id
+        limit 10
+    </select>
+
+    <select id="selectBusiMtrListForDeletedNotEnd" resultMap="BusiMtrResult">
+        <include refid="selectBusiMtrVo"/>
+        where status = 0
+        and pid is not null
+        and delete_time is not null
+        order by id
+        limit 10
+    </select>
+    
+    <select id="selectBusiMtrById" parameterType="Long" resultMap="BusiMtrResult">
+        <include refid="selectBusiMtrVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiMtr" parameterType="BusiMtr" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_mtr
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="sourceIp != null and sourceIp != ''">source_ip,</if>
+            <if test="targetIp != null and targetIp != ''">target_ip,</if>
+            <if test="times != null">times,</if>
+            <if test="fileName != null and fileName != ''">file_name,</if>
+            <if test="pid != null">pid,</if>
+            <if test="status != null">status,</if>
+            <if test="name != null">name,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="deleteTime != null">delete_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="sourceIp != null and sourceIp != ''">#{sourceIp},</if>
+            <if test="targetIp != null and targetIp != ''">#{targetIp},</if>
+            <if test="times != null">#{times},</if>
+            <if test="fileName != null and fileName != ''">#{fileName},</if>
+            <if test="pid != null">#{pid},</if>
+            <if test="status != null">#{status},</if>
+            <if test="name != null">#{name},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="deleteTime != null">#{deleteTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiMtr" parameterType="BusiMtr">
+        update busi_mtr
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="sourceIp != null and sourceIp != ''">source_ip = #{sourceIp},</if>
+            <if test="targetIp != null and targetIp != ''">target_ip = #{targetIp},</if>
+            <if test="times != null">times = #{times},</if>
+            <if test="fileName != null and fileName != ''">file_name = #{fileName},</if>
+            <if test="pid != null">pid = #{pid},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="createBy != null and createBy != ''">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="deleteTime != null">delete_time = #{deleteTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <update id="updateBusiMtrForDeleteById" parameterType="Long">
+        update busi_mtr set delete_time = CURRENT_TIMESTAMP where id = #{id}
+    </update>
+
+    <update id="updateBusiMtrForDeleteByIds" parameterType="String">
+        update busi_mtr set delete_time = CURRENT_TIMESTAMP where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+
+    <delete id="deleteBusiMtrById" parameterType="Long">
+        delete from busi_mtr where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiMtrByIds" parameterType="String">
+        delete from busi_mtr where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

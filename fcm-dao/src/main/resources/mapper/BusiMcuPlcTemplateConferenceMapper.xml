@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiMcuPlcTemplateConferenceMapper">
+    
+    <resultMap type="BusiMcuPlcTemplateConference" id="BusiMcuPlcTemplateConferenceResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="createUserId"    column="create_user_id"    />
+        <result property="name"    column="name"    />
+        <result property="createUserName"    column="create_user_name"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="callLegProfileId"    column="call_leg_profile_id"    />
+        <result property="bandwidth"    column="bandwidth"    />
+        <result property="isAutoCall"    column="is_auto_call"    />
+        <result property="conferenceNumber"    column="conference_number"    />
+        <result property="callProfileId"    column="call_profile_id"    />
+        <result property="callBrandingProfileId"    column="call_branding_profile_id"    />
+        <result property="streamUrl"    column="stream_url"    />
+        <result property="type"    column="type"    />
+        <result property="viewType"    column="view_type"    />
+        <result property="isAutoMonitor"    column="is_auto_monitor"    />
+        <result property="recordingEnabled"    column="recording_enabled"    />
+        <result property="isAutoCreateConferenceNumber"    column="is_auto_create_conference_number"    />
+        <result property="streamingEnabled"    column="streaming_enabled"    />
+        <result property="createType"    column="create_type"    />
+        <result property="defaultViewLayout"    column="default_view_layout"    />
+        <result property="masterParticipantId"    column="master_participant_id"    />
+        <result property="defaultViewIsBroadcast"    column="default_view_is_broadcast"    />
+        <result property="defaultViewIsDisplaySelf"    column="default_view_is_display_self"    />
+        <result property="defaultViewIsFill"    column="default_view_is_fill"    />
+        <result property="pollingInterval"    column="polling_interval"    />
+        <result property="conferencePassword"    column="conference_password"    />
+        <result property="businessFieldType"    column="business_field_type"    />
+        <result property="businessProperties"    column="business_properties"  typeHandler="com.paradisecloud.fcm.dao.typehandler.JSONTypeMapHandler" jdbcType="OTHER" />
+        <result property="remarks"    column="remarks"    />
+        <result property="cover"    column="cover"    />
+        <result property="durationEnabled"    column="duration_enabled"    />
+        <result property="durationTime"    column="duration_time"    />
+        <result property="conferenceCtrlPassword"    column="conference_ctrl_password"    />
+        <result property="lastConferenceId"    column="last_conference_id"    />
+        <result property="muteType"    column="mute_type"    />
+        <result property="isAutoCreateStreamUrl"    column="is_auto_create_stream_url"    />
+        <result property="hdResolution"    column="hd_resolution"    />
+        <result property="confId"    column="conf_id"    />
+        <result property="presenter"    column="presenter"    />
+        <result property="upCascadeId"    column="up_cascade_id"    />
+        <result property="upCascadeMcuType"    column="up_cascade_mcu_type"    />
+        <result property="upCascadeType"    column="up_cascade_type"    />
+        <result property="upCascadeIndex"    column="up_cascade_index"    />
+    </resultMap>
+
+    <sql id="selectBusiMcuPlcTemplateConferenceVo">
+        select id, create_time, update_time, name, create_user_id, create_user_name, dept_id, call_leg_profile_id, bandwidth, is_auto_call, conference_number, call_profile_id, call_branding_profile_id, type, view_type, is_auto_monitor, stream_url, is_auto_create_conference_number, recording_enabled, create_type, streaming_enabled, master_participant_id, default_view_layout, default_view_is_broadcast, default_view_is_display_self, default_view_is_fill, polling_interval, conference_password, business_field_type, remarks, business_properties, cover ,duration_enabled,duration_time, conference_ctrl_password, last_conference_id, mute_type, is_auto_create_stream_url, hd_resolution, conf_id, presenter, up_cascade_id, up_cascade_mcu_type, up_cascade_type, up_cascade_index from busi_mcu_plc_template_conference
+    </sql>
+    <sql id="selectBusiMcuPlcTemplateConferenceVoverVo">
+        select id, cover from busi_mcu_plc_template_conference
+    </sql>
+    <resultMap type="DeptRecordCount" id="DeptRecordCountMap">
+        <result property="deptId"    column="dept_id"    />
+        <result property="count"    column="template_count"    />
+    </resultMap>
+
+    <select id="selectBusiMcuPlcTemplateConferenceList" parameterType="BusiMcuPlcTemplateConference" resultMap="BusiMcuPlcTemplateConferenceResult">
+        <include refid="selectBusiMcuPlcTemplateConferenceVo"/>
+        where id not in (select template_id from busi_mcu_plc_conference_appointment where status=1)
+        <if test="createUserId != null "> and create_user_id = #{createUserId}</if>
+        <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+        <if test="createUserName != null  and createUserName != ''"> and create_user_name like concat('%', #{createUserName}, '%')</if>
+        <if test="deptId != null "> and dept_id = #{deptId}</if>
+        <if test="callLegProfileId != null and callLegProfileId != ''"> and call_leg_profile_id = #{callLegProfileId}</if>
+        <if test="callProfileId != null  and callProfileId != ''"> and call_profile_id = #{callProfileId}</if>
+        <if test="callBrandingProfileId != null  and callBrandingProfileId != ''"> and call_branding_profile_id = #{callBrandingProfileId}</if>
+        <if test="recordingEnabled != null "> and recording_enabled = #{recordingEnabled}</if>
+        <if test="streamingEnabled != null "> and streaming_enabled = #{streamingEnabled}</if>
+        <if test="streamUrl != null  and streamUrl != ''"> and stream_url = #{streamUrl}</if>
+        <if test="bandwidth != null "> and bandwidth = #{bandwidth}</if>
+        <if test="isAutoCall != null "> and is_auto_call = #{isAutoCall}</if>
+        <if test="conferenceNumber != null "> and conference_number = #{conferenceNumber}</if>
+        <if test="type != null "> and type = #{type}</if>
+        <if test="viewType != null "> and view_type = #{viewType}</if>
+        <if test="isAutoMonitor != null "> and is_auto_monitor = #{isAutoMonitor}</if>
+        <if test="isAutoCreateConferenceNumber != null "> and is_auto_create_conference_number = #{isAutoCreateConferenceNumber}</if>
+        <if test="createType != null "> and create_type = #{createType}</if>
+        <if test="masterParticipantId != null "> and master_participant_id = #{masterParticipantId}</if>
+        <if test="defaultViewLayout != null  and defaultViewLayout != ''"> and default_view_layout = #{defaultViewLayout}</if>
+        <if test="defaultViewIsBroadcast != null "> and default_view_is_broadcast = #{defaultViewIsBroadcast}</if>
+        <if test="defaultViewIsDisplaySelf != null "> and default_view_is_display_self = #{defaultViewIsDisplaySelf}</if>
+        <if test="defaultViewIsFill != null "> and default_view_is_fill = #{defaultViewIsFill}</if>
+        <if test="pollingInterval != null "> and polling_interval = #{pollingInterval}</if>
+        <if test="conferencePassword != null  and conferencePassword != ''"> and conference_password = #{conferencePassword}</if>
+        <if test="businessFieldType != null "> and business_field_type = #{businessFieldType}</if>
+        <if test="remarks != null  and remarks != ''"> and remarks = #{remarks}</if>
+        <if test="durationEnabled != null "> and duration_enabled = #{durationEnabled}</if>
+        <if test="durationTime!= null "> and duration_time = #{durationTime}</if>
+        <if test="lastConferenceId != null "> and last_conference_id = #{lastConferenceId}</if>
+        <if test="muteType != null "> and mute_type = #{muteType}</if>
+        <if test="isAutoCreateStreamUrl != null "> and is_auto_create_stream_url = #{isAutoCreateStreamUrl}</if>
+        <if test="hdResolution != null "> and hd_resolution = #{hdResolution}</if>
+        <if test="confId != null "> and conf_id = #{confId}</if>
+        <if test="presenter != null "> and presenter = #{presenter}</if>
+        <if test="upCascadeId != null"> and up_cascade_id = #{upCascadeId}</if>
+        <if test="upCascadeMcuType != null and upCascadeMcuType != ''"> and up_cascade_mcu_type = #{upCascadeMcuType}</if>
+        <if test="upCascadeType != null"> and up_cascade_type = #{upCascadeType}</if>
+        <if test="upCascadeIndex != null"> and up_cascade_index = #{upCascadeIndex}</if>
+    </select>
+    
+    <select id="selectAllBusiMcuPlcTemplateConferenceList" parameterType="BusiMcuPlcTemplateConference" resultMap="BusiMcuPlcTemplateConferenceResult">
+        <include refid="selectBusiMcuPlcTemplateConferenceVo"/>
+        <where>
+            <if test="createUserId != null "> and create_user_id = #{createUserId}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="createUserName != null  and createUserName != ''"> and create_user_name like concat('%', #{createUserName}, '%')</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="callLegProfileId != null and callLegProfileId != ''"> and call_leg_profile_id = #{callLegProfileId}</if>
+            <if test="callProfileId != null  and callProfileId != ''"> and call_profile_id = #{callProfileId}</if>
+            <if test="callBrandingProfileId != null  and callBrandingProfileId != ''"> and call_branding_profile_id = #{callBrandingProfileId}</if>
+            <if test="recordingEnabled != null "> and recording_enabled = #{recordingEnabled}</if>
+            <if test="streamingEnabled != null "> and streaming_enabled = #{streamingEnabled}</if>
+            <if test="streamUrl != null  and streamUrl != ''"> and stream_url = #{streamUrl}</if>
+            <if test="bandwidth != null "> and bandwidth = #{bandwidth}</if>
+            <if test="isAutoCall != null "> and is_auto_call = #{isAutoCall}</if>
+            <if test="conferenceNumber != null "> and conference_number = #{conferenceNumber}</if>
+            <if test="type != null "> and type = #{type}</if>
+            <if test="viewType != null "> and view_type = #{viewType}</if>
+            <if test="isAutoMonitor != null "> and is_auto_monitor = #{isAutoMonitor}</if>
+            <if test="isAutoCreateConferenceNumber != null "> and is_auto_create_conference_number = #{isAutoCreateConferenceNumber}</if>
+            <if test="createType != null "> and create_type = #{createType}</if>
+            <if test="masterParticipantId != null "> and master_participant_id = #{masterParticipantId}</if>
+            <if test="defaultViewLayout != null  and defaultViewLayout != ''"> and default_view_layout = #{defaultViewLayout}</if>
+            <if test="defaultViewIsBroadcast != null "> and default_view_is_broadcast = #{defaultViewIsBroadcast}</if>
+            <if test="defaultViewIsDisplaySelf != null "> and default_view_is_display_self = #{defaultViewIsDisplaySelf}</if>
+            <if test="defaultViewIsFill != null "> and default_view_is_fill = #{defaultViewIsFill}</if>
+            <if test="pollingInterval != null "> and polling_interval = #{pollingInterval}</if>
+            <if test="conferencePassword != null  and conferencePassword != ''"> and conference_password = #{conferencePassword}</if>
+            <if test="businessFieldType != null "> and business_field_type = #{businessFieldType}</if>
+            <if test="remarks != null  and remarks != ''"> and remarks = #{remarks}</if>
+            <if test="durationEnabled != null "> and duration_enabled = #{durationEnabled}</if>
+            <if test="durationTime != null "> and duration_time = #{durationTime}</if>
+            <if test="lastConferenceId != null "> and last_conference_id = #{lastConferenceId}</if>
+            <if test="muteType != null "> and mute_type = #{muteType}</if>
+            <if test="params.conditionTerminalIds != null">
+                and id in (select distinct template_conference_id from busi_mcu_plc_template_participant where terminal_id in
+                <foreach collection="params.conditionTerminalIds" index="index" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>)
+            </if>
+            <if test="isAutoCreateStreamUrl != null "> and is_auto_create_stream_url = #{isAutoCreateStreamUrl}</if>
+            <if test="hdResolution != null "> and hd_resolution = #{hdResolution}</if>
+            <if test="confId != null "> and conf_id = #{confId}</if>
+            <if test="presenter != null "> and presenter = #{presenter}</if>
+            <if test="upCascadeId != null"> and up_cascade_id = #{upCascadeId}</if>
+            <if test="upCascadeMcuType != null and upCascadeMcuType != ''"> and up_cascade_mcu_type = #{upCascadeMcuType}</if>
+            <if test="upCascadeType != null"> and up_cascade_type = #{upCascadeType}</if>
+            <if test="upCascadeIndex != null"> and up_cascade_index = #{upCascadeIndex}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiMcuPlcTemplateConferenceById" parameterType="Long" resultMap="BusiMcuPlcTemplateConferenceResult">
+        <include refid="selectBusiMcuPlcTemplateConferenceVo"/>
+        where id = #{id}
+    </select>
+    
+    <!-- 单独查找会议封面 -->
+    <select id="selectBusiMcuPlcTemplateConferenceCoverById" parameterType="Long" resultMap="BusiMcuPlcTemplateConferenceResult">
+        <include refid="selectBusiMcuPlcTemplateConferenceVoverVo"/>
+        where id = #{id}
+    </select>
+    
+    <select id="getDeptTemplateCount" parameterType="Integer" resultMap="DeptRecordCountMap">
+        SELECT dept_id, count(*) template_count FROM 
+        (select * from `busi_mcu_plc_template_conference` where id not in (select template_id from busi_mcu_plc_conference_appointment) and business_field_type=#{businessFieldType} and create_type=2) t
+        GROUP BY dept_id ORDER BY dept_id asc
+    </select>
+        
+    <insert id="insertBusiMcuPlcTemplateConference" parameterType="BusiMcuPlcTemplateConference" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_mcu_plc_template_conference
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="createUserId != null">create_user_id,</if>
+            <if test="name != null">name,</if>
+            <if test="createUserName != null">create_user_name,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="callLegProfileId != null">call_leg_profile_id,</if>
+            <if test="callProfileId != null">call_profile_id,</if>
+            <if test="callBrandingProfileId != null">call_branding_profile_id,</if>
+            <if test="streamUrl != null">stream_url,</if>
+            <if test="bandwidth != null">bandwidth,</if>
+            <if test="isAutoCall != null">is_auto_call,</if>
+            <if test="conferenceNumber != null">conference_number,</if>
+            <if test="type != null">type,</if>
+            <if test="viewType != null">view_type,</if>
+            <if test="isAutoMonitor != null">is_auto_monitor,</if>
+            <if test="isAutoCreateConferenceNumber != null">is_auto_create_conference_number,</if>
+            <if test="createType != null">create_type,</if>
+            <if test="masterParticipantId != null">master_participant_id,</if>
+            <if test="defaultViewLayout != null">default_view_layout,</if>
+            <if test="defaultViewIsBroadcast != null">default_view_is_broadcast,</if>
+            <if test="defaultViewIsDisplaySelf != null">default_view_is_display_self,</if>
+            <if test="defaultViewIsFill != null">default_view_is_fill,</if>
+            <if test="pollingInterval != null">polling_interval,</if>
+            <if test="recordingEnabled != null">recording_enabled,</if>
+            <if test="streamingEnabled != null">streaming_enabled,</if>
+            <if test="durationEnabled != null "> duration_enabled,</if>
+            <if test="durationTime!= null ">  duration_time ,</if>
+            <if test="conferencePassword != null">conference_password,</if>
+            business_field_type,
+            business_properties,
+            <if test="remarks != null">remarks,</if>
+            <if test="cover != null">cover,</if>
+            <if test="conferenceCtrlPassword != null">conference_ctrl_password,</if>
+            <if test="lastConferenceId != null">last_conference_id,</if>
+            <if test="muteType != null">mute_type,</if>
+            <if test="isAutoCreateStreamUrl != null ">is_auto_create_stream_url,</if>
+            <if test="hdResolution != null">hd_resolution,</if>
+            <if test="confId != null">conf_id,</if>
+            <if test="presenter != null">presenter,</if>
+            <if test="upCascadeId != null">up_cascade_id,</if>
+            <if test="upCascadeMcuType != null">up_cascade_mcu_type,</if>
+            <if test="upCascadeType != null">up_cascade_type,</if>
+            <if test="upCascadeIndex != null">up_cascade_index,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="createUserId != null">#{createUserId},</if>
+            <if test="name != null">#{name},</if>
+            <if test="createUserName != null">#{createUserName},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="callLegProfileId != null">#{callLegProfileId},</if>
+            <if test="callProfileId != null">#{callProfileId},</if>
+            <if test="callBrandingProfileId != null">#{callBrandingProfileId},</if>
+            <if test="streamUrl != null">#{streamUrl},</if>
+            <if test="bandwidth != null">#{bandwidth},</if>
+            <if test="isAutoCall != null">#{isAutoCall},</if>
+            <if test="conferenceNumber != null">#{conferenceNumber},</if>
+            <if test="type != null">#{type},</if>
+            <if test="viewType != null">#{viewType},</if>
+            <if test="isAutoMonitor != null">#{isAutoMonitor},</if>
+            <if test="isAutoCreateConferenceNumber != null">#{isAutoCreateConferenceNumber},</if>
+            <if test="createType != null">#{createType},</if>
+            <if test="masterParticipantId != null">#{masterParticipantId},</if>
+            <if test="defaultViewLayout != null">#{defaultViewLayout},</if>
+            <if test="defaultViewIsBroadcast != null">#{defaultViewIsBroadcast},</if>
+            <if test="defaultViewIsDisplaySelf != null">#{defaultViewIsDisplaySelf},</if>
+            <if test="defaultViewIsFill != null">#{defaultViewIsFill},</if>
+            <if test="pollingInterval != null">#{pollingInterval},</if>
+            <if test="recordingEnabled != null">#{recordingEnabled},</if>
+            <if test="streamingEnabled != null">#{streamingEnabled},</if>
+            <if test="durationEnabled != null "> #{durationEnabled},</if>
+            <if test="durationTime!= null ">  #{durationTime},</if>
+            <if test="conferencePassword != null">#{conferencePassword},</if>
+            #{businessFieldType},
+            #{businessProperties, typeHandler=com.paradisecloud.fcm.dao.typehandler.JSONTypeMapHandler},
+            <if test="remarks != null">#{remarks},</if>
+            <if test="cover != null">#{cover},</if>
+            <if test="conferenceCtrlPassword != null">#{conferenceCtrlPassword},</if>
+            <if test="lastConferenceId != null">#{lastConferenceId},</if>
+            <if test="muteType != null">#{muteType},</if>
+            <if test="isAutoCreateStreamUrl != null ">#{isAutoCreateStreamUrl},</if>
+            <if test="hdResolution != null">#{hdResolution},</if>
+            <if test="confId != null">#{confId},</if>
+            <if test="presenter != null">#{presenter},</if>
+            <if test="upCascadeId != null">#{upCascadeId},</if>
+            <if test="upCascadeMcuType != null">#{upCascadeMcuType},</if>
+            <if test="upCascadeType != null">#{upCascadeType},</if>
+            <if test="upCascadeIndex != null">#{upCascadeIndex},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiMcuPlcTemplateConference" parameterType="BusiMcuPlcTemplateConference">
+        update busi_mcu_plc_template_conference
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="createUserId != null">create_user_id = #{createUserId},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="createUserName != null">create_user_name = #{createUserName},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="bandwidth != null">bandwidth = #{bandwidth},</if>
+            <if test="isAutoCall != null">is_auto_call = #{isAutoCall},</if>
+            <if test="isAutoCreateConferenceNumber != null">is_auto_create_conference_number = #{isAutoCreateConferenceNumber},</if>
+            <if test="createType != null">create_type = #{createType},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="viewType != null">view_type = #{viewType},</if>
+            <if test="isAutoMonitor != null">is_auto_monitor = #{isAutoMonitor},</if>
+            call_leg_profile_id = #{callLegProfileId},
+            call_branding_profile_id = #{callBrandingProfileId},
+            call_profile_id = #{callProfileId},
+            conference_number = #{conferenceNumber},
+            master_participant_id = #{masterParticipantId},
+            conference_password = #{conferencePassword},
+            stream_url = #{streamUrl},
+            default_view_layout = #{defaultViewLayout},
+            recording_enabled = #{recordingEnabled},
+            streaming_enabled = #{streamingEnabled},
+            default_view_is_display_self = #{defaultViewIsDisplaySelf},
+            <if test="defaultViewIsBroadcast != null">default_view_is_broadcast = #{defaultViewIsBroadcast},</if>
+            <if test="defaultViewIsFill != null">default_view_is_fill = #{defaultViewIsFill},</if>
+            <if test="pollingInterval != null">polling_interval = #{pollingInterval},</if>
+            business_field_type = #{businessFieldType},
+            business_properties = #{businessProperties, typeHandler=com.paradisecloud.fcm.dao.typehandler.JSONTypeMapHandler},
+            <if test="remarks != null">remarks = #{remarks},</if>
+            <if test="cover != null">cover = #{cover},</if>
+            <if test="durationEnabled != null ">duration_enabled = #{durationEnabled},</if>
+            <if test="durationTime != null ">  duration_time = #{durationTime},</if>
+            conference_ctrl_password = #{conferenceCtrlPassword},
+            <if test="lastConferenceId != null ">  last_conference_id = #{lastConferenceId},</if>
+            <if test="muteType != null ">  mute_type = #{muteType},</if>
+            <if test="isAutoCreateStreamUrl != null ">  is_auto_create_stream_url = #{isAutoCreateStreamUrl},</if>
+            <if test="hdResolution != null">hd_resolution = #{hdResolution},</if>
+            <if test="confId != null ">  conf_id = #{confId},</if>
+            <if test="presenter != null">presenter = #{presenter},</if>
+            up_cascade_id = #{upCascadeId},
+            up_cascade_mcu_type = #{upCascadeMcuType},
+            up_cascade_type = #{upCascadeType},
+            up_cascade_index = #{upCascadeIndex},
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiMcuPlcTemplateConferenceById" parameterType="Long">
+        delete from busi_mcu_plc_template_conference where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiMcuPlcTemplateConferenceByIds" parameterType="String">
+        delete from busi_mcu_plc_template_conference where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectBusiMcuPlcTemplateConferenceListByKey" resultMap="BusiMcuPlcTemplateConferenceResult">
+        <include refid="selectBusiMcuPlcTemplateConferenceVo"/>
+        where id not in (select template_id from busi_mcu_plc_conference_appointment where status=1)
+        <if test="deptId != null "> and dept_id = #{deptId}</if>
+        <if test="searchKey != null "> and name like  concat('%',#{searchKey},'%') or conference_number=#{searchKey}</if>
+    </select>
+
+    <select id="selectAllBusiMcuPlcTemplateConferenceListByKey" resultMap="BusiMcuPlcTemplateConferenceResult">
+        <include refid="selectBusiMcuPlcTemplateConferenceVo"/>
+        <where>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="searchKey != null "> and name like  concat('%',#{searchKey},'%') or conference_number=#{searchKey}</if>
+        </where>
+    </select>
+</mapper>

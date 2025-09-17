@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiConferenceCustomButtonMapper">
+    
+    <resultMap type="BusiConferenceCustomButton" id="BusiConferenceCustomButtonResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="sort"    column="sort"    />
+        <result property="mcuType"    column="mcu_type"    />
+    </resultMap>
+
+    <sql id="selectBusiConferenceCustomButtonVo">
+        select id, name, sort, mcu_type from busi_conference_custom_button
+    </sql>
+
+    <select id="selectBusiConferenceCustomButtonList" parameterType="BusiConferenceCustomButton" resultMap="BusiConferenceCustomButtonResult">
+        <include refid="selectBusiConferenceCustomButtonVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="sort != null "> and sort = #{sort}</if>
+            <if test="mcuType != null and mcuType != ''"> and mcu_type = #{mcuType}</if>
+        </where>
+        order by mcu_type, sort
+    </select>
+    
+    <select id="selectBusiConferenceCustomButtonById" resultMap="BusiConferenceCustomButtonResult">
+        <include refid="selectBusiConferenceCustomButtonVo"/>
+        where id = #{id} and mcu_type = #{mcuType}
+    </select>
+        
+    <insert id="insertBusiConferenceCustomButton" parameterType="BusiConferenceCustomButton">
+        insert into busi_conference_custom_button
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null and name != ''">name,</if>
+            <if test="sort != null">sort,</if>
+            <if test="mcuType != null">mcu_type,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="sort != null">#{sort},</if>
+            <if test="mcuType != null">#{mcuType},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiConferenceCustomButton" parameterType="BusiConferenceCustomButton">
+        update busi_conference_custom_button
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="sort != null">sort = #{sort},</if>
+            <if test="mcuType != null">mcu_type = #{mcuType},</if>
+        </trim>
+        where id = #{id} and mcu_type = #{mcuType}
+    </update>
+
+    <delete id="deleteBusiConferenceCustomButtonById">
+        delete from busi_conference_custom_button where id = #{id} and mcu_type = #{mcuType}
+    </delete>
+</mapper>

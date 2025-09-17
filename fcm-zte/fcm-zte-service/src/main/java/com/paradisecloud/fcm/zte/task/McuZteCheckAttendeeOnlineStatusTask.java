@@ -1,0 +1,145 @@
+package com.paradisecloud.fcm.zte.task;
+
+import com.alibaba.fastjson.JSONObject;
+import com.paradisecloud.fcm.common.enumer.TerminalOnlineStatus;
+import com.paradisecloud.fcm.common.enumer.WebsocketMessageType;
+import com.paradisecloud.fcm.common.utils.EncryptIdUtil;
+import com.paradisecloud.fcm.dao.mapper.ViewTemplateConferenceMapper;
+import com.paradisecloud.fcm.dao.model.BusiTerminal;
+import com.paradisecloud.fcm.dao.model.ViewTemplateConference;
+import com.paradisecloud.fcm.service.conference.AllConferenceContextCache;
+import com.paradisecloud.fcm.service.conference.BaseConferenceContext;
+import com.paradisecloud.fcm.terminal.cache.TerminalCache;
+import com.paradisecloud.fcm.zte.cache.AttendeeCountingStatistics;
+import com.paradisecloud.fcm.zte.cache.McuZteConferenceContextCache;
+import com.paradisecloud.fcm.zte.cache.McuZteWebSocketMessagePusher;
+import com.paradisecloud.fcm.zte.cache.model.McuZteConferenceContext;
+import com.paradisecloud.fcm.zte.model.busi.attendee.McuAttendeeForMcuZte;
+import com.paradisecloud.fcm.zte.model.busi.attendee.TerminalAttendeeForMcuZte;
+import com.sinhy.spring.BeanFactory;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class McuZteCheckAttendeeOnlineStatusTask extends DelayTask {
+
+    public McuZteCheckAttendeeOnlineStatusTask(String id, long delayInMilliseconds) {
+        super("check_attendee_o_s_" + id, delayInMilliseconds);
+    }
+
+    /**
+     * When an object implementing interface {@code Runnable} is used
+     * to create a thread, starting the thread causes the object's
+     * {@code run} method to be called in that separately executing
+     * thread.
+     * <p>
+     * The general contract of the method {@code run} is that it may
+     * take any action whatsoever.
+     *
+     * @see Thread#run()
+     */
+    @Override
+    public void run() {
+        Collection<McuZteConferenceContext> conferenceContexts = McuZteConferenceContextCache.getInstance().values();
+        if (conferenceContexts != null) {
+            for (McuZteConferenceContext conferenceContext : conferenceContexts) {
+                updateConference(conferenceContext);
+            }
+        }
+    }
+
+    private void updateConference(McuZteConferenceContext conferenceContext) {
+        try {
+            if (!conferenceContext.isEnd()) {
+                Map<Long, TerminalAttendeeForMcuZte> terminalAttendeeMap = conferenceContext.getTerminalAttendeeMap();
+                for (TerminalAttendeeForMcuZte terminalAttendee : terminalAttendeeMap.values()) {
+                    if (terminalAttendee.isMeetingJoined()) {
+                        continue;
+                    }
+                    BusiTerminal busiTerminal = TerminalCache.getInstance().get(terminalAttendee.getTerminalId());
+                    if (terminalAttendee.getOnlineStatus() == busiTerminal.getOnlineStatus()) {
+                        continue;
+                    }
+                    synchronized (terminalAttendee) {
+                        terminalAttendee.resetUpdateMap();
+
+                        // 同步终端在线状态
+                        terminalAttendee.setOnlineStatus(busiTerminal.getOnlineStatus());
+
+                        // 在线消息
+                        if (terminalAttendee.containsUpdateField("onlineStatus")) {
+                            TerminalOnlineStatus onlineStatus = TerminalOnlineStatus.convert((int) terminalAttendee.getUpdateMap().get("onlineStatus"));
+                            StringBuilder messageTip = new StringBuilder();
+                            messageTip.append("【").append(terminalAttendee.getName()).append("】").append(onlineStatus.getName());
+
+                            // 消息和参会者信息同步到主级会议
+                            McuZteWebSocketMessagePusher.getInstance().upwardPushConferenceMessage(conferenceContext, WebsocketMessageType.MESSAGE_TIP, messageTip);
+                            Map<String, Object> updateMap = new HashMap<>(terminalAttendee.getUpdateMap());
+                            updateMap.put("ip", terminalAttendee.getIp());
+                            updateMap.put("ipNew", terminalAttendee.getIpNew());
+                            McuZteWebSocketMessagePusher.getInstance().upwardPushConferenceMessage(conferenceContext, WebsocketMessageType.ATTENDEE_UPDATE, updateMap);
+
+                        }
+                    }
+                }
+                List<McuAttendeeForMcuZte> mcuAttendees = conferenceContext.getMcuAttendees();
+                for (McuAttendeeForMcuZte mcuAttendee : mcuAttendees) {
+                    if (mcuAttendee.isMeetingJoined()) {
+                        continue;
+                    }
+                    int newOnlineStatus = TerminalOnlineStatus.OFFLINE.getValue();
+                    String contextKey = EncryptIdUtil.parasToContextKey(mcuAttendee.getId());
+                    BaseConferenceContext baseConferenceContext = AllConferenceContextCache.getInstance().get(contextKey);
+                    if (baseConferenceContext != null) {
+                        newOnlineStatus = TerminalOnlineStatus.ONLINE.getValue();
+                    }
+                    if (baseConferenceContext == null) {
+                        ViewTemplateConferenceMapper viewTemplateConferenceMapper = BeanFactory.getBean(ViewTemplateConferenceMapper.class);
+                        ViewTemplateConference viewTemplateConferenceConCascade = new ViewTemplateConference();
+                        viewTemplateConferenceConCascade.setId(mcuAttendee.getCascadeTemplateId());
+                        viewTemplateConferenceConCascade.setMcuType(mcuAttendee.getCascadeMcuType());
+                        viewTemplateConferenceConCascade.setUpCascadeId(conferenceContext.getTemplateConferenceId());
+                        viewTemplateConferenceConCascade.setUpCascadeMcuType(conferenceContext.getMcuType());
+                        List<ViewTemplateConference> viewTemplateConferenceList = viewTemplateConferenceMapper.selectAllViewTemplateConferenceList(viewTemplateConferenceConCascade);
+                        if (viewTemplateConferenceList == null || viewTemplateConferenceList.size() == 0) {
+                            conferenceContext.removeMcuAttendee(mcuAttendee);
+                            Map<String, Object> updateMap = new HashMap<>();
+                            updateMap.put("id", mcuAttendee.getId());
+                            updateMap.put("deptId", mcuAttendee.getDeptId());
+                            updateMap.put("mcuAttendee", mcuAttendee.isMcuAttendee());
+                            McuZteWebSocketMessagePusher.getInstance().upwardPushConferenceMessage(conferenceContext, WebsocketMessageType.ATTENDEE_DELETE, updateMap);
+                            JSONObject jsonObject = new JSONObject();
+                            jsonObject.put("attendeeCountingStatistics",new AttendeeCountingStatistics(conferenceContext));
+                            McuZteWebSocketMessagePusher.getInstance().pushSpecificConferenceMessage(conferenceContext,WebsocketMessageType.CONFERENCE_CHANGE,jsonObject);
+                            continue;
+                        }
+                    }
+                    if (mcuAttendee.getOnlineStatus() == newOnlineStatus) {
+                        continue;
+                    }
+                    synchronized (mcuAttendee) {
+                        mcuAttendee.resetUpdateMap();
+
+                        // 同步终端在线状态
+                        mcuAttendee.setOnlineStatus(newOnlineStatus);
+
+                        // 在线消息
+                        if (mcuAttendee.containsUpdateField("onlineStatus")) {
+                            TerminalOnlineStatus onlineStatus = TerminalOnlineStatus.convert((int) mcuAttendee.getUpdateMap().get("onlineStatus"));
+                            StringBuilder messageTip = new StringBuilder();
+                            messageTip.append("【").append(mcuAttendee.getName()).append("】").append(onlineStatus.getName());
+
+                            // 消息和参会者信息同步到主级会议
+                            McuZteWebSocketMessagePusher.getInstance().upwardPushConferenceMessage(conferenceContext, WebsocketMessageType.MESSAGE_TIP, messageTip);
+                            McuZteWebSocketMessagePusher.getInstance().upwardPushConferenceMessage(conferenceContext, WebsocketMessageType.ATTENDEE_UPDATE, mcuAttendee.getUpdateMap());
+
+                        }
+                    }
+                }
+            }
+        } catch (Throwable e) {
+        }
+    }
+}

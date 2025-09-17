@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiMcuKdcTemplateParticipantMapper">
+    
+    <resultMap type="BusiMcuKdcTemplateParticipant" id="BusiMcuKdcTemplateParticipantResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="templateConferenceId"    column="template_conference_id"    />
+        <result property="uuid"    column="uuid"    />
+        <result property="attendType"    column="attend_type"    />
+        <result property="terminalId"    column="terminal_id"    />
+        <result property="weight"    column="weight"    />
+        <result property="businessProperties"    column="business_properties"  typeHandler="com.paradisecloud.fcm.dao.typehandler.JSONTypeMapHandler" jdbcType="OTHER"  />
+    </resultMap>
+
+    <sql id="selectBusiMcuKdcTemplateParticipantVo">
+        select id, create_time, update_time, uuid, attend_type, template_conference_id, terminal_id, weight, business_properties from busi_mcu_kdc_template_participant
+    </sql>
+
+    <select id="selectBusiMcuKdcTemplateParticipantList" parameterType="BusiMcuKdcTemplateParticipant" resultMap="BusiMcuKdcTemplateParticipantResult">
+        <include refid="selectBusiMcuKdcTemplateParticipantVo"/>
+        <where>
+            <if test="uuid != null  and uuid != ''"> and uuid = #{uuid}</if>
+            <if test="attendType != null "> and attend_type = #{attendType}</if>
+            <if test="templateConferenceId != null "> and template_conference_id = #{templateConferenceId}</if>
+            <if test="terminalId != null "> and terminal_id = #{terminalId}</if>
+            <if test="weight != null "> and weight = #{weight}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiMcuKdcTemplateParticipantById" parameterType="Long" resultMap="BusiMcuKdcTemplateParticipantResult">
+        <include refid="selectBusiMcuKdcTemplateParticipantVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiMcuKdcTemplateParticipant" parameterType="BusiMcuKdcTemplateParticipant" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_mcu_kdc_template_participant
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="uuid != null">uuid,</if>
+            <if test="attendType != null">attend_type,</if>
+            <if test="templateConferenceId != null">template_conference_id,</if>
+            <if test="terminalId != null">terminal_id,</if>
+            <if test="weight != null">weight,</if>
+            business_properties,
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="uuid != null">#{uuid},</if>
+            <if test="attendType != null">#{attendType},</if>
+            <if test="templateConferenceId != null">#{templateConferenceId},</if>
+            <if test="terminalId != null">#{terminalId},</if>
+            <if test="weight != null">#{weight},</if>
+            #{businessProperties, typeHandler=com.paradisecloud.fcm.dao.typehandler.JSONTypeMapHandler},
+         </trim>
+    </insert>
+
+    <update id="updateBusiMcuKdcTemplateParticipant" parameterType="BusiMcuKdcTemplateParticipant">
+        update busi_mcu_kdc_template_participant
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="uuid != null">uuid = #{uuid},</if>
+            <if test="attendType != null">attend_type = #{attendType},</if>
+            <if test="templateConferenceId != null">template_conference_id = #{templateConferenceId},</if>
+            <if test="terminalId != null">terminal_id = #{terminalId},</if>
+            <if test="weight != null">weight = #{weight},</if>
+            business_properties = #{businessProperties, typeHandler=com.paradisecloud.fcm.dao.typehandler.JSONTypeMapHandler},
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiMcuKdcTemplateParticipantById" parameterType="Long">
+        delete from busi_mcu_kdc_template_participant where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiMcuKdcTemplateParticipantByIds" parameterType="String">
+        delete from busi_mcu_kdc_template_participant where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

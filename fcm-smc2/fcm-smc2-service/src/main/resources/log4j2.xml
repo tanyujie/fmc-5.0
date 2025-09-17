@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 日志级别以及优先级排序：OFF > FATAL > ERROR > WARN > INFO >DEBUG > TRACE > AA -->
+<!-- status log4j2内部日志级别 -->
+<configuration status="WARN">
+    <!-- 全局参数 -->
+    <Properties>
+        <Property name="pattern">%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%t] [%C.%M]: %m%n</Property>
+        <Property name="displayName">esdk</Property>
+        <Property name="logPath">logs</Property>
+    </Properties>
+
+    <Appenders>
+
+        <Console name="console" target="SYSTEM_OUT" follow="true">
+            <PatternLayout>
+                <pattern>${pattern}</pattern>
+            </PatternLayout>
+            <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+        </Console>
+
+        <RollingFile name="traceFile" fileName="${logPath}/${displayName}_trace.log"   filePattern="${logPath}/${date:yyyy-MM}/${displayName}-trace-%d{yyyy-MM-dd}-%i.log">
+
+            <PatternLayout pattern="${pattern}"/>
+            <Filters>
+                <ThresholdFilter level="TRACE"/>
+                <!-- 过滤条件有三个值：ACCEPT(接受)，DENY(拒绝)，NEUTRAL(中立) -->
+                <!-- 设置 onMismatch="NEUTRAL" 可以让日志经过后续的过滤器 -->
+                <ThresholdFilter level="INFO" onMatch="DENY" onMismatch="NEUTRAL"/>
+            </Filters>
+            <Policies>
+                <!-- 归档每天的文件 -->
+                <!--
+                    这个配置需要和 filePattern 结合使用，注意 filePattern 中配置的文件重命名规
+                    则。
+                    滚动策略依赖于 filePattern 中配置的最具体的时间单位，根据最具体的时间单位进行
+滚动。
+                    注意：modulate属性是指从启动时间开始算5秒，还是从0秒开始算5秒，运行一下就明
+白了。
+                    modulate: true(默认值) // 会从启动时间开始算 5秒
+                    modulate: false // 从 0秒开始算
+                -->
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <!-- 按大小划分 -->
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+            <!-- 限制每天文件个数 -->
+            <DefaultRolloverStrategy compressionLevel="9" max="10"/>
+        </RollingFile>
+
+        <RollingFile name="infoFile" fileName="${logPath}/${displayName}_info.log"
+                     filePattern="${logPath}/${date:yyyy-MM}/${displayName}-info-
+%d{yyyy-MM-dd}-%i.log">
+            <PatternLayout pattern="${pattern}"/>
+            <Filters>
+                <ThresholdFilter level="INFO"/>
+                <!-- 过滤条件有三个值：ACCEPT(接受)，DENY(拒绝)，NEUTRAL(中立) -->
+                <!-- 设置 onMismatch="NEUTRAL" 可以让日志经过后续的过滤器 -->
+                <ThresholdFilter level="WARN" onMatch="DENY" onMismatch="NEUTRAL"/>
+            </Filters>
+            <Policies>
+                <!-- 归档每天的文件 -->
+                <!--
+                    这个配置需要和 filePattern 结合使用，注意 filePattern 中配置的文件重命名规
+                    则。
+                    滚动策略依赖于 filePattern 中配置的最具体的时间单位，根据最具体的时间单位进行
+                     滚动。
+                    注意：modulate属性是指从启动时间开始算5秒，还是从0秒开始算5秒，运行一下就明
+			     白了。
+                    modulate: true(默认值) // 会从启动时间开始算 5秒
+                    modulate: false // 从 0秒开始算
+                -->
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <!-- 按大小划分 -->
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+            <!-- 限制每天文件个数 -->
+            <DefaultRolloverStrategy compressionLevel="9" max="10"/>
+        </RollingFile>
+        <RollingFile name="debugFile" fileName="${logPath}/${displayName}_debug.log"
+                     filePattern="${logPath}/${date:yyyy-MM}/${displayName}-debug-
+%d{yyyy-MM-dd}-%i.log">
+            <PatternLayout pattern="${pattern}"/>
+            <Filters>
+                <ThresholdFilter level="DEBUG"/>
+                <!-- 过滤条件有三个值：ACCEPT(接受)，DENY(拒绝)，NEUTRAL(中立) -->
+                <!-- 设置 onMismatch="NEUTRAL" 可以让日志经过后续的过滤器 -->
+                <ThresholdFilter level="INFO" onMatch="DENY" onMismatch="NEUTRAL"/>
+            </Filters>
+            <Policies>
+                <!-- 归档每天的文件 -->
+                <!--
+                    这个配置需要和 filePattern 结合使用，注意 filePattern 中配置的文件重命名规
+则。
+                    滚动策略依赖于 filePattern 中配置的最具体的时间单位，根据最具体的时间单位进行
+滚动。
+
+                    注意：modulate属性是指从启动时间开始算5秒，还是从0秒开始算5秒，运行一下就明
+白了。
+                    modulate: true(默认值) // 会从启动时间开始算 5秒
+                    modulate: false // 从 0秒开始算
+                -->
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <!-- 按大小划分 -->
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+            <!-- 限制每天文件个数 -->
+            <DefaultRolloverStrategy compressionLevel="9" max="10"/>
+        </RollingFile>
+
+        <RollingFile name="warnFile" fileName="${logPath}/${displayName}_warn.log"
+                     filePattern="${logPath}/${date:yyyy-MM}/${displayName}-warn-
+%d{yyyy-MM-dd}-%i.log">
+            <PatternLayout pattern="${pattern}"/>
+            <Filters>
+                <ThresholdFilter level="WARN"/>
+                <ThresholdFilter level="ERROR" onMatch="DENY" onMismatch="NEUTRAL"/>
+            </Filters>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy compressionLevel="9" max="10"/>
+        </RollingFile>
+        <RollingFile name="errorFile" fileName="${logPath}/${displayName}_error.log"
+                     filePattern="${logPath}/${date:yyyy-MM}/${displayName}-error-
+%d{yyyy-MM-dd}-%i.log">
+            <PatternLayout pattern="${pattern}"/>
+            <ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy compressionLevel="9" max="10"/>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Logger name="org.springframework.ws" level="DEBUG" />
+        <Root level="DEBUG">
+            <AppenderRef ref="console"/>
+            <AppenderRef ref="infoFile"/>
+            <AppenderRef ref="debugFile"/>
+            <AppenderRef ref="warnFile"/>
+            <AppenderRef ref="errorFile"/>
+        </Root>
+    </Loggers>
+</configuration>

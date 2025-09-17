@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiTencentConferenceAppointmentMapper">
+    
+    <resultMap type="BusiTencentConferenceAppointment" id="BusiTencentConferenceAppointmentResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_Time"    />
+        <result property="updateTime"    column="update_Time"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="templateId"    column="template_id"    />
+        <result property="isAutoCreateTemplate"    column="is_auto_create_template"    />
+        <result property="startDate"    column="start_date"    />
+        <result property="endDate"    column="end_date"    />
+        <result property="extendMinutes"    column="extend_minutes"    />
+        <result property="isHangUp"    column="is_hang_up"    />
+        <result property="status"    column="status"    />
+        <result property="isStart"    column="is_start"    />
+        <result property="startFailedReason"    column="start_failed_reason"    />
+        <result property="repeatRate"    column="repeat_rate"    />
+        <result property="repeatDate"    column="repeat_date"    />
+        <result property="password"    column="password"    />
+        <result property="attendeeLimit"    column="attendee_limit"    />
+        <result property="type"    column="type"    />
+        <result property="tencentType"    column="tencent_type"    />
+        <result property="recurringRule"    column="recurring_rule"    />
+        <result property="subject"    column="subject"    />
+        <result property="duration"    column="duration"    />
+        <result property="accessCode"    column="access_code"    />
+        <result property="createBy"    column="create_by"    />
+    </resultMap>
+
+    <sql id="selectBusiTencentConferenceAppointmentVo">
+        select id, create_time, update_time, dept_id, template_id, is_auto_create_template, start_date, end_date, extend_minutes, is_hang_up, status, is_start, start_failed_reason, repeat_rate, repeat_date, password, attendee_limit, type, recurring_rule,tencent_type,duration,subject,access_code,create_by from busi_tencent_conference_appointment
+    </sql>
+
+    <select id="selectBusiTencentConferenceAppointmentList" parameterType="BusiTencentConferenceAppointment" resultMap="BusiTencentConferenceAppointmentResult">
+        <include refid="selectBusiTencentConferenceAppointmentVo"/>
+        <where>  
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="templateId != null "> and template_id = #{templateId}</if>
+            <if test="isAutoCreateTemplate != null "> and is_auto_create_template = #{isAutoCreateTemplate}</if>
+            <if test="startDate != null  and startTime != ''"> and start_date = #{startDate}</if>
+            <if test="endDate != null  and endTime != ''"> and end_date = #{endDate}</if>
+            <if test="extendMinutes != null "> and extend_minutes = #{extendMinutes}</if>
+            <if test="isHangUp != null "> and is_hang_up = #{isHangUp}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="isStart != null "> and is_start = #{isStart}</if>
+            <if test="startFailedReason != null  and startFailedReason != ''"> and start_failed_reason = #{startFailedReason}</if>
+            <if test="repeatRate != null "> and repeat_rate = #{repeatRate}</if>
+            <if test="repeatDate != null "> and repeat_date = #{repeatDate}</if>
+            <if test="password != null  and password != ''"> and password = #{password}</if>
+            <if test="attendeeLimit != null "> and attendee_limit = #{attendeeLimit}</if>
+            <if test="type != null "> and type = #{type}</if>
+            <if test="recurringRule != null  and recurringRule != ''"> and  recurring_rule = #{recurringRule}</if>
+            <if test="subject != null  and subject != ''"> and subject = #{subject}</if>
+            <if test="accessCode != null  and subject != ''"> and access_code = #{accessCode}</if>
+            <if test="createBy != null "> and create_by = #{createBy}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiTencentConferenceAppointmentById" parameterType="Long" resultMap="BusiTencentConferenceAppointmentResult">
+        <include refid="selectBusiTencentConferenceAppointmentVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiTencentConferenceAppointment" parameterType="BusiTencentConferenceAppointment" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_tencent_conference_appointment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="templateId != null">template_id,</if>
+            <if test="isAutoCreateTemplate != null">is_auto_create_template,</if>
+            <if test="startDate != null">start_date,</if>
+            <if test="endDate != null">end_date,</if>
+            <if test="extendMinutes != null">extend_minutes,</if>
+            <if test="isHangUp != null">is_hang_up,</if>
+            <if test="status != null">status,</if>
+            <if test="isStart != null">is_start,</if>
+            <if test="startFailedReason != null">start_failed_reason,</if>
+            <if test="repeatRate != null">repeat_rate,</if>
+            <if test="repeatDate != null">repeat_date,</if>
+            <if test="password != null">password,</if>
+            <if test="attendeeLimit != null">attendee_limit,</if>
+            <if test="type != null">type,</if>
+            <if test="recurringRule != null">recurring_rule,</if>
+            <if test="subject != null">subject,</if>
+            <if test="duration != null">duration,</if>
+            <if test="tencentType != null">tencent_type,</if>
+            <if test="accessCode != null">access_code,</if>
+            <if test="createBy != null">create_by,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="templateId != null">#{templateId},</if>
+            <if test="isAutoCreateTemplate != null">#{isAutoCreateTemplate},</if>
+            <if test="startDate != null">#{startDate},</if>
+            <if test="endDate != null">#{endDate},</if>
+            <if test="extendMinutes != null">#{extendMinutes},</if>
+            <if test="isHangUp != null">#{isHangUp},</if>
+            <if test="status != null">#{status},</if>
+            <if test="isStart != null">#{isStart},</if>
+            <if test="startFailedReason != null">#{startFailedReason},</if>
+            <if test="repeatRate != null">#{repeatRate},</if>
+            <if test="repeatDate != null">#{repeatDate},</if>
+            <if test="password != null">#{password},</if>
+            <if test="attendeeLimit != null">#{attendeeLimit},</if>
+            <if test="type != null">#{type},</if>
+            <if test="recurringRule != null">#{recurringRule},</if>
+            <if test="subject != null">#{subject},</if>
+            <if test="duration != null">#{duration},</if>
+            <if test="tencentType != null">#{tencentType},</if>
+            <if test="accessCode != null">#{accessCode},</if>
+            <if test="createBy != null">#{createBy},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiTencentConferenceAppointment" parameterType="BusiTencentConferenceAppointment">
+        update busi_tencent_conference_appointment
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="templateId != null">template_id = #{templateId},</if>
+            <if test="isAutoCreateTemplate != null">is_auto_create_template = #{isAutoCreateTemplate},</if>
+            <if test="startDate != null">start_date = #{startDate},</if>
+            <if test="endDate != null">end_date = #{endDate},</if>
+            <if test="extendMinutes != null">extend_minutes = #{extendMinutes},</if>
+            <if test="isHangUp != null">is_hang_up = #{isHangUp},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="isStart != null">is_start = #{isStart},</if>
+            <if test="startFailedReason != null">start_failed_reason = #{startFailedReason},</if>
+            <if test="repeatRate != null">repeat_rate = #{repeatRate},</if>
+            <if test="repeatDate != null">repeat_date = #{repeatDate},</if>
+            <if test="password != null">password = #{password},</if>
+            <if test="attendeeLimit != null">attendee_limit = #{attendeeLimit},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="recurringRule != null"> recurring_rule = #{recurringRule},</if>
+            <if test="subject != null">subject = #{subject},</if>
+            <if test="duration != null">duration = #{duration},</if>
+            <if test="tencentType != null">tencent_type = #{tencentType},</if>
+            <if test="accessCode != null">access_code = #{accessCode},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiTencentConferenceAppointmentById" parameterType="Long">
+        delete from busi_tencent_conference_appointment where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiTencentConferenceAppointmentByIds" parameterType="String">
+        delete from busi_tencent_conference_appointment where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectBusiAppointmentConferenceQuery" resultMap="BusiTencentConferenceAppointmentResult">
+
+        <include refid="selectBusiTencentConferenceAppointmentVo"/>
+        <where>
+            <if test="startTime!=null and startTime.trim() neq ''">
+                and date_format(str_to_date(start_date,'%Y-%m-%d %H:%i:%s'),'%Y-%m-%d %H:%i:%s') &gt;= str_to_date(#{startDate},'%Y-%m-%d %H:%i:%s')
+            </if>
+            <if test="endTime!=null and endTime.trim() neq ''">
+                and date_format(str_to_date(start_date,'%Y-%m-%d %H:%i:%s'),'%Y-%m-%d %H:%i:%s') &lt;= str_to_date(#{endDate},'%Y-%m-%d %H:%i:%s')
+            </if>
+            <if test="deptId != null and deptId !=''">and dept_id = #{deptId}</if>
+            <if test="active != null ">and  is_start= #{active}</if>
+            <if test="searchKey != null and searchKey !='' ">and subject LIKE CONCAT('%',#{searchKey},'%') </if>
+        </where>
+
+    </select>
+</mapper>

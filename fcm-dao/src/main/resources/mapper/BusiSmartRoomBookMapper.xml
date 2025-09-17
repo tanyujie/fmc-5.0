@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiSmartRoomBookMapper">
+
+    <resultMap type="BusiSmartRoomBook" id="BusiSmartRoomBookResult">
+        <result property="id"    column="id"    />
+        <result property="roomId"    column="room_id"    />
+        <result property="bookName"    column="book_name"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="endTime"    column="end_time"    />
+        <result property="bookStatus"    column="book_status"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="remark"    column="remark"    />
+        <result property="mcuType"    column="mcu_type"    />
+        <result property="appointmentConferenceId"    column="appointment_conference_id"    />
+        <result property="extendMinutes"    column="extend_minutes"    />
+    </resultMap>
+
+    <sql id="selectBusiSmartRoomBookVo">
+        select id, room_id, book_name, start_time, end_time, book_status, create_time, create_by, remark, mcu_type, appointment_conference_id, extend_minutes from busi_smart_room_book
+    </sql>
+
+    <select id="selectBusiSmartRoomBookList" parameterType="BusiSmartRoomBook" resultMap="BusiSmartRoomBookResult">
+        <include refid="selectBusiSmartRoomBookVo"/>
+        <where>
+            <if test="roomId != null "> and room_id = #{roomId}</if>
+            <if test="bookName != null  and bookName != ''"> and book_name like concat('%', #{bookName}, '%')</if>
+            <if test="startTime != null "> and start_time = #{startTime}</if>
+            <if test="endTime != null "> and end_time = #{endTime}</if>
+            <if test="bookStatus != null "> and book_status = #{bookStatus}</if>
+            <if test="mcuType != null "> and mcu_type = #{mcuType}</if>
+            <if test="appointmentConferenceId != null "> and appointment_conference_id = #{appointmentConferenceId}</if>
+            <if test="extendMinutes != null "> and extend_minutes = #{extendMinutes}</if>
+        </where>
+    </select>
+
+    <select id="selectBusiSmartRoomBookListForNext" resultMap="BusiSmartRoomBookResult">
+        <include refid="selectBusiSmartRoomBookVo"/>
+        <where>
+            and room_id = #{roomId}
+            and start_time <![CDATA[>]]> #{currentTime}
+            and book_status = 0
+        </where>
+        order by start_time asc
+    </select>
+
+    <select id="selectBusiSmartRoomBookListForNextTerm" resultMap="BusiSmartRoomBookResult">
+        <include refid="selectBusiSmartRoomBookVo"/>
+        <where>
+            and room_id = #{roomId}
+            and start_time <![CDATA[>]]> #{currentTime}
+            and start_time <![CDATA[<=]]> #{endTime}
+            and book_status = 0
+        </where>
+        order by start_time asc
+    </select>
+
+    <select id="selectBusiSmartRoomBookListForRoomTerm" resultMap="BusiSmartRoomBookResult">
+        <include refid="selectBusiSmartRoomBookVo"/>
+        <where>
+            and room_id = #{roomId}
+            and (start_time between #{startTime} and #{endTime} or end_time between #{startTime} and #{endTime})
+            and book_status in (0, 2)
+        </where>
+        order by start_time asc
+    </select>
+
+    <select id="selectBusiSmartRoomBookListForCheckExist" resultMap="BusiSmartRoomBookResult">
+        <include refid="selectBusiSmartRoomBookVo"/>
+        <where>
+            <if test="id != null "> and id != #{id}</if>
+            and room_id = #{roomId}
+            and (start_time between #{startTime} and #{endTime} or end_time between #{startTime} and #{endTime}
+                or #{startTime} between start_time and end_time or #{endTime} between start_time and end_time)
+            and book_status = 0
+        </where>
+        limit 1
+    </select>
+
+    <select id="selectBusiSmartRoomBookForCurrent" resultMap="BusiSmartRoomBookResult">
+        <include refid="selectBusiSmartRoomBookVo"/>
+        <where>
+            and room_id = #{roomId}
+            and start_time <![CDATA[<=]]> #{currentTime}
+            and end_time <![CDATA[>=]]> #{currentTime}
+            and book_status = 0
+        </where>
+        limit 1
+    </select>
+
+    <select id="selectBusiSmartRoomBookById" parameterType="Long" resultMap="BusiSmartRoomBookResult">
+        <include refid="selectBusiSmartRoomBookVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertBusiSmartRoomBook" parameterType="BusiSmartRoomBook" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_smart_room_book
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="roomId != null">room_id,</if>
+            <if test="bookName != null and bookName != ''">book_name,</if>
+            <if test="startTime != null">start_time,</if>
+            <if test="endTime != null">end_time,</if>
+            <if test="bookStatus != null">book_status,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            <if test="remark != null">remark,</if>
+            <if test="mcuType != null">mcu_type,</if>
+            <if test="appointmentConferenceId != null">appointment_conference_id,</if>
+            <if test="extendMinutes != null">extend_minutes,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="roomId != null">#{roomId},</if>
+            <if test="bookName != null and bookName != ''">#{bookName},</if>
+            <if test="startTime != null">#{startTime},</if>
+            <if test="endTime != null">#{endTime},</if>
+            <if test="bookStatus != null">#{bookStatus},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="mcuType != null">#{mcuType},</if>
+            <if test="appointmentConferenceId != null">#{appointmentConferenceId},</if>
+            <if test="extendMinutes != null">#{extendMinutes},</if>
+        </trim>
+    </insert>
+
+    <update id="updateBusiSmartRoomBook" parameterType="BusiSmartRoomBook">
+        update busi_smart_room_book
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="roomId != null">room_id = #{roomId},</if>
+            <if test="bookName != null and bookName != ''">book_name = #{bookName},</if>
+            <if test="startTime != null">start_time = #{startTime},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+            <if test="bookStatus != null">book_status = #{bookStatus},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null and createBy != ''">create_by = #{createBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            mcu_type = #{mcuType},
+            appointment_conference_id = #{appointmentConferenceId},
+            <if test="extendMinutes != null">extend_minutes = #{extendMinutes},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiSmartRoomBookById" parameterType="Long">
+        delete from busi_smart_room_book where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiSmartRoomBookByIds" parameterType="String">
+        delete from busi_smart_room_book where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

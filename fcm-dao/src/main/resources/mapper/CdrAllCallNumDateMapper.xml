@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.CdrAllCallNumDateMapper">
+
+    <resultMap type="CdrAllCallNumDate" id="CdrAllCallNumDateResult">
+        <result property="id"    column="id"    />
+        <result property="fmeIp"    column="fme_ip"    />
+        <result property="number"    column="number"    />
+        <result property="recordDate"    column="record_date"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectCdrAllCallNumDateVo">
+        select id, fme_ip, number, record_date, create_time, update_time from cdr_all_call_num_date
+    </sql>
+
+    <select id="selectCdrAllCallNumDateList" parameterType="CdrAllCallNumDate" resultMap="CdrAllCallNumDateResult">
+        <include refid="selectCdrAllCallNumDateVo"/>
+        <where>
+            <if test="fmeIp != null "> and fme_ip = #{fmeIp}</if>
+            <if test="number != null "> and number = #{number}</if>
+            <if test="recordDate != null "> and record_date = #{recordDate}</if>
+        </where>
+    </select>
+
+    <select id="selectCdrAllCallNumDateById" parameterType="Long" resultMap="CdrAllCallNumDateResult">
+        <include refid="selectCdrAllCallNumDateVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertCdrAllCallNumDate" parameterType="CdrAllCallNumDate" useGeneratedKeys="true" keyProperty="id">
+        insert into cdr_all_call_num_date
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fmeIp != null">fme_ip,</if>
+            <if test="number != null">number,</if>
+            <if test="recordDate != null">record_date,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="fmeIp != null">#{fmeIp},</if>
+            <if test="number != null">#{number},</if>
+            <if test="recordDate != null">#{recordDate},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateCdrAllCallNumDate" parameterType="CdrAllCallNumDate">
+        update cdr_all_call_num_date
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="fmeIp != null">fme_ip = #{fmeIp},</if>
+            <if test="number != null">number = #{number},</if>
+            <if test="recordDate != null">record_date = #{recordDate},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCdrAllCallNumDateById" parameterType="Long">
+        delete from cdr_all_call_num_date where id = #{id}
+    </delete>
+
+    <delete id="deleteCdrAllCallNumDateByIds" parameterType="String">
+        delete from cdr_all_call_num_date where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <select id="selectByFmeIpAndDate" resultMap="CdrAllCallNumDateResult">
+        <include refid="selectCdrAllCallNumDateVo"/>
+        <where>
+            <if test="fmeIp != null "> and fme_ip = #{fmeIp}</if>
+            <if test="recordDate != null "> and record_date = #{recordDate}</if>
+        </where>
+    </select>
+    <select id="selectByFmeIpAndDateRange" resultMap="CdrAllCallNumDateResult">
+        <include refid="selectCdrAllCallNumDateVo"/>
+        <where>
+            <if test="fmeIp != null "> and fme_ip = #{fmeIp}</if>
+            <if test="startTime != null "> and record_date <![CDATA[>=]]> #{startTime}</if>
+            <if test="endTime != null "> and record_date <![CDATA[<=]]> #{endTime}</if>
+        </where>
+    </select>
+</mapper>

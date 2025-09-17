@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiEduSectionSchemeMapper">
+    
+    <resultMap type="BusiEduSectionScheme" id="BusiEduSectionSchemeResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="name"    column="name"    />
+        <result property="classInterval"    column="class_interval"    />
+        <result property="breakInterval"    column="break_interval"    />
+        <result property="enableStatus"    column="enable_status"    />
+    </resultMap>
+
+    <sql id="selectBusiEduSectionSchemeVo">
+        select id, create_time, update_time, dept_id, name, class_interval, break_interval, enable_status from busi_edu_section_scheme
+    </sql>
+    
+    <resultMap type="DeptRecordCount" id="DeptRecordCountMap">
+        <result property="deptId"    column="dept_id"    />
+        <result property="count"    column="ct"    />
+    </resultMap>
+    
+    <select id="getDeptRecordCounts" resultMap="DeptRecordCountMap">
+        SELECT
+        	a.dept_id,
+        	count(*) ct 
+        FROM
+        	busi_edu_section_scheme a
+        GROUP BY
+        	a.dept_id 
+        ORDER BY
+        	a.dept_id ASC
+    </select>
+
+    <select id="selectBusiEduSectionSchemeList" parameterType="BusiEduSectionScheme" resultMap="BusiEduSectionSchemeResult">
+        <include refid="selectBusiEduSectionSchemeVo"/>
+        <where>  
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="classInterval != null "> and class_interval = #{classInterval}</if>
+            <if test="breakInterval != null "> and break_interval = #{breakInterval}</if>
+            <if test="enableStatus != null "> and enable_status = #{enableStatus}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiEduSectionSchemeById" parameterType="Long" resultMap="BusiEduSectionSchemeResult">
+        <include refid="selectBusiEduSectionSchemeVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiEduSectionScheme" parameterType="BusiEduSectionScheme" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_edu_section_scheme
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="name != null">name,</if>
+            <if test="classInterval != null">class_interval,</if>
+            <if test="breakInterval != null">break_interval,</if>
+            <if test="enableStatus != null">enable_status,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="name != null">#{name},</if>
+            <if test="classInterval != null">#{classInterval},</if>
+            <if test="breakInterval != null">#{breakInterval},</if>
+            <if test="enableStatus != null">#{enableStatus},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiEduSectionScheme" parameterType="BusiEduSectionScheme">
+        update busi_edu_section_scheme
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="classInterval != null">class_interval = #{classInterval},</if>
+            <if test="breakInterval != null">break_interval = #{breakInterval},</if>
+            <if test="enableStatus != null">enable_status = #{enableStatus},</if>
+        </trim>
+        where id = #{id}
+    </update>
+    
+    <update id="updateBusiEduSectionSchemeEnableStatus">
+        update busi_edu_section_scheme
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="enableStatus != null">enable_status = #{enableStatus},</if>
+        </trim>
+        where dept_id = #{deptId}
+    </update>
+    
+
+    <delete id="deleteBusiEduSectionSchemeById" parameterType="Long">
+        delete from busi_edu_section_scheme where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiEduSectionSchemeByIds" parameterType="String">
+        delete from busi_edu_section_scheme where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

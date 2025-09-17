@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 2.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiMcuHwcloudMapper">
+
+    <resultMap type="BusiMcuHwcloud" id="BusiMcuHwcloudResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="appId"    column="app_id"    />
+        <result property="appKey"    column="app_key"    />
+        <result property="name"    column="name"    />
+        <result property="status"    column="status"    />
+        <result property="capacity"    column="capacity"    />
+        <result property="spareSmcId"    column="spare_smc_id"    />
+    </resultMap>
+
+    <sql id="selectBusiMcuHwcloudVo">
+        select id, create_time, update_time, app_id, app_key, `name`, status, capacity, spare_smc_id  from busi_mcu_hwcloud
+    </sql>
+
+    <select id="selectBusiMcuHwcloudList" parameterType="BusiMcuHwcloud" resultMap="BusiMcuHwcloudResult">
+        <include refid="selectBusiMcuHwcloudVo"/>
+        <where>
+            <if test="appId != null  and appId != ''"> and app_id = #{appId}</if>
+            <if test="appKey != null  and appKey != ''"> and app_key = #{appKey}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="capacity != null "> and capacity = #{capacity}</if>
+            <if test="spareSmcId != null "> and spare_smc_id = #{spareSmcId}</if>
+        </where>
+    </select>
+
+    <select id="selectBusiMcuHwcloudById" parameterType="Long" resultMap="BusiMcuHwcloudResult">
+        <include refid="selectBusiMcuHwcloudVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertBusiMcuHwcloud" parameterType="BusiMcuHwcloud" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_mcu_hwcloud
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="appId != null">app_id,</if>
+            <if test="appKey != null">app_key,</if>
+            <if test="name != null">name,</if>
+            <if test="status != null">status,</if>
+            <if test="capacity != null">capacity,</if>
+            <if test="spareSmcId != null">spare_smc_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="appId != null">#{appId},</if>
+            <if test="appKey != null">#{appKey},</if>
+            <if test="name != null">#{name},</if>
+            <if test="status != null">#{status},</if>
+            <if test="capacity != null">#{capacity},</if>
+            <if test="spareSmcId != null">#{spareSmcId},</if>
+        </trim>
+    </insert>
+
+    <update id="updateBusiMcuHwcloud" parameterType="BusiMcuHwcloud">
+        update busi_mcu_hwcloud
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="appId != null">app_id = #{appId},</if>
+            <if test="appKey != null">app_key = #{appKey},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="capacity != null">capacity = #{capacity},</if>
+            <if test="spareSmcId != null">spare_smc_id = #{spareSmcId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiMcuHwcloudById" parameterType="Long">
+        delete from busi_mcu_hwcloud where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiMcuHwcloudByIds" parameterType="String">
+        delete from busi_mcu_hwcloud where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

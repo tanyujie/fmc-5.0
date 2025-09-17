@@ -1,0 +1,39 @@
+[2020-12-14 11:30:37,959] : websocket连接成功: wss://172.16.100.93:9443/events/v1?authToken=a78478a2-773b-4610-b337-2fe96228e5f8
+[2020-12-14 11:30:37,959] : client----->server: {"message":{"messageId":1,"subscriptions":[{"elements":["name","participants","recording","endpointRecording","streaming","lockState","callType","callCorrelator"],"index":1,"type":"calls"}],"type":"subscribeRequest"},"type":"message"}
+[2020-12-14 11:30:37,961] : server----->client: { "type": "messageAck", "messageAck": { "messageId": 1, "status": "success" } }
+[2020-12-14 11:30:37,971] : client----->server: { "type": "messageAck", "messageAck": { "messageId": 1, "status": "success" } }
+[2020-12-14 11:30:37,972] : server----->client: { "type": "message", "message": { "messageId": 1, "type": "subscriptionUpdate", "subscriptions": [ { "index": 1, "state": "pending" } ] } }
+[2020-12-14 11:30:37,981] : client----->server: { "type": "message", "message": { "messageId": 1, "type": "subscriptionUpdate", "subscriptions": [ { "index": 1, "state": "pending" } ] } }
+[2020-12-14 11:30:37,982] : server----->client: { "type": "message", "message": { "messageId": 2, "type": "subscriptionUpdate", "subscriptions": [ { "index": 1, "state": "active" } ] } }
+[2020-12-14 11:30:37,983] : client----->server: { "type": "message", "message": { "messageId": 2, "type": "subscriptionUpdate", "subscriptions": [ { "index": 1, "state": "active" } ] } }
+[2020-12-14 11:30:37,984] : server----->client: { "type": "message", "message": { "messageId": 3, "type": "callListUpdate", "subscriptionIndex": 1, "updates": [ { "call": "99a83d33-df17-4502-8bf4-90ee18e9b692", "updateType": "add", "callCorrelator": "3b45f5e5-08b9-4014-acb9-2d5b721305d6", "name": "test98865", "participants": 1, "streaming": "inactive", "recording": "inactive", "endpointRecording": "inactive", "lockState": "notLocked", "callType": "coSpace" } ] } }
+[2020-12-14 11:30:38,121] : client----->server: {"message":{"messageId":1,"subscriptions":[{"elements":["name","participants","recording","endpointRecording","streaming","lockState","callType","callCorrelator"],"index":1,"type":"calls"},{"call":"99a83d33-df17-4502-8bf4-90ee18e9b692","elements":["name","uri","state","direction","audioMuted","videoMuted","importance","layout","presenter","endpointRecording"],"index":2,"type":"callRoster"}],"type":"subscribeRequest"},"type":"message"}
+[2020-12-14 11:30:38,122] : client----->server: { "type": "message", "message": { "messageId": 3, "type": "callListUpdate", "subscriptionIndex": 1, "updates": [ { "call": "99a83d33-df17-4502-8bf4-90ee18e9b692", "updateType": "add", "callCorrelator": "3b45f5e5-08b9-4014-acb9-2d5b721305d6", "name": "test98865", "participants": 1, "streaming": "inactive", "recording": "inactive", "endpointRecording": "inactive", "lockState": "notLocked", "callType": "coSpace" } ] } }
+[2020-12-14 11:30:38,122] : server----->client: { "type": "messageAck", "messageAck": { "messageId": 1, "status": "success" } }
+[2020-12-14 11:30:38,124] : client----->server: { "type": "messageAck", "messageAck": { "messageId": 1, "status": "success" } }
+[2020-12-14 11:30:38,124] : server----->client: { "type": "messageAck", "messageAck": { "messageId": 2, "status": "success" } }
+[2020-12-14 11:30:38,125] : client----->server: { "type": "messageAck", "messageAck": { "messageId": 2, "status": "success" } }
+[2020-12-14 11:30:38,126] : server----->client: { "type": "messageAck", "messageAck": { "messageId": 1, "status": "success" } }
+[2020-12-14 11:30:38,127] : client----->server: { "type": "messageAck", "messageAck": { "messageId": 1, "status": "success" } }
+[2020-12-14 11:30:38,127] : server----->client: { "type": "messageAck", "messageAck": { "messageId": 3, "status": "success" } }
+[2020-12-14 11:30:38,128] : client----->server: { "type": "messageAck", "messageAck": { "messageId": 3, "status": "success" } }
+[2020-12-14 11:30:38,166] : server----->client: { "type": "message", "message": { "messageId": 4, "type": "subscriptionUpdate", "subscriptions": [ { "index": 1, "state": "active" }, { "index": 2, "state": "active" } ] } }
+[2020-12-14 11:30:38,167] : client----->server: { "type": "message", "message": { "messageId": 4, "type": "subscriptionUpdate", "subscriptions": [ { "index": 1, "state": "active" }, { "index": 2, "state": "active" } ] } }
+[2020-12-14 11:30:38,168] : server----->client: { "type": "message", "message": { "messageId": 5, "type": "rosterUpdate", "subscriptionIndex": 2, "updates": [ { "participant": "cbe046d8-2c3c-41be-9d07-ab75df79032b", "updateType": "add", "name": "248", "uri": "172.16.100.248", "state": "connected", "direction": "outgoing", "audioMuted": true, "videoMuted": false, "importance": 1, "layout": "speakerOnly", "presenter": false, "endpointRecording": "inactive" } ] } }
+[2020-12-14 11:30:38,171] : client----->server: { "type": "message", "message": { "messageId": 5, "type": "rosterUpdate", "subscriptionIndex": 2, "updates": [ { "participant": "cbe046d8-2c3c-41be-9d07-ab75df79032b", "updateType": "add", "name": "248", "uri": "172.16.100.248", "state": "connected", "direction": "outgoing", "audioMuted": true, "videoMuted": false, "importance": 1, "layout": "speakerOnly", "presenter": false, "endpointRecording": "inactive" } ] } }
+[2020-12-14 11:30:38,172] : server----->client: { "type": "messageAck", "messageAck": { "messageId": 4, "status": "success" } }
+[2020-12-14 11:30:38,173] : client----->server: { "type": "messageAck", "messageAck": { "messageId": 4, "status": "success" } }
+[2020-12-14 11:30:38,175] : server----->client: { "type": "messageAck", "messageAck": { "messageId": 5, "status": "success" } }
+[2020-12-14 11:30:38,176] : client----->server: { "type": "messageAck", "messageAck": { "messageId": 5, "status": "success" } }
+[2020-12-14 11:30:40,302] : server----->client: { "type": "messageAck", "messageAck": { "messageId": 1, "status": "success" } }
+[2020-12-14 11:30:40,303] : client----->server: { "type": "messageAck", "messageAck": { "messageId": 1, "status": "success" } }
+[2020-12-14 11:30:45,005] : server----->client: { "type": "messageAck", "messageAck": { "messageId": 1, "status": "success" } }
+[2020-12-14 11:30:45,007] : client----->server: { "type": "messageAck", "messageAck": { "messageId": 1, "status": "success" } }
+[2020-12-14 11:30:50,307] : server----->client: { "type": "messageAck", "messageAck": { "messageId": 1, "status": "success" } }
+[2020-12-14 11:30:50,308] : client----->server: { "type": "messageAck", "messageAck": { "messageId": 1, "status": "success" } }
+[2020-12-14 11:30:55,004] : server----->client: { "type": "messageAck", "messageAck": { "messageId": 1, "status": "success" } }
+[2020-12-14 11:30:55,006] : client----->server: { "type": "messageAck", "messageAck": { "messageId": 1, "status": "success" } }
+[2020-12-14 11:31:00,299] : server----->client: { "type": "messageAck", "messageAck": { "messageId": 1, "status": "success" } }
+[2020-12-14 11:31:00,299] : client----->server: { "type": "messageAck", "messageAck": { "messageId": 1, "status": "success" } }
+[2020-12-14 11:31:05,005] : server----->client: { "type": "messageAck", "messageAck": { "messageId": 1, "status": "success" } }
+[2020-12-14 11:31:05,006] : client----->server: { "type": "messageAck", "messageAck": { "messageId": 1, "status": "success" } }

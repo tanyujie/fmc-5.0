@@ -1,0 +1,7 @@
+ALTER TABLE `fcmdb`.`busi_register_terminal`
+CHANGE COLUMN `sn` `sn` VARCHAR(128) CHARACTER SET 'utf8mb4' NULL DEFAULT NULL COMMENT '终端序列号' ,
+CHANGE COLUMN `mac` `mac` VARCHAR(128) CHARACTER SET 'utf8mb4' NULL DEFAULT NULL COMMENT 'mac地址' ;
+
+ALTER TABLE `fcmdb`.`busi_terminal`
+CHANGE COLUMN `sn` `sn` VARCHAR(128) NULL DEFAULT NULL COMMENT '终端序列号，设备硬件的sn，mqtt必须' ,
+CHANGE COLUMN `mac` `mac` VARCHAR(128) NULL DEFAULT NULL COMMENT 'mac地址' ;

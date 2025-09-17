@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiOperationLogMapper">
+    <resultMap type="BusiOperationLog" id="BusiOperationLogResult">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="operatorName"    column="operator_name"    />
+        <result property="time"    column="time"    />
+        <result property="actionDetails"    column="action_details"    />
+        <result property="actionResult"    column="action_result"    />
+        <result property="ip"    column="ip"    />
+        <result property="deviceType"    column="device_type"    />
+        <result property="historyConferenceId"    column="history_conference_id"    />
+    </resultMap>
+
+    <sql id="selectBusiOperationLogVo">
+        select id, user_id, operator_name, time, action_details, action_result, ip, device_type, history_conference_id from busi_operation_log
+    </sql>
+
+    <select id="selectBusiOperationLogList" parameterType="BusiOperationLog" resultMap="BusiOperationLogResult">
+        <include refid="selectBusiOperationLogVo"/>
+        <where>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="operatorName != null  and operatorName != ''"> and operator_name like concat('%', #{operatorName}, '%')</if>
+            <if test="time != null "> and time = #{time}</if>
+            <if test="actionDetails != null  and actionDetails != ''"> and action_details = #{actionDetails}</if>
+            <if test="actionResult != null "> and action_result = #{actionResult}</if>
+            <if test="ip != null  and ip != ''"> and ip = #{ip}</if>
+            <if test="deviceType != null  and deviceType != ''"> and device_type = #{deviceType}</if>
+            <if test="historyConferenceId != null "> and history_conference_id = #{historyConferenceId}</if>
+            <if test="startTime != null "> and time <![CDATA[>=]]> #{startTime}</if>
+            <if test="endTime != null "> and time <![CDATA[<=]]> #{endTime}</if>
+        </where>
+        order by time ${sort}
+    </select>
+
+    <select id="selectBusiOperationLogListHistory" parameterType="OperationLogSearchVo" resultMap="BusiOperationLogResult">
+        select id, user_id, operator_name, time, action_details, action_result, ip, device_type, history_conference_id from
+        <if test="year == null or year == ''">busi_operation_log</if>
+        <if test="year != null and year != ''">busi_operation_log_${year}</if>
+        <where>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="operatorName != null  and operatorName != ''"> and operator_name like concat('%', #{operatorName}, '%')</if>
+            <if test="time != null "> and time = #{time}</if>
+            <if test="actionDetails != null  and actionDetails != ''"> and action_details = #{actionDetails}</if>
+            <if test="actionResult != null "> and action_result = #{actionResult}</if>
+            <if test="ip != null  and ip != ''"> and ip = #{ip}</if>
+            <if test="deviceType != null  and deviceType != ''"> and device_type = #{deviceType}</if>
+            <if test="historyConferenceId != null "> and history_conference_id = #{historyConferenceId}</if>
+            <if test="startTime != null "> and time <![CDATA[>=]]> #{startTime}</if>
+            <if test="endTime != null "> and time <![CDATA[<=]]> #{endTime}</if>
+        </where>
+        order by time ${sort}
+    </select>
+
+    <select id="selectBusiOperationLogFirst" resultMap="BusiOperationLogResult">
+        <include refid="selectBusiOperationLogVo"/>
+        order by id ASC limit 1
+    </select>
+
+    <select id="selectBusiOperationLogCount" parameterType="BusiOperationLog" resultType="long">
+        SELECT COUNT(*) FROM busi_operation_log
+        <where>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="operatorName != null  and operatorName != ''"> and operator_name like concat('%', #{operatorName}, '%')</if>
+            <if test="time != null "> and time = #{time}</if>
+            <if test="actionDetails != null  and actionDetails != ''"> and action_details = #{actionDetails}</if>
+            <if test="actionResult != null "> and action_result = #{actionResult}</if>
+            <if test="ip != null  and ip != ''"> and ip = #{ip}</if>
+            <if test="deviceType != null  and deviceType != ''"> and device_type = #{deviceType}</if>
+            <if test="historyConferenceId != null "> and history_conference_id = #{historyConferenceId}</if>
+            <if test="startTime != null "> and time <![CDATA[>=]]> #{startTime}</if>
+            <if test="endTime != null "> and time <![CDATA[<=]]> #{endTime}</if>
+        </where>
+    </select>
+
+    <select id="selectBusiOperationLogById" parameterType="Long" resultMap="BusiOperationLogResult">
+        <include refid="selectBusiOperationLogVo"/><if test="year != null ">_${year}</if>
+        where id = #{id}
+    </select>
+
+    <insert id="insertBusiOperationLog" parameterType="BusiOperationLog" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_operation_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="operatorName != null">operator_name,</if>
+            <if test="time != null">time,</if>
+            <if test="actionDetails != null">action_details,</if>
+            <if test="actionResult != null">action_result,</if>
+            <if test="ip != null">ip,</if>
+            <if test="deviceType != null">device_type,</if>
+            <if test="historyConferenceId != null">history_conference_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="operatorName != null">#{operatorName},</if>
+            <if test="time != null">#{time},</if>
+            <if test="actionDetails != null">#{actionDetails},</if>
+            <if test="actionResult != null">#{actionResult},</if>
+            <if test="ip != null">#{ip},</if>
+            <if test="deviceType != null">#{deviceType},</if>
+            <if test="historyConferenceId != null">#{historyConferenceId},</if>
+        </trim>
+    </insert>
+
+    <update id="updateBusiOperationLog" parameterType="BusiOperationLog">
+        update busi_operation_log
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="operatorName != null">operator_name = #{operatorName},</if>
+            <if test="time != null">time = #{time},</if>
+            <if test="actionDetails != null">action_details = #{actionDetails},</if>
+            <if test="actionResult != null">action_result = #{actionResult},</if>
+            <if test="ip != null">ip = #{ip},</if>
+            <if test="deviceType != null">device_type = #{deviceType},</if>
+            <if test="historyConferenceId != null">history_conference_id = #{historyConferenceId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiOperationLogById" parameterType="Long">
+        delete from busi_operation_log where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiOperationLogByIds" parameterType="String">
+        delete from busi_operation_log where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <insert id="copyTable" parameterType="String">
+        CREATE TABLE ${tableName} AS SELECT * FROM busi_operation_log;
+    </insert>
+
+    <delete id="clearTable" parameterType="String">
+        TRUNCATE TABLE ${tableName};
+    </delete>
+</mapper>

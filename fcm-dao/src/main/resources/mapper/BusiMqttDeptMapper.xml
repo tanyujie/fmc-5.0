@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiMqttDeptMapper">
+    
+    <resultMap type="BusiMqttDept" id="BusiMqttDeptResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="mqttType"    column="mqtt_type"    />
+        <result property="mqttId"    column="mqtt_id"    />
+    </resultMap>
+
+    <sql id="selectBusiMqttDeptVo">
+        select id, create_time, update_time, dept_id, mqtt_type, mqtt_id from busi_mqtt_dept
+    </sql>
+
+    <select id="selectBusiMqttDeptList" parameterType="BusiMqttDept" resultMap="BusiMqttDeptResult">
+        <include refid="selectBusiMqttDeptVo"/>
+        <where>  
+            <if test="updateTime != null "> and update_time = #{update_time}</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="mqttType != null "> and mqtt_type = #{mqttType}</if>
+            <if test="mqttId != null "> and mqtt_id = #{mqttId}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiMqttDeptById" parameterType="Long" resultMap="BusiMqttDeptResult">
+        <include refid="selectBusiMqttDeptVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiMqttDept" parameterType="BusiMqttDept" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_mqtt_dept
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="mqttType != null">mqtt_type,</if>
+            <if test="mqttId != null">mqtt_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="mqttType != null">#{mqttType},</if>
+            <if test="mqttId != null">#{mqttId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiMqttDept" parameterType="BusiMqttDept">
+        update busi_mqtt_dept
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="mqttType != null">mqtt_type = #{mqttType},</if>
+            <if test="mqttId != null">mqtt_id = #{mqttId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiMqttDeptById" parameterType="Long">
+        delete from busi_mqtt_dept where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiMqttDeptByIds" parameterType="String">
+        delete from busi_mqtt_dept where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

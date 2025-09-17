@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiFreeSwitchDeptMapper">
+    
+    <resultMap type="BusiFreeSwitchDept" id="BusiFreeSwitchDeptResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="serverId"    column="server_id"    />
+        <result property="fcmType"    column="fcm_type"    />
+    </resultMap>
+
+    <sql id="selectBusiFreeSwitchDeptVo">
+        select id, create_time, update_time, dept_id, server_id, fcm_type from busi_free_switch_dept
+    </sql>
+
+    <select id="selectBusiFreeSwitchDeptList" parameterType="BusiFreeSwitchDept" resultMap="BusiFreeSwitchDeptResult">
+        <include refid="selectBusiFreeSwitchDeptVo"/>
+        <where>  
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="serverId != null "> and server_id = #{serverId}</if>
+            <if test="fcmType != null "> and fcm_type = #{fcmType}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiFreeSwitchDeptById" parameterType="Long" resultMap="BusiFreeSwitchDeptResult">
+        <include refid="selectBusiFreeSwitchDeptVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiFreeSwitchDept" parameterType="BusiFreeSwitchDept" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_free_switch_dept
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="serverId != null">server_id,</if>
+            <if test="fcmType != null">fcm_type,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="serverId != null">#{serverId},</if>
+            <if test="fcmType != null">#{fcmType},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiFreeSwitchDept" parameterType="BusiFreeSwitchDept">
+        update busi_free_switch_dept
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="serverId != null">server_id = #{serverId},</if>
+            <if test="fcmType != null">fcm_type = #{fcmType},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiFreeSwitchDeptById" parameterType="Long">
+        delete from busi_free_switch_dept where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiFreeSwitchDeptByIds" parameterType="String">
+        delete from busi_free_switch_dept where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

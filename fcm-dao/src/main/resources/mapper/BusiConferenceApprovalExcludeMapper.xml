@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiConferenceApprovalExcludeMapper">
+    
+    <resultMap type="BusiConferenceApprovalExclude" id="BusiConferenceApprovalExcludeResult">
+        <result property="id"    column="id"    />
+        <result property="type"    column="type"    />
+        <result property="excludeId"    column="exclude_id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectBusiConferenceApprovalExcludeVo">
+        select id, type, exclude_id, create_by, create_time from busi_conference_approval_exclude
+    </sql>
+
+    <select id="selectBusiConferenceApprovalExcludeList" parameterType="BusiConferenceApprovalExclude" resultMap="BusiConferenceApprovalExcludeResult">
+        <include refid="selectBusiConferenceApprovalExcludeVo"/>
+        <where>  
+            <if test="type != null "> and type = #{type}</if>
+            <if test="excludeId != null "> and exclude_id = #{excludeId}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiConferenceApprovalExcludeById" parameterType="Long" resultMap="BusiConferenceApprovalExcludeResult">
+        <include refid="selectBusiConferenceApprovalExcludeVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiConferenceApprovalExclude" parameterType="BusiConferenceApprovalExclude" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_conference_approval_exclude
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="type != null">type,</if>
+            <if test="excludeId != null">exclude_id,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="type != null">#{type},</if>
+            <if test="excludeId != null">#{excludeId},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiConferenceApprovalExclude" parameterType="BusiConferenceApprovalExclude">
+        update busi_conference_approval_exclude
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="type != null">type = #{type},</if>
+            <if test="excludeId != null">exclude_id = #{excludeId},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiConferenceApprovalExcludeById" parameterType="Long">
+        delete from busi_conference_approval_exclude where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiConferenceApprovalExcludeByIds" parameterType="String">
+        delete from busi_conference_approval_exclude where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

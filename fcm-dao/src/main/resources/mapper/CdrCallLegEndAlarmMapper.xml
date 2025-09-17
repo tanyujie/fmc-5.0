@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.CdrCallLegEndAlarmMapper">
+    
+    <resultMap type="CdrCallLegEndAlarm" id="CdrCallLegEndAlarmResult">
+        <result property="id"    column="id"    />
+        <result property="cdrLegEndId"    column="cdr_leg_end_id"    />
+        <result property="type"    column="type"  typeHandler="com.paradisecloud.fcm.dao.enums.EnumHandler"   />
+        <result property="durationPercentage"    column="duration_percentage"    />
+        <result property="time"    column="time"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="createUserId"    column="create_user_id"    />
+        <result property="createUserName"    column="create_user_name"    />
+    </resultMap>
+
+    <sql id="selectCdrCallLegEndAlarmVo">
+        select id, cdr_leg_end_id, type, duration_percentage,time from cdr_call_leg_end_alarm
+    </sql>
+
+    <select id="selectCdrCallLegEndAlarmList" parameterType="CdrCallLegEndAlarm" resultMap="CdrCallLegEndAlarmResult">
+        <include refid="selectCdrCallLegEndAlarmVo"/>
+        <where>  
+            <if test="cdrLegEndId != null "> and cdr_leg_end_id = #{cdrLegEndId}</if>
+            <if test="type != null  and type != ''"> and type = #{type,typeHandler=com.paradisecloud.fcm.dao.enums.EnumHandler}</if>
+            <if test="durationPercentage != null "> and duration_percentage = #{durationPercentage}</if>
+        </where>
+    </select>
+    
+    <select id="selectCdrCallLegEndAlarmById" parameterType="Integer" resultMap="CdrCallLegEndAlarmResult">
+        <include refid="selectCdrCallLegEndAlarmVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertCdrCallLegEndAlarm" parameterType="CdrCallLegEndAlarm">
+        insert into cdr_call_leg_end_alarm
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="cdrLegEndId != null">cdr_leg_end_id,</if>
+            <if test="type != null">type,</if>
+            <if test="durationPercentage != null">duration_percentage,</if>
+            <if test="time != null">time ,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="createUserId != null">create_user_id,</if>
+            <if test="createUserName != null">create_user_name,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="cdrLegEndId != null">#{cdrLegEndId},</if>
+            <if test="type != null">#{type,typeHandler=com.paradisecloud.fcm.dao.enums.EnumHandler},</if>
+            <if test="durationPercentage != null">#{durationPercentage},</if>
+            <if test="time != null">#{time},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="createUserId != null">#{createUserId},</if>
+            <if test="createUserName != null">#{createUserName},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCdrCallLegEndAlarm" parameterType="CdrCallLegEndAlarm">
+        update cdr_call_leg_end_alarm
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="cdrLegEndId != null">cdr_leg_end_id = #{cdrLegEndId},</if>
+            <if test="type != null">type = #{type,typeHandler=com.paradisecloud.fcm.dao.enums.EnumHandler},</if>
+            <if test="durationPercentage != null">duration_percentage = #{durationPercentage},</if>
+            <if test="time != null">time = #{time},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCdrCallLegEndAlarmById" parameterType="Integer">
+        delete from cdr_call_leg_end_alarm where id = #{id}
+    </delete>
+
+    <delete id="deleteCdrCallLegEndAlarmByIds" parameterType="String">
+        delete from cdr_call_leg_end_alarm where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectAlarmListForConferenceTerminalById" resultMap="CdrCallLegEndAlarmResult">
+        select a.id, a.cdr_leg_end_id, a.type, avg(a.duration_percentage) duration_percentage, a.time
+        from cdr_call_leg_end_alarm a
+        inner join busi_history_participant p on p.call_leg_id = a.cdr_leg_end_id
+        inner join busi_history_participant_terminal pt on pt.terminal_id = p.terminal_id and pt.history_conference_id = p.history_conference_id and pt.terminal_id = #{terminalId} and pt.history_conference_id = #{historyConferenceId}
+        group by a.type
+    </select>
+
+    <select id="selectAlarmListForConferenceTerminalByRemoteParty" resultMap="CdrCallLegEndAlarmResult">
+        select a.id, a.cdr_leg_end_id, a.type, avg(a.duration_percentage) duration_percentage, a.time
+        from cdr_call_leg_end_alarm a
+        inner join busi_history_participant p on p.call_leg_id = a.cdr_leg_end_id
+        inner join busi_history_participant_terminal pt on pt.remote_party = p.remote_party and pt.history_conference_id = p.history_conference_id and pt.remote_party = #{remoteParty} and pt.history_conference_id = #{historyConferenceId}
+        group by a.type
+    </select>
+
+    <delete id="deleteHistory">
+        delete from cdr_call_leg_end_alarm where create_time &lt; #{beforeDate}
+    </delete>
+</mapper>

@@ -1,0 +1,17 @@
+proxyComponents: 
+  - interfaceClass: "com.paradisecloud.fcm.fme.attendee.interfaces.IAttendeeFieldService"
+    proxyMethodClasses: 
+      - "com.paradisecloud.fcm.fme.attendee.model.pm.attendeefield.UpdateByParticipant0"
+      - "com.paradisecloud.fcm.fme.attendee.model.pm.attendeefield.UpdateByParticipant1"
+      
+  - interfaceClass: "com.paradisecloud.fcm.fme.attendee.interfaces.ICallegService"
+    proxyMethodClasses: 
+      - "com.paradisecloud.fcm.fme.attendee.model.pm.calleg.GetCallLegByParticipantUuid"
+      - "com.paradisecloud.fcm.fme.attendee.model.pm.calleg.GetCallLegByAttendee"
+      
+  - interfaceClass: "com.paradisecloud.fcm.fme.attendee.interfaces.IAttendeeLayoutService"
+    proxyMethodClasses: 
+      - "com.paradisecloud.fcm.fme.attendee.model.pm.layout.SetAttendeeLayout0"
+      - "com.paradisecloud.fcm.fme.attendee.model.pm.layout.SetAttendeeLayout1"
+      - "com.paradisecloud.fcm.fme.attendee.model.pm.layout.SetAttendeeLayout2"
+      - "com.paradisecloud.fcm.fme.attendee.model.pm.layout.SetAttendeeLayout3"

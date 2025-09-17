@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiSmc2HistoryConferenceMapper">
+    
+    <resultMap type="com.paradisecloud.fcm.dao.model.BusiSmc2HistoryConference" id="BusiSmc2HistoryConferenceResult">
+        <result property="id"    column="id"    />
+        <result property="conferenceId"    column="conference_id"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="subject"    column="subject"    />
+        <result property="conferenceCode"    column="conference_code"    />
+        <result property="endStatus"    column="end_status"    />
+        <result property="endTime"    column="end_time"    />
+        <result property="templateId"    column="template_id"    />
+        <result property="conferenceAvcType"    column="conference_avc_type"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="duration"    column="duration"    />
+    </resultMap>
+
+    <sql id="selectBusiSmc2HistoryConferenceVo">
+        select id, conference_id, dept_id, create_time, subject, conference_code, end_status, end_time, template_id, conference_avc_type, start_time, duration from busi_smc2_history_conference
+    </sql>
+
+    <select id="selectBusiSmc2HistoryConferenceList" parameterType="com.paradisecloud.fcm.dao.model.BusiSmc2HistoryConference" resultMap="BusiSmc2HistoryConferenceResult">
+        <include refid="selectBusiSmc2HistoryConferenceVo"/>
+        <where>  
+            <if test="conferenceId != null  and conferenceId != ''"> and conference_id = #{conferenceId}</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="subject != null  and subject != ''"> and subject = #{subject}</if>
+            <if test="conferenceCode != null  and conferenceCode != ''"> and conference_code = #{conferenceCode}</if>
+            <if test="endStatus != null "> and end_status = #{endStatus}</if>
+            <if test="endTime != null "> and end_time = #{endTime}</if>
+            <if test="templateId != null "> and template_id = #{templateId}</if>
+            <if test="conferenceAvcType != null  and conferenceAvcType != ''"> and conference_avc_type = #{conferenceAvcType}</if>
+            <if test="startTime != null "> and start_time = #{startTime}</if>
+            <if test="duration != null "> and duration = #{duration}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiSmc2HistoryConferenceById" parameterType="Integer" resultMap="BusiSmc2HistoryConferenceResult">
+        <include refid="selectBusiSmc2HistoryConferenceVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiSmc2HistoryConference" parameterType="com.paradisecloud.fcm.dao.model.BusiSmc2HistoryConference" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_smc2_history_conference
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="conferenceId != null and conferenceId != ''">conference_id,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="subject != null">subject,</if>
+            <if test="conferenceCode != null">conference_code,</if>
+            <if test="endStatus != null">end_status,</if>
+            <if test="endTime != null">end_time,</if>
+            <if test="templateId != null">template_id,</if>
+            <if test="conferenceAvcType != null">conference_avc_type,</if>
+            <if test="startTime != null">start_time,</if>
+            <if test="duration != null">duration,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="conferenceId != null and conferenceId != ''">#{conferenceId},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="subject != null">#{subject},</if>
+            <if test="conferenceCode != null">#{conferenceCode},</if>
+            <if test="endStatus != null">#{endStatus},</if>
+            <if test="endTime != null">#{endTime},</if>
+            <if test="templateId != null">#{templateId},</if>
+            <if test="conferenceAvcType != null">#{conferenceAvcType},</if>
+            <if test="startTime != null">#{startTime},</if>
+            <if test="duration != null">#{duration},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiSmc2HistoryConference" parameterType="com.paradisecloud.fcm.dao.model.BusiSmc2HistoryConference">
+        update busi_smc2_history_conference
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="conferenceId != null and conferenceId != ''">conference_id = #{conferenceId},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="subject != null">subject = #{subject},</if>
+            <if test="conferenceCode != null">conference_code = #{conferenceCode},</if>
+            <if test="endStatus != null">end_status = #{endStatus},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+            <if test="templateId != null">template_id = #{templateId},</if>
+            <if test="conferenceAvcType != null">conference_avc_type = #{conferenceAvcType},</if>
+            <if test="startTime != null">start_time = #{startTime},</if>
+            <if test="duration != null">duration = #{duration},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiSmc2HistoryConferenceById" parameterType="Integer">
+        delete from busi_smc2_history_conference where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiSmc2HistoryConferenceByIds" parameterType="String">
+        delete from busi_smc2_history_conference where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectBusiSmcHistoryConferenceNotTemplate" resultMap="BusiSmc2HistoryConferenceResult">
+        select id, conference_id, dept_id, create_time, subject, conference_code, end_status, end_time, template_id, conference_avc_type, start_time, duration from busi_smc2_history_conference
+        where end_status=2
+        <if test="searchKey != null and searchKey !='' ">and (subject LIKE CONCAT('%',#{searchKey},'%') or access_code  LIKE CONCAT('%',#{searchKey},'%'))</if>
+        <if test="ids != null ">and dept_id in
+            <foreach collection="ids" open="(" close=")"  item="id" separator=", ">
+                #{id}
+            </foreach>
+        </if>
+    </select>
+</mapper>

@@ -1,0 +1,40 @@
+proxyComponents: 
+  - interfaceClass: "com.paradisecloud.fcm.fme.conference.interfaces.IDebugService"
+    proxyMethodClasses: 
+      - "com.paradisecloud.fcm.fme.conference.model.pm.debug.AllConference"
+      - "com.paradisecloud.fcm.fme.conference.model.pm.debug.LogJson"
+      
+  - interfaceClass: "com.paradisecloud.fcm.fme.conference.interfaces.IParticipantSyncService"
+    proxyMethodClasses: 
+      - "com.paradisecloud.fcm.fme.conference.model.pm.participantsync.SyncParticipants"
+
+  - interfaceClass: "com.paradisecloud.fcm.fme.conference.interfaces.IBusiConferenceService"
+    proxyMethodClasses: 
+      - "com.paradisecloud.fcm.fme.conference.model.pm.conference.AllowAllMuteSelf"
+      - "com.paradisecloud.fcm.fme.conference.model.pm.conference.AllowAllPresentationContribution"
+      - "com.paradisecloud.fcm.fme.conference.model.pm.conference.CancelDiscuss"
+      - "com.paradisecloud.fcm.fme.conference.model.pm.conference.Discuss"
+      - "com.paradisecloud.fcm.fme.conference.model.pm.conference.EndConference"
+      - "com.paradisecloud.fcm.fme.conference.model.pm.conference.EndConference2"
+      - "com.paradisecloud.fcm.fme.conference.model.pm.conference.ExtendMinutes"
+      - "com.paradisecloud.fcm.fme.conference.model.pm.conference.GetLayoutTemplate"
+      - "com.paradisecloud.fcm.fme.conference.model.pm.conference.GetLayoutTemplates"
+      - "com.paradisecloud.fcm.fme.conference.model.pm.conference.JoinAudioMuteOverride"
+      - "com.paradisecloud.fcm.fme.conference.model.pm.conference.Lock"
+      - "com.paradisecloud.fcm.fme.conference.model.pm.conference.Stream"
+      - "com.paradisecloud.fcm.fme.conference.model.pm.conference.Stream2"
+      - "com.paradisecloud.fcm.fme.conference.model.pm.conference.Sync"
+      - "com.paradisecloud.fcm.fme.conference.model.pm.conference.Sync2"
+      - "com.paradisecloud.fcm.fme.conference.model.pm.conference.ReCall"
+      - "com.paradisecloud.fcm.fme.conference.model.pm.conference.UpdateCall"
+      - "com.paradisecloud.fcm.fme.conference.model.pm.conference.UpdateCallRecordStatus"
+      - "com.paradisecloud.fcm.fme.conference.model.pm.conference.UpdateConferenceName"
+      - "com.paradisecloud.fcm.fme.conference.model.pm.conference.AttendList"
+      - "com.paradisecloud.fcm.fme.conference.model.pm.conference.UpdateConferencePresenter"
+      - "com.paradisecloud.fcm.fme.conference.model.pm.conference.Mode"
+
+  - interfaceClass: "com.paradisecloud.fcm.fme.conference.interfaces.ITemplateConferenceStartService"
+    proxyMethodClasses: 
+      - "com.paradisecloud.fcm.fme.conference.model.pm.templateconference.BuildTemplateConferenceContext"
+      - "com.paradisecloud.fcm.fme.conference.model.pm.templateconference.StartConference"
+      - "com.paradisecloud.fcm.fme.conference.model.pm.templateconference.StartTemplateConference"

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.smc.dao.model.mapper.SmcTemplateTerminalMapper">
+
+    <resultMap type="com.paradisecloud.smc.dao.model.SmcTemplateTerminal" id="SmcTemplateTerminalResult">
+        <result property="id"    column="id"    />
+        <result property="terminalId"    column="terminal_id"    />
+        <result property="smcTemplateId"    column="smc_template_id"    />
+        <result property="terminalDeptId"    column="terminal_dept_id"    />
+        <result property="smcnumber"    column="smcnumber"    />
+        <result property="weight"    column="weight"    />
+    </resultMap>
+
+    <sql id="selectSmcTemplateTerminalVo">
+        select id, terminal_id, smc_template_id,terminal_dept_id,smcnumber,weight from smc_template_terminal
+    </sql>
+
+
+
+    <select id="selectSmcTemplateTerminalById" parameterType="Long" resultMap="SmcTemplateTerminalResult">
+        <include refid="selectSmcTemplateTerminalVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectBusiSmcList" parameterType="String" resultMap="SmcTemplateTerminalResult">
+        select id, terminal_id, smc_template_id,terminal_dept_id,smcnumber,weight,terminal_dept_id as deptId from smc_template_terminal
+        where smc_template_id = #{smcTemplateId}
+    </select>
+
+
+
+    <insert id="insertSmcTemplateTerminal" parameterType="com.paradisecloud.smc.dao.model.SmcTemplateTerminal" useGeneratedKeys="true" keyProperty="id">
+        insert into smc_template_terminal
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="terminalId != null">terminal_id,</if>
+            <if test="smcTemplateId != null">smc_template_id,</if>
+            <if test="terminalDeptId != null">terminal_dept_id,</if>
+            <if test="smcnumber != null">smcnumber,</if>
+            <if test="weight != null">weight,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="terminalId != null">#{terminalId},</if>
+            <if test="smcTemplateId != null">#{smcTemplateId},</if>
+            <if test="terminalDeptId != null">#{terminalDeptId},</if>
+            <if test="smcnumber != null">#{smcnumber},</if>
+            <if test="weight != null">#{weight},</if>
+        </trim>
+    </insert>
+
+    <update id="updateSmcTemplateTerminal" parameterType="com.paradisecloud.smc.dao.model.SmcTemplateTerminal">
+        update smc_template_terminal
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="terminalId != null">terminal_id = #{terminalId},</if>
+            <if test="smcTemplateId != null">smc_template_id = #{smcTemplateId},</if>
+            <if test="terminalDeptId != null">terminal_dept_id = #{terminalDeptId},</if>
+            <if test="smcnumber != null">smcnumber = #{smcnumber},</if>
+            <if test="weight != null">weight = #{weight},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSmcTemplateTerminalById" parameterType="Long">
+        delete from smc_template_terminal where id = #{id}
+    </delete>
+
+
+    <delete id="deleteSmcTemplateTerminalByTemplateId" parameterType="String">
+        delete from smc_template_terminal where smc_template_id = #{smcTemplateId}
+    </delete>
+
+</mapper>

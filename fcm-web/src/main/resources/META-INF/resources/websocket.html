@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="Nature.css">
+<style type="text/css">
+	div.messageBorad {
+		margin: 0px 20px;
+		border-radius: 5px;
+		border: 1px solid gray;
+		height: 400px;
+		overflow: auto;
+	}
+	
+	div.btns {
+		margin: 10px 20px;
+		text-align: right;
+		padding: 5px;
+	}
+	
+	div.btns>button {
+		margin-left: 10px;
+		padding: 5px 10px;
+		background-color: #3C8DBC;
+		color: white;
+		border-radius: 3px;
+	}
+	
+	div.btns>button:hover {
+		background-color: #367FA9;
+	}
+	
+	div.btns>button:active {
+		background-color: #204D74;
+	}
+</style>
+<script type="text/javascript" src="sockjs.min.js"></script>
+<script type="text/javascript" src="stomp.min.js"></script>
+<script type="text/javascript" src="websocket.js"></script>
+</head>
+<body style="padding: 10px;">
+<div class="messageBorad">
+	<pre id="messageBorad">
+	
+	</pre>
+</div>
+<div class="btns">
+	<button id="send1">群体发送</button>
+	<button id="send2">发送给自己</button>
+	<button id="send3">发送</button>
+</div>
+</body>
+</html>

@@ -1,0 +1,96 @@
+# 数据源配置
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driverClassName: com.mysql.cj.jdbc.Driver
+    druid:
+    
+      # 主库数据源
+      master:
+        url: jdbc:mysql://lingkai995.f3322.org:32085/fcmdb?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&tinyInt1isBit=false&serverTimezone=Asia/Shanghai&allowMultiQueries=true
+        username: root
+        password: P@rad1se
+          
+      # 从库数据源
+      slave:
+      
+        # 从数据源开关/默认关闭
+        enabled: false
+        url: 
+        username: 
+        password: 
+          
+      # 初始化时建立物理连接的个数。初始化发生在显示调用init方法，或者第一次getConnection时
+      initialSize: 100
+      
+      # 最小连接池数量
+      minIdle: 20
+      
+      # 最大连接池数量
+      maxActive: 160
+      
+      # 配置获取连接等待超时的时间
+      maxWait: 60000
+      
+      # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      timeBetweenEvictionRunsMillis: 60000
+      
+      # 配置一个连接在池中最小生存的时间，单位是毫秒
+      minEvictableIdleTimeMillis: 300000
+      
+      # 配置一个连接在池中最大生存的时间，单位是毫秒
+      maxEvictableIdleTimeMillis: 900000
+      
+      # 配置检测连接是否有效
+      validationQuery: SELECT 1 FROM DUAL
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      webStatFilter: 
+        enabled: true
+      statViewServlet:
+        enabled: true
+        
+        # 设置白名单，不填则允许所有访问
+        allow:
+        url-pattern: /datasource-monitor/*
+        
+        # 控制台管理用户名和密码
+        login-username: 
+        login-password: 
+      filter:
+        stat:
+          enabled: true
+          
+          # 慢SQL记录
+          log-slow-sql: true
+          slow-sql-millis: 1000
+          merge-sql: true
+        wall:
+          config:
+            multi-statement-allow: true
+
+
+freeswitch:
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    # 多台free switch服务器时，需使用相同数据库配置，只有IP地址可不同.
+    # eg1. 固定ip (只会连接此一个数据库): jdbc:mysql://127.0.0.1:3306/freeswitch
+    # eg2. 非固定ip (根据配置的free switch去连接各自ip的数据库): jdbc:mysql://{ip}:3306/freeswitch
+    url: jdbc:mysql://{ip}:3306/freeswitch?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&tinyInt1isBit=false&serverTimezone=Asia/Shanghai&allowMultiQueries=true
+    username: root
+    password: P@rad1se
+
+  transaction:
+    enable: true
+
+  userinfo:
+    enable: true
+    useFcmDb: true
+    datasource:
+      # 上面所有动态或者静态free switch的用户数据都将连接下面的同一数据库。（目前该连接和主数据库一致）
+      driverClassName: com.mysql.cj.jdbc.Driver
+      ip: lingkai995.f3322.org
+      url: jdbc:mysql://{ip}:32085/fcmdb?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&tinyInt1isBit=false&serverTimezone=Asia/Shanghai&allowMultiQueries=true
+      username: root
+      password: P@rad1se

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiMcuSmc3Mapper">
+
+    <resultMap type="BusiMcuSmc3" id="BusiMcuSmc3Result">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="username"    column="username"    />
+        <result property="password"    column="password"    />
+        <result property="meetingUsername"    column="meeting_username"    />
+        <result property="meetingPassword"    column="meeting_password"    />
+        <result property="name"    column="name"    />
+        <result property="ip"    column="ip"    />
+        <result property="cucmIp"    column="cucm_ip"    />
+        <result property="port"    column="port"    />
+        <result property="status"    column="status"    />
+        <result property="capacity"    column="capacity"    />
+        <result property="spareMcuId"    column="spare_mcu_id"    />
+        <result property="mcuDomain"    column="mcu_domain"    />
+        <result property="callPort"    column="call_port"    />
+        <result property="proxyHost"    column="proxy_host"    />
+        <result property="proxyPort"    column="proxy_port"    />
+        <result property="scUrl"    column="sc_url"    />
+    </resultMap>
+
+    <sql id="selectBusiMcuSmc3Vo">
+        select id, create_time, update_time, username, password, meeting_username, meeting_password, name, ip, cucm_ip, port, status, capacity, spare_mcu_id, mcu_domain, call_port, proxy_host, proxy_port, sc_url from busi_mcu_smc3
+    </sql>
+
+    <select id="selectBusiMcuSmc3List" parameterType="BusiMcuSmc3" resultMap="BusiMcuSmc3Result">
+        <include refid="selectBusiMcuSmc3Vo"/>
+        <where>
+            <if test="username != null  and username != ''"> and username like concat('%', #{username}, '%')</if>
+            <if test="password != null  and password != ''"> and password = #{password}</if>
+            <if test="meetingUsername != null  and meetingUsername != ''"> and meeting_username like concat('%', #{meetingUsername}, '%')</if>
+            <if test="meetingPassword != null  and meetingPassword != ''"> and meeting_password = #{meetingPassword}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="ip != null  and ip != ''"> and ip = #{ip}</if>
+            <if test="cucmIp != null  and cucmIp != ''"> and cucm_ip = #{cucmIp}</if>
+            <if test="port != null "> and port = #{port}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="capacity != null "> and capacity = #{capacity}</if>
+            <if test="spareMcuId != null "> and spare_mcu_id = #{spareMcuId}</if>
+            <if test="mcuDomain != null  and mcuDomain != ''"> and mcu_domain = #{mcuDomain}</if>
+            <if test="callPort != null "> and call_port = #{callPort}</if>
+            <if test="proxyHost != null  and proxyHost != ''"> and proxy_host = #{proxyHost}</if>
+            <if test="proxyPort != null "> and proxy_port = #{proxyPort}</if>
+            <if test="scUrl != null  and scUrl != ''"> and sc_url = #{scUrl}</if>
+        </where>
+    </select>
+
+    <select id="selectBusiMcuSmc3ById" parameterType="Long" resultMap="BusiMcuSmc3Result">
+        <include refid="selectBusiMcuSmc3Vo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertBusiMcuSmc3" parameterType="BusiMcuSmc3" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_mcu_smc3
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="username != null">username,</if>
+            <if test="password != null">password,</if>
+            <if test="meetingUsername != null">meeting_username,</if>
+            <if test="meetingPassword != null">meeting_password,</if>
+            <if test="name != null">name,</if>
+            <if test="ip != null and ip != ''">ip,</if>
+            <if test="cucmIp != null">cucm_ip,</if>
+            <if test="port != null">port,</if>
+            <if test="status != null">status,</if>
+            <if test="capacity != null">capacity,</if>
+            <if test="spareMcuId != null">spare_mcu_id,</if>
+            <if test="mcuDomain != null">mcu_domain,</if>
+            <if test="callPort != null">call_port,</if>
+            <if test="proxyHost != null">proxy_host,</if>
+            <if test="proxyPort != null">proxy_port,</if>
+            <if test="scUrl != null">sc_url,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="username != null">#{username},</if>
+            <if test="password != null">#{password},</if>
+            <if test="meetingUsername != null">#{meetingUsername},</if>
+            <if test="meetingPassword != null">#{meetingPassword},</if>
+            <if test="name != null">#{name},</if>
+            <if test="ip != null and ip != ''">#{ip},</if>
+            <if test="cucmIp != null">#{cucmIp},</if>
+            <if test="port != null">#{port},</if>
+            <if test="status != null">#{status},</if>
+            <if test="capacity != null">#{capacity},</if>
+            <if test="spareMcuId != null">#{spareMcuId},</if>
+            <if test="mcuDomain != null">#{mcuDomain},</if>
+            <if test="callPort != null">#{callPort},</if>
+            <if test="proxyHost != null">#{proxyHost},</if>
+            <if test="proxyPort != null">#{proxyPort},</if>
+            <if test="scUrl != null">#{scUrl},</if>
+        </trim>
+    </insert>
+
+    <update id="updateBusiMcuSmc3" parameterType="BusiMcuSmc3">
+        update busi_mcu_smc3
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="username != null">username = #{username},</if>
+            <if test="password != null">password = #{password},</if>
+            <if test="meetingUsername != null">meeting_username = #{meetingUsername},</if>
+            <if test="meetingPassword != null">meeting_password = #{meetingPassword},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="ip != null and ip != ''">ip = #{ip},</if>
+            <if test="cucmIp != null">cucm_ip = #{cucmIp},</if>
+            <if test="port != null">port = #{port},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="capacity != null">capacity = #{capacity},</if>
+            <if test="spareMcuId != null">spare_mcu_id = #{spareMcuId},</if>
+            <if test="mcuDomain != null">mcu_domain = #{mcuDomain},</if>
+            <if test="callPort != null">call_port = #{callPort},</if>
+            <if test="proxyHost != null">proxy_host = #{proxyHost},</if>
+            <if test="proxyPort != null">proxy_port = #{proxyPort},</if>
+            <if test="scUrl != null">sc_url = #{scUrl},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiMcuSmc3ById" parameterType="Long">
+        delete from busi_mcu_smc3 where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiMcuSmc3ByIds" parameterType="String">
+        delete from busi_mcu_smc3 where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

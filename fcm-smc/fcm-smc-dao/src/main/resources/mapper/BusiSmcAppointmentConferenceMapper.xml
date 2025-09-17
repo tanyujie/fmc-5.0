@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.smc.dao.model.mapper.BusiSmcAppointmentConferenceMapper">
+    
+    <resultMap type="com.paradisecloud.smc.dao.model.BusiSmcAppointmentConference" id="BusiSmcAppointmentConferenceResult">
+        <result property="id"    column="id"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="chairmanPassword"    column="chairman_password"    />
+        <result property="conferenceTimeType"    column="conference_time_type"    />
+        <result property="duration"    column="duration"    />
+        <result property="guestPassword"    column="guest_password"    />
+        <result property="scheduleStartTime"    column="schedule_start_time"    />
+        <result property="subject"    column="subject"    />
+        <result property="vmrNumber"    column="vmr_number"    />
+        <result property="type"    column="type"    />
+        <result property="maxParticipantNum"    column="max_participant_num"    />
+        <result property="voiceActive"    column="voice_active"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="rate"    column="rate"    />
+        <result property="periodConferenceTime"    column="period_conference_time"    />
+        <result property="durationPerPeriodUnit"    column="duration_per_period_unit"    />
+        <result property="periodUnitType"    column="period_unit_type"    />
+        <result property="startDate"    column="start_date"    />
+        <result property="endDate"    column="end_date"    />
+        <result property="weekIndexInMonthMode"    column="week_index_in_month_mode"    />
+        <result property="conferenceId"    column="conference_id"    />
+        <result property="videoResolution"    column="video_resolution"    />
+        <result property="svcVideoResolution"    column="svc_video_resolution"    />
+        <result property="autoMute"    column="auto_mute"    />
+        <result property="supportLive"    column="support_live"    />
+        <result property="supportRecord"    column="support_record"    />
+        <result property="amcRecord"    column="amc_record"    />
+        <result property="accessCode"    column="access_code"    />
+        <result property="createHyAdmin"    column="create_hy_admin"    />
+        <result property="createUserId"    column="create_user_id"    />
+        <result property="accountName"    column="account_name"    />
+        <result property="username"    column="username"    />
+        <result property="token"    column="token"    />
+        <result property="stage"    column="stage"    />
+        <result property="guestLink"    column="guest_link"    />
+        <result property="chairmanLink"    column="chairman_link"    />
+        <result property="category"    column="category"    />
+        <result property="active"    column="active"    />
+        <result property="legacyId"    column="legacy_id"    />
+        <result property="organizationName"    column="organization_name"    />
+        <result property="masterTerminalId"    column="master_terminal_id"    />
+        <result property="enableDataConf"    column="enable_data_conf"    />
+        <result property="createBy"    column="create_by"    />
+    </resultMap>
+
+    <sql id="selectBusiSmcAppointmentConferenceVo">
+        select id, dept_id, chairman_password, conference_time_type, duration, guest_password, schedule_start_time, subject, vmr_number, type, max_participant_num, voice_active, create_time, rate, period_conference_time, duration_per_period_unit, period_unit_type, start_date, end_date, week_index_in_month_mode, conference_id, video_resolution, svc_video_resolution, auto_mute, support_live, support_record, amc_record, access_code, create_hy_admin, create_user_id, account_name, username, token, stage, guest_link, chairman_link, category, active, legacy_id, organization_name,master_terminal_id,enable_data_conf,create_by from busi_smc_appointment_conference
+    </sql>
+
+    <select id="selectBusiSmcAppointmentConferenceList" parameterType="com.paradisecloud.smc.dao.model.BusiSmcAppointmentConference" resultMap="BusiSmcAppointmentConferenceResult">
+        <include refid="selectBusiSmcAppointmentConferenceVo"/>
+        <where>  
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="chairmanPassword != null  and chairmanPassword != ''"> and chairman_password = #{chairmanPassword}</if>
+            <if test="conferenceTimeType != null  and conferenceTimeType != ''"> and conference_time_type = #{conferenceTimeType}</if>
+            <if test="duration != null "> and duration = #{duration}</if>
+            <if test="guestPassword != null  and guestPassword != ''"> and guest_password = #{guestPassword}</if>
+            <if test="scheduleStartTime != null  and scheduleStartTime != ''"> and schedule_start_time = #{scheduleStartTime}</if>
+            <if test="subject != null  and subject != ''"> and subject = #{subject}</if>
+            <if test="vmrNumber != null  and vmrNumber != ''"> and vmr_number = #{vmrNumber}</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="maxParticipantNum != null "> and max_participant_num = #{maxParticipantNum}</if>
+            <if test="voiceActive != null "> and voice_active = #{voiceActive}</if>
+            <if test="rate != null "> and rate = #{rate}</if>
+            <if test="periodConferenceTime != null  and periodConferenceTime != ''"> and period_conference_time = #{periodConferenceTime}</if>
+            <if test="durationPerPeriodUnit != null  and durationPerPeriodUnit != ''"> and duration_per_period_unit = #{durationPerPeriodUnit}</if>
+            <if test="periodUnitType != null  and periodUnitType != ''"> and period_unit_type = #{periodUnitType}</if>
+            <if test="startDate != null  and startDate != ''"> and start_date = #{startDate}</if>
+            <if test="endDate != null  and endDate != ''"> and end_date = #{endDate}</if>
+            <if test="weekIndexInMonthMode != null "> and week_index_in_month_mode = #{weekIndexInMonthMode}</if>
+            <if test="conferenceId != null  and conferenceId != ''"> and conference_id = #{conferenceId}</if>
+            <if test="videoResolution != null  and videoResolution != ''"> and video_resolution = #{videoResolution}</if>
+            <if test="svcVideoResolution != null  and svcVideoResolution != ''"> and svc_video_resolution = #{svcVideoResolution}</if>
+            <if test="autoMute != null "> and auto_mute = #{autoMute}</if>
+            <if test="supportLive != null "> and support_live = #{supportLive}</if>
+            <if test="supportRecord != null "> and support_record = #{supportRecord}</if>
+            <if test="amcRecord != null "> and amc_record = #{amcRecord}</if>
+            <if test="accessCode != null  and accessCode != ''"> and access_code = #{accessCode}</if>
+            <if test="createHyAdmin != null  and createHyAdmin != ''"> and create_hy_admin = #{createHyAdmin}</if>
+            <if test="createUserId != null "> and create_user_id = #{createUserId}</if>
+            <if test="accountName != null  and accountName != ''"> and account_name like concat('%', #{accountName}, '%')</if>
+            <if test="username != null  and username != ''"> and username like concat('%', #{username}, '%')</if>
+            <if test="token != null  and token != ''"> and token = #{token}</if>
+            <if test="stage != null  and stage != ''"> and stage = #{stage}</if>
+            <if test="guestLink != null  and guestLink != ''"> and guest_link = #{guestLink}</if>
+            <if test="chairmanLink != null  and chairmanLink != ''"> and chairman_link = #{chairmanLink}</if>
+            <if test="category != null  and category != ''"> and category = #{category}</if>
+            <if test="active != null "> and active = #{active}</if>
+            <if test="legacyId != null "> and legacy_id = #{legacyId}</if>
+            <if test="organizationName != null  and organizationName != ''"> and organization_name like concat('%', #{organizationName}, '%')</if>
+            <if test="createBy != null "> and create_by = #{createBy}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiSmcAppointmentConferenceById" parameterType="Integer" resultMap="BusiSmcAppointmentConferenceResult">
+        <include refid="selectBusiSmcAppointmentConferenceVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiSmcAppointmentConference" parameterType="com.paradisecloud.smc.dao.model.BusiSmcAppointmentConference" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_smc_appointment_conference
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="deptId != null">dept_id,</if>
+            <if test="chairmanPassword != null">chairman_password,</if>
+            <if test="conferenceTimeType != null">conference_time_type,</if>
+            <if test="duration != null">duration,</if>
+            <if test="guestPassword != null">guest_password,</if>
+            <if test="scheduleStartTime != null">schedule_start_time,</if>
+            <if test="subject != null">subject,</if>
+            <if test="vmrNumber != null">vmr_number,</if>
+            <if test="type != null">type,</if>
+            <if test="maxParticipantNum != null">max_participant_num,</if>
+            <if test="voiceActive != null">voice_active,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="rate != null">rate,</if>
+            <if test="periodConferenceTime != null">period_conference_time,</if>
+            <if test="durationPerPeriodUnit != null">duration_per_period_unit,</if>
+            <if test="periodUnitType != null">period_unit_type,</if>
+            <if test="startDate != null">start_date,</if>
+            <if test="endDate != null">end_date,</if>
+            <if test="weekIndexInMonthMode != null">week_index_in_month_mode,</if>
+            <if test="conferenceId != null">conference_id,</if>
+            <if test="videoResolution != null">video_resolution,</if>
+            <if test="svcVideoResolution != null">svc_video_resolution,</if>
+            <if test="autoMute != null">auto_mute,</if>
+            <if test="supportLive != null">support_live,</if>
+            <if test="supportRecord != null">support_record,</if>
+            <if test="amcRecord != null">amc_record,</if>
+            <if test="accessCode != null">access_code,</if>
+            <if test="createHyAdmin != null">create_hy_admin,</if>
+            <if test="createUserId != null">create_user_id,</if>
+            <if test="accountName != null">account_name,</if>
+            <if test="username != null">username,</if>
+            <if test="token != null">token,</if>
+            <if test="stage != null">stage,</if>
+            <if test="guestLink != null">guest_link,</if>
+            <if test="chairmanLink != null">chairman_link,</if>
+            <if test="category != null">category,</if>
+            <if test="active != null">active,</if>
+            <if test="legacyId != null">legacy_id,</if>
+            <if test="organizationName != null">organization_name,</if>
+            <if test="masterTerminalId != null">master_terminal_id,</if>
+            <if test="enableDataConf != null">enable_data_conf,</if>
+            <if test="createBy != null">create_by,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="deptId != null">#{deptId},</if>
+            <if test="chairmanPassword != null">#{chairmanPassword},</if>
+            <if test="conferenceTimeType != null">#{conferenceTimeType},</if>
+            <if test="duration != null">#{duration},</if>
+            <if test="guestPassword != null">#{guestPassword},</if>
+            <if test="scheduleStartTime != null">#{scheduleStartTime},</if>
+            <if test="subject != null">#{subject},</if>
+            <if test="vmrNumber != null">#{vmrNumber},</if>
+            <if test="type != null">#{type},</if>
+            <if test="maxParticipantNum != null">#{maxParticipantNum},</if>
+            <if test="voiceActive != null">#{voiceActive},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="rate != null">#{rate},</if>
+            <if test="periodConferenceTime != null">#{periodConferenceTime},</if>
+            <if test="durationPerPeriodUnit != null">#{durationPerPeriodUnit},</if>
+            <if test="periodUnitType != null">#{periodUnitType},</if>
+            <if test="startDate != null">#{startDate},</if>
+            <if test="endDate != null">#{endDate},</if>
+            <if test="weekIndexInMonthMode != null">#{weekIndexInMonthMode},</if>
+            <if test="conferenceId != null">#{conferenceId},</if>
+            <if test="videoResolution != null">#{videoResolution},</if>
+            <if test="svcVideoResolution != null">#{svcVideoResolution},</if>
+            <if test="autoMute != null">#{autoMute},</if>
+            <if test="supportLive != null">#{supportLive},</if>
+            <if test="supportRecord != null">#{supportRecord},</if>
+            <if test="amcRecord != null">#{amcRecord},</if>
+            <if test="accessCode != null">#{accessCode},</if>
+            <if test="createHyAdmin != null">#{createHyAdmin},</if>
+            <if test="createUserId != null">#{createUserId},</if>
+            <if test="accountName != null">#{accountName},</if>
+            <if test="username != null">#{username},</if>
+            <if test="token != null">#{token},</if>
+            <if test="stage != null">#{stage},</if>
+            <if test="guestLink != null">#{guestLink},</if>
+            <if test="chairmanLink != null">#{chairmanLink},</if>
+            <if test="category != null">#{category},</if>
+            <if test="active != null">#{active},</if>
+            <if test="legacyId != null">#{legacyId},</if>
+            <if test="organizationName != null">#{organizationName},</if>
+            <if test="masterTerminalId != null">#{masterTerminalId},</if>
+            <if test="enableDataConf != null">#{enableDataConf},</if>
+            <if test="createBy != null">#{createBy},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiSmcAppointmentConference" parameterType="com.paradisecloud.smc.dao.model.BusiSmcAppointmentConference">
+        update busi_smc_appointment_conference
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="chairmanPassword != null">chairman_password = #{chairmanPassword},</if>
+            <if test="conferenceTimeType != null">conference_time_type = #{conferenceTimeType},</if>
+            <if test="duration != null">duration = #{duration},</if>
+            <if test="guestPassword != null">guest_password = #{guestPassword},</if>
+            <if test="scheduleStartTime != null">schedule_start_time = #{scheduleStartTime},</if>
+            <if test="subject != null">subject = #{subject},</if>
+            <if test="vmrNumber != null">vmr_number = #{vmrNumber},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="maxParticipantNum != null">max_participant_num = #{maxParticipantNum},</if>
+            <if test="voiceActive != null">voice_active = #{voiceActive},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="rate != null">rate = #{rate},</if>
+            <if test="periodConferenceTime != null">period_conference_time = #{periodConferenceTime},</if>
+            <if test="durationPerPeriodUnit != null">duration_per_period_unit = #{durationPerPeriodUnit},</if>
+            <if test="periodUnitType != null">period_unit_type = #{periodUnitType},</if>
+            <if test="startDate != null">start_date = #{startDate},</if>
+            <if test="endDate != null">end_date = #{endDate},</if>
+            <if test="weekIndexInMonthMode != null">week_index_in_month_mode = #{weekIndexInMonthMode},</if>
+            <if test="conferenceId != null">conference_id = #{conferenceId},</if>
+            <if test="videoResolution != null">video_resolution = #{videoResolution},</if>
+            <if test="svcVideoResolution != null">svc_video_resolution = #{svcVideoResolution},</if>
+            <if test="autoMute != null">auto_mute = #{autoMute},</if>
+            <if test="supportLive != null">support_live = #{supportLive},</if>
+            <if test="supportRecord != null">support_record = #{supportRecord},</if>
+            <if test="amcRecord != null">amc_record = #{amcRecord},</if>
+            <if test="accessCode != null">access_code = #{accessCode},</if>
+            <if test="createHyAdmin != null">create_hy_admin = #{createHyAdmin},</if>
+            <if test="createUserId != null">create_user_id = #{createUserId},</if>
+            <if test="accountName != null">account_name = #{accountName},</if>
+            <if test="username != null">username = #{username},</if>
+            <if test="token != null">token = #{token},</if>
+            <if test="stage != null">stage = #{stage},</if>
+            <if test="guestLink != null">guest_link = #{guestLink},</if>
+            <if test="chairmanLink != null">chairman_link = #{chairmanLink},</if>
+            <if test="category != null">category = #{category},</if>
+            <if test="active != null">active = #{active},</if>
+            <if test="legacyId != null">legacy_id = #{legacyId},</if>
+            <if test="organizationName != null">organization_name = #{organizationName},</if>
+            <if test="masterTerminalId != null">master_terminal_id = #{masterTerminalId},</if>
+            <if test="enableDataConf != null">enable_data_conf = #{enableDataConf},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiSmcAppointmentConferenceById" parameterType="Integer">
+        delete from busi_smc_appointment_conference where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiSmcAppointmentConferenceByIds" parameterType="String">
+        delete from busi_smc_appointment_conference where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectBusiSmcAppointmentConferenceQuery" resultMap="BusiSmcAppointmentConferenceResult">
+
+        <include refid="selectBusiSmcAppointmentConferenceVo"/>
+        <where>
+            <if test="startTime!=null and startTime.trim() neq ''">
+                and date_format(str_to_date(start_date,'%Y-%m-%d %H:%i:%s'),'%Y-%m-%d %H:%i:%s') &gt;= str_to_date(#{startTime},'%Y-%m-%d %H:%i:%s')
+            </if>
+            <if test="endTime!=null and endTime.trim() neq ''">
+                and date_format(str_to_date(start_date,'%Y-%m-%d %H:%i:%s'),'%Y-%m-%d %H:%i:%s') &lt;= str_to_date(#{endTime},'%Y-%m-%d %H:%i:%s')
+            </if>
+            <if test="deptId != null ">and dept_id = #{deptId}</if>
+            <if test="active != null ">and active = #{active}</if>
+            <if test="searchKey != null and searchKey !='' ">and (subject LIKE CONCAT('%',#{searchKey},'%') or access_code  LIKE CONCAT('%',#{searchKey},'%'))</if>
+        </where>
+
+    </select>
+
+
+    <select id="selectBusiSmcAppointmentConferenceHistoryQuery" resultMap="BusiSmcAppointmentConferenceResult">
+
+        <include refid="selectBusiSmcAppointmentConferenceVo"/>
+        <where>
+            <if test="startTime!=null and startTime.trim() neq ''">
+                and date_format(str_to_date(start_date,'%Y-%m-%d %H:%i:%s'),'%Y-%m-%d %H:%i:%s') &lt;= str_to_date(#{startTime},'%Y-%m-%d %H:%i:%s')
+            </if>
+        </where>
+
+    </select>
+
+    <select id="selectBusiSmcAppointmentConferenceByConferenceId" resultMap="BusiSmcAppointmentConferenceResult">
+        <include refid="selectBusiSmcAppointmentConferenceVo"/>
+         where  conference_id=#{conferenceId}
+    </select>
+
+
+    <select id="selectBusiSmcAppointmentConferenceByStartTime" resultMap="BusiSmcAppointmentConferenceResult">
+        <include refid="selectBusiSmcAppointmentConferenceVo"/>
+        where   date_format(str_to_date(start_date,'%Y-%m-%d %H:%i:%s'),'%Y-%m-%d %H:%i:%s') &gt; date_format(now(),'%Y-%m-%d %H:%i:%s')
+    </select>
+
+
+    <select id="selectBusiSmcAppointmentConferenceByStartTimeLt" resultMap="BusiSmcAppointmentConferenceResult">
+        <include refid="selectBusiSmcAppointmentConferenceVo"/>
+        where   date_format(str_to_date(start_date,'%Y-%m-%d %H:%i:%s'),'%Y-%m-%d %H:%i:%s') &lt;= date_format(now(),'%Y-%m-%d %H:%i:%s')
+    </select>
+
+
+    <select id="selectBusiSmcAppointmentConferenceByTime" resultMap="BusiSmcAppointmentConferenceResult">
+        <include refid="selectBusiSmcAppointmentConferenceVo"/>
+        where  DATE_FORMAT(str_to_date(start_date,'%Y-%m-%d'),'%Y-%m-%d') =DATE_FORMAT(#{startDate},'%Y-%m-%d')
+    </select>
+
+
+    <select id="selectBusiSmcAppointmentConferenceByStartTimeLtNoExisTHistory" resultMap="BusiSmcAppointmentConferenceResult">
+        SELECT
+        t1.id, t1.dept_id, t1.chairman_password, t1.conference_time_type, t1.duration,
+        t1.guest_password, t1.schedule_start_time, t1.subject, t1.vmr_number, t1.type,
+        t1.max_participant_num, t1.voice_active, t1.create_time, t1.rate, t1.period_conference_time, t1.duration_per_period_unit,
+        t1.period_unit_type, t1.start_date, t1.end_date, t1.week_index_in_month_mode,
+        t1.conference_id, t1.video_resolution, t1.svc_video_resolution, t1.auto_mute, t1.support_live, t1.support_record,
+        t1.amc_record, t1.access_code, t1.create_hy_admin, t1.create_user_id, t1.account_name,
+        t1.username, t1.token, t1.stage, t1.guest_link, t1.chairman_link, t1.category, t1.active, t1.legacy_id, t1.organization_name,t1.master_terminal_id,t1.enable_data_conf
+        FROM
+        busi_smc_appointment_conference t1
+        WHERE
+        NOT EXISTS ( SELECT 1 FROM busi_smc_history_conference t2 WHERE t2.conference_id = t1.conference_id )
+         <![CDATA[
+         AND  date_format(str_to_date(start_date,'%Y-%m-%d %H:%i:%s'),'%Y-%m-%d %H:%i:%s') <= date_format(now(),'%Y-%m-%d %H:%i:%s')
+        ]]>
+    </select>
+
+
+</mapper>

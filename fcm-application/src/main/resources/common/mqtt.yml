@@ -1,0 +1,11 @@
+#mqtt服务的配置信息
+mqtt:
+  #服务地址
+  url: 172.16.100.135:1883
+     
+  #用户名
+  userName: admin
+     
+  #密码
+  password: P@rad1se
+

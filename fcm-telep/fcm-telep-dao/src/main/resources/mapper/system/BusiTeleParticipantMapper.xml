@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.telep.dao.mapper.BusiTeleParticipantMapper">
+
+    <resultMap type="com.paradisecloud.fcm.telep.dao.model.BusiTeleParticipant" id="BusiTeleParticipantResult">
+        <result property="id"    column="id"    />
+        <result property="conferenceName"    column="conference_name"    />
+        <result property="participantName"    column="participant_name"    />
+        <result property="choose"    column="choose"    />
+        <result property="calltheroll"    column="calltheroll"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="conferenceNumber"    column="conference_number"    />
+    </resultMap>
+
+    <sql id="selectBusiTeleParticipantVo">
+        select id, conference_name, participant_name, choose, calltheroll, create_time, conference_number from busi_tele_participant
+    </sql>
+
+    <select id="selectBusiTeleParticipantList" parameterType="com.paradisecloud.fcm.telep.dao.model.BusiTeleParticipant" resultMap="BusiTeleParticipantResult">
+        <include refid="selectBusiTeleParticipantVo"/>
+        <where>
+            <if test="conferenceName != null  and conferenceName != ''"> and conference_name like concat('%', #{conferenceName}, '%')</if>
+            <if test="participantName != null  and participantName != ''"> and participant_name like concat('%', #{participantName}, '%')</if>
+            <if test="choose != null "> and choose = #{choose}</if>
+            <if test="calltheroll != null "> and calltheroll = #{calltheroll}</if>
+            <if test="conferenceNumber != null  and conferenceNumber != ''"> and conference_number = #{conferenceNumber}</if>
+        </where>
+    </select>
+
+    <select id="selectBusiTeleParticipantById" parameterType="Integer" resultMap="BusiTeleParticipantResult">
+        <include refid="selectBusiTeleParticipantVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertBusiTeleParticipant" parameterType="com.paradisecloud.fcm.telep.dao.model.BusiTeleParticipant" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_tele_participant
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="conferenceName != null and conferenceName != ''">conference_name,</if>
+            <if test="participantName != null and participantName != ''">participant_name,</if>
+            <if test="choose != null">choose,</if>
+            <if test="calltheroll != null">calltheroll,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="conferenceNumber != null">conference_number,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="conferenceName != null and conferenceName != ''">#{conferenceName},</if>
+            <if test="participantName != null and participantName != ''">#{participantName},</if>
+            <if test="choose != null">#{choose},</if>
+            <if test="calltheroll != null">#{calltheroll},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="conferenceNumber != null">#{conferenceNumber},</if>
+        </trim>
+    </insert>
+
+    <update id="updateBusiTeleParticipant" parameterType="com.paradisecloud.fcm.telep.dao.model.BusiTeleParticipant">
+        update busi_tele_participant
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="conferenceName != null and conferenceName != ''">conference_name = #{conferenceName},</if>
+            <if test="participantName != null and participantName != ''">participant_name = #{participantName},</if>
+            <if test="choose != null">choose = #{choose},</if>
+            <if test="calltheroll != null">calltheroll = #{calltheroll},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="conferenceNumber != null">conference_number = #{conferenceNumber},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiTeleParticipantById" parameterType="Integer">
+        delete from busi_tele_participant where id = #{id}
+    </delete>
+
+
+    <delete id="deleteBusiTeleParticipantByConferenceNumber" parameterType="String">
+        delete from busi_tele_participant where conference_number = #{conferenceNumber}
+    </delete>
+
+    <delete id="deleteBusiTeleParticipantByIds" parameterType="String">
+        delete from busi_tele_participant where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

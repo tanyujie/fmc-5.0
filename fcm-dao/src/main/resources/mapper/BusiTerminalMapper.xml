@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiTerminalMapper">
+
+    <resultMap type="BusiTerminal" id="BusiTerminalResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="createUserId"    column="create_user_id"    />
+        <result property="sn"    column="sn"    />
+        <result property="createUserName"    column="create_user_name"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="ip"    column="ip"    />
+        <result property="number"    column="number"    />
+        <result property="cameraIp"    column="camera_ip"    />
+        <result property="name"    column="name"    />
+        <result property="type"    column="type"    />
+        <result property="onlineStatus"    column="online_status"    />
+        <result property="protocol"    column="protocol"    />
+        <result property="password"    column="password"    />
+        <result property="credential"    column="credential"    />
+        <result property="registrationTime"    column="registration_time"    />
+        <result property="intranetIp"    column="intranet_ip"    />
+        <result property="fsbcServerId"    column="fsbc_server_id"    />
+        <result property="fsServerId"    column="fs_server_id"    />
+        <result property="port"    column="port"    />
+        <result property="transport"    column="transport"    />
+        <result property="vendor"    column="vendor"    />
+        <result property="businessFieldType"    column="business_field_type"    />
+        <result property="businessProperties"    column="business_properties" typeHandler="com.paradisecloud.fcm.dao.typehandler.JSONTypeMapHandler" jdbcType="OTHER"   />
+        <result property="attendType"    column="attend_type"    />
+        <result property="mqttOnlineStatus"    column="mqtt_online_status"    />
+        <result property="mac"    column="mac"    />
+        <result property="remarks"    column="remarks"    />
+        <result property="appVersionCode"    column="app_version_code"    />
+        <result property="appVersionName"    column="app_version_name"    />
+        <result property="appType"    column="app_type"    />
+        <result property="sortNum"    column="sort_num"    />
+        <result property="terminalNum"    column="terminal_num"    />
+        <result property="zjServerId"    column="zj_server_id"    />
+        <result property="zjUserId"    column="zj_user_id"    />
+        <result property="expiredDate"    column="expired_date"    />
+        <result property="available"    column="available"    />
+        <result property="connectIp"    column="connect_ip"    />
+        <result property="zteServerId"    column="zte_server_id"    />
+        <result property="zteTerminalId"    column="zte_terminal_id"    />
+        <result property="zteTerminalType"    column="zte_terminal_type"    />
+        <result property="callmodel"    column="callmodel"    />
+        <result property="terminalUsername"    column="terminal_username"    />
+        <result property="terminalPassword"    column="terminal_password"    />
+        <result property="snCheck"    column="sn_check"    />
+        <result property="code"    column="code"    />
+        <result property="phone"    column="phone"    />
+    </resultMap>
+
+    <sql id="selectBusiTerminalVo">
+        select id, create_time, update_time, create_user_id, sn, create_user_name, dept_id, ip, number, camera_ip, name, type, online_status, password, credential, protocol, registration_time, intranet_ip, fsbc_server_id, port, transport, vendor, fs_server_id, business_field_type, business_properties, attend_type, mqtt_online_status, mac, remarks, app_version_code, app_version_name, app_type, sort_num, terminal_num, zj_server_id, zj_user_id, expired_date, available, connect_ip,zte_server_id,zte_terminal_id,zte_terminal_type,callmodel,terminal_username,terminal_password,sn_check,code,phone from busi_terminal
+    </sql>
+    
+    <resultMap type="DeptRecordCount" id="DeptRecordCountMap">
+        <result property="deptId"    column="dept_id"    />
+        <result property="count"    column="ct"    />
+    </resultMap>
+    
+    <select id="getDeptRecordCounts" parameterType="Integer"  resultMap="DeptRecordCountMap">
+        SELECT
+        	a.dept_id,
+        	count(*) ct 
+        FROM
+        	busi_terminal a where business_field_type = #{businessFieldType} 
+        GROUP BY
+        	a.dept_id 
+        ORDER BY
+        	a.dept_id ASC
+    </select>
+
+    <select id="selectBusiTerminalList" parameterType="BusiTerminal" resultMap="BusiTerminalResult">
+        <include refid="selectBusiTerminalVo"/>
+        <where>  
+            <if test="createUserId != null "> and create_user_id = #{createUserId}</if>
+            <if test="sn != null  and sn != ''"> and sn = #{sn}</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="createUserName != null  and createUserName != ''"> and create_user_name like concat('%', #{createUserName}, '%')</if>
+            <if test="ip != null  and ip != ''"> and ip = #{ip}</if>
+            <if test="number != null  and number != ''"> and number = #{number}</if>
+            <if test="cameraIp != null  and cameraIp != ''"> and camera_ip = #{cameraIp}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="type != null "> and type = #{type}</if>
+            <if test="onlineStatus != null "> and online_status = #{onlineStatus}</if>
+            <if test="password != null  and password != ''"> and password = #{password}</if>
+            <if test="credential != null  and credential != ''"> and credential = #{credential}</if>
+            <if test="protocol != null  and protocol != ''"> and protocol = #{protocol}</if>
+            <if test="registrationTime != null "> and registration_time = #{registrationTime}</if>
+            <if test="intranetIp != null  and intranetIp != ''"> and intranet_ip = #{intranetIp}</if>
+            <if test="fsbcServerId != null "> and fsbc_server_id = #{fsbcServerId}</if>
+            <if test="fsServerId != null "> and fs_server_id = #{fsServerId}</if>
+            <if test="port != null "> and port = #{port}</if>
+            <if test="vendor != null  and vendor != ''"> and vendor = #{vendor}</if>
+            <if test="transport != null  and transport != ''"> and transport = #{transport}</if>
+            <if test="businessFieldType != null "> and business_field_type = #{businessFieldType}</if>
+            <if test="attendType != null "> and attend_type = #{attendType}</if>
+            <if test="mqttOnlineStatus != null "> and mqtt_online_status = #{mqttOnlineStatus}</if>
+            <if test="mac != null  and mac != ''"> and mac = #{mac}</if>
+            <if test="remarks != null  and remarks != ''"> and remarks = #{remarks}</if>
+            <if test="params.deptIds != null ">
+                and dept_id in 
+                <foreach item="id" collection="params.deptIds" open="(" separator="," close=")">
+                    #{id}
+                </foreach>
+            </if>
+            <if test="params.searchKey != null and params.searchKey != ''">
+                and (sn = #{params.searchKey} or credential = #{params.searchKey} or name like concat('%', #{params.searchKey}, '%'))
+            </if>
+            <if test="appVersionCode != null and appVersionCode != ''"> and app_version_code = #{appVersionCode}</if>
+            <if test="appVersionName != null and appVersionName != ''"> and app_version_name = #{appVersionName}</if>
+            <if test="appType != null and appType != ''"> and app_type = #{appType}</if>
+            <if test="sortNum != null"> and sort_num = #{sortNum}</if>
+            <if test="terminalNum != null"> and terminal_num = #{terminalNum}</if>
+            <if test="zjServerId != null"> and zj_server_id = #{zjServerId}</if>
+            <if test="zjUserId != null"> and zj_user_id = #{zjUserId}</if>
+            <if test="expiredDate != null"> and expired_date = #{expiredDate}</if>
+            <if test="available != null"> and available = #{available}</if>
+            <if test="connectIp != null and connectIp != ''"> and connect_ip = #{connectIp}</if>
+            <if test="zteServerId != null"> and zte_server_id = #{zteServerId}</if>
+            <if test="zteTerminalId != null"> and zte_terminal_id = #{zteTerminalId}</if>
+            <if test="zteTerminalType != null"> and zte_terminal_type = #{zteTerminalType}</if>
+            <if test="callmodel != null"> and callmodel = #{callmodel}</if>
+            <if test="code != null"> and code = #{code}</if>
+            <if test="phone != null"> and phone = #{phone}</if>
+        </where>
+        order by dept_id, if(isnull(sort_num), 1, 0), sort_num
+    </select> 
+
+    <select id="selectBusiTerminalById" parameterType="Long" resultMap="BusiTerminalResult">
+        <include refid="selectBusiTerminalVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiTerminal" parameterType="BusiTerminal" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_terminal
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="createUserId != null">create_user_id,</if>
+            <if test="sn != null">sn,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="createUserName != null">create_user_name,</if>
+            <if test="ip != null">ip,</if>
+            <if test="number != null">number,</if>
+            <if test="cameraIp != null">camera_ip,</if>
+            <if test="name != null">name,</if>
+            <if test="type != null">type,</if>
+            <if test="onlineStatus != null">online_status,</if>
+            <if test="password != null">password,</if>
+            <if test="credential != null">credential,</if>
+            <if test="protocol != null">protocol,</if>
+            <if test="registrationTime != null">registration_time,</if>
+            <if test="intranetIp != null">intranet_ip,</if>
+            <if test="fsbcServerId != null">fsbc_server_id,</if>
+            <if test="fsServerId != null">fs_server_id,</if>
+            <if test="port != null">port,</if>
+            <if test="vendor != null">vendor,</if>
+            <if test="transport != null">transport,</if>
+            business_field_type,
+            business_properties,
+            <if test="attendType != null">attend_type,</if>
+            <if test="mqttOnlineStatus != null">mqtt_online_status,</if>
+            <if test="mac != null">mac,</if>
+            <if test="remarks != null">remarks,</if>
+            <if test="appVersionCode != null">app_version_code,</if>
+            <if test="appVersionName != null">app_version_name,</if>
+            <if test="appType != null">app_type,</if>
+            <if test="sortNum != null">sort_num,</if>
+            <if test="terminalNum != null">terminal_num,</if>
+            <if test="zjServerId != null">zj_server_id,</if>
+            <if test="zjUserId != null">zj_user_id,</if>
+            <if test="expiredDate != null">expired_date,</if>
+            <if test="available != null">available,</if>
+            <if test="connectIp != null">connect_ip,</if>
+            <if test="zteServerId != null">zte_server_id,</if>
+            <if test="zteTerminalId != null">zte_terminal_id,</if>
+            <if test="zteTerminalType != null">zte_terminal_type,</if>
+            <if test="callmodel != null">callmodel,</if>
+            <if test="terminalUsername != null">terminal_username,</if>
+            <if test="terminalPassword != null">terminal_password,</if>
+            <if test="snCheck != null">sn_check,</if>
+            <if test="code != null">code,</if>
+            <if test="phone != null">phone,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="createUserId != null">#{createUserId},</if>
+            <if test="sn != null">#{sn},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="createUserName != null">#{createUserName},</if>
+            <if test="ip != null">#{ip},</if>
+            <if test="number != null">#{number},</if>
+            <if test="cameraIp != null">#{cameraIp},</if>
+            <if test="name != null">#{name},</if>
+            <if test="type != null">#{type},</if>
+            <if test="onlineStatus != null">#{onlineStatus},</if>
+            <if test="password != null">#{password},</if>
+            <if test="credential != null">#{credential},</if>
+            <if test="protocol != null">#{protocol},</if>
+            <if test="registrationTime != null">#{registrationTime},</if>
+            <if test="intranetIp != null">#{intranetIp},</if>
+            <if test="fsbcServerId != null">#{fsbcServerId},</if>
+            <if test="fsServerId != null">#{fsServerId},</if>
+            <if test="port != null">#{port},</if>
+            <if test="vendor != null">#{vendor},</if>
+            <if test="transport != null">#{transport},</if>
+            #{businessFieldType},
+            #{businessProperties, typeHandler=com.paradisecloud.fcm.dao.typehandler.JSONTypeMapHandler},
+            <if test="attendType != null">#{attendType},</if>
+            <if test="mqttOnlineStatus != null">#{mqttOnlineStatus},</if>
+            <if test="mac != null">#{mac},</if>
+            <if test="remarks != null">#{remarks},</if>
+            <if test="appVersionCode != null">#{appVersionCode},</if>
+            <if test="appVersionName != null">#{appVersionName},</if>
+            <if test="appType != null">#{appType},</if>
+            <if test="sortNum != null">#{sortNum},</if>
+            <if test="terminalNum != null">#{terminalNum},</if>
+            <if test="zjServerId != null">#{zjServerId},</if>
+            <if test="zjUserId != null">#{zjUserId},</if>
+            <if test="expiredDate != null">#{expiredDate},</if>
+            <if test="available != null">#{available},</if>
+            <if test="connectIp != null">#{connectIp},</if>
+            <if test="zteServerId != null">#{zteServerId},</if>
+            <if test="zteTerminalId != null">#{zteTerminalId},</if>
+            <if test="zteTerminalType != null">#{zteTerminalType},</if>
+            <if test="callmodel != null">#{callmodel},</if>
+            <if test="terminalUsername != null">#{terminalUsername},</if>
+            <if test="terminalPassword != null">#{terminalPassword},</if>
+            <if test="snCheck != null">#{snCheck},</if>
+            <if test="code != null">#{code},</if>
+            <if test="phone != null">#{phone},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiTerminal" parameterType="BusiTerminal">
+        update busi_terminal
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="createUserId != null">create_user_id = #{createUserId},</if>
+            <if test="sn != null">sn = #{sn},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="createUserName != null">create_user_name = #{createUserName},</if>
+            <if test="ip != null">ip = #{ip},</if>
+            <if test="number != null">number = #{number},</if>
+            <if test="cameraIp != null">camera_ip = #{cameraIp},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="onlineStatus != null">online_status = #{onlineStatus},</if>
+            <if test="password != null">password = #{password},</if>
+            <if test="credential != null">credential = #{credential},</if>
+            <if test="protocol != null">protocol = #{protocol},</if>
+            <if test="registrationTime != null">registration_time = #{registrationTime},</if>
+            <if test="intranetIp != null">intranet_ip = #{intranetIp},</if>
+            <if test="fsbcServerId != null">fsbc_server_id = #{fsbcServerId},</if>
+            <if test="fsServerId != null">fs_server_id = #{fsServerId},</if>
+            <if test="port != null">port = #{port},</if>
+            <if test="vendor != null">vendor = #{vendor},</if>
+            <if test="transport != null">transport = #{transport},</if>
+            business_field_type = #{businessFieldType},
+            business_properties = #{businessProperties, typeHandler=com.paradisecloud.fcm.dao.typehandler.JSONTypeMapHandler},
+            <if test="attendType != null">attend_type = #{attendType},</if>
+            <if test="mqttOnlineStatus != null">mqtt_online_status = #{mqttOnlineStatus},</if>
+            <if test="mac != null">mac = #{mac},</if>
+            remarks = #{remarks},
+            <if test="appVersionCode != null">app_version_code = #{appVersionCode},</if>
+            <if test="appVersionName != null">app_version_name = #{appVersionName},</if>
+            <if test="appType != null">app_type = #{appType},</if>
+            <if test="sortNum != null">sort_num = #{sortNum},</if>
+            <if test="terminalNum != null">terminal_num = #{terminalNum},</if>
+            <if test="zjServerId != null">zj_server_id = #{zjServerId},</if>
+            <if test="zjUserId != null">zj_user_id = #{zjUserId},</if>
+            <if test="expiredDate != null">expired_date = #{expiredDate},</if>
+            <if test="expiredDate == null">expired_date = null,</if>
+            <if test="available != null">available = #{available},</if>
+            <if test="zteServerId != null">zte_server_id = #{zteServerId},</if>
+            <if test="zteTerminalId != null">zte_terminal_id = #{zteTerminalId},</if>
+            <if test="zteTerminalType != null">zte_terminal_type = #{zteTerminalType},</if>
+            <if test="callmodel != null">callmodel = #{callmodel},</if>
+            <if test="terminalUsername != null">terminal_username=#{terminalUsername},</if>
+            <if test="terminalPassword != null">terminal_password=#{terminalPassword},</if>
+            <if test="snCheck != null">sn_check=#{snCheck},</if>
+            <if test="code != null">code=#{code},</if>
+            connect_ip = #{connectIp},
+            phone = #{phone},
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiTerminalById" parameterType="Long">
+        delete from busi_terminal where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiTerminalByIds" parameterType="String">
+        delete from busi_terminal where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectBusiTerminalListForIpTerminal" resultMap="BusiTerminalResult">
+        <include refid="selectBusiTerminalVo"/>
+        <where>
+            ip = #{ip}
+            <if test="number != null "> and number = #{number}</if>
+            <if test="number == null "> and number is null</if>
+        </where>
+    </select>
+
+    <resultMap type="TerminalTypeCountVo" id="TerminalTypeCountMap">
+        <result property="type"    column="type"    />
+        <result property="count"    column="count"    />
+    </resultMap>
+
+    <select id="selectTerminalTypeCount" resultMap="TerminalTypeCountMap">
+        select t.type, count(1) count
+        from busi_terminal t
+        <where>
+            <if test="deptId != null "> and t.dept_id = #{deptId}</if>
+        </where>
+        group by t.type
+    </select>
+
+    <resultMap type="DeptRecordCount" id="DeptTerminalCountMap">
+        <result property="deptId"    column="dept_id"    />
+        <result property="count"    column="count"    />
+    </resultMap>
+
+    <select id="getDeptTerminalCount" resultMap="DeptTerminalCountMap">
+        select t.dept_id, count(*) count
+        from busi_terminal t
+        <where>
+            <if test="deptId != null "> and t.dept_id = #{deptId}</if>
+        </where>
+        group by t.dept_id
+        order by t.dept_id
+    </select>
+
+    <select id="selectBusiTerminalListOfNotBoundByUser" parameterType="BusiTerminal" resultMap="BusiTerminalResult">
+        <include refid="selectBusiTerminalVo"/>
+        <where>
+            dept_id = #{deptId}
+            and type in (1300, 1100, 2100)
+            and available = 1
+            <if test="type != null "> and type = #{type}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="credential != null  and credential != ''"> and credential = #{credential}</if>
+            and not exists(select 1 from busi_user_terminal ut where ut.terminal_id = busi_terminal.id)
+        </where>
+    </select>
+
+    <select id="getAvailableTerminalNum" resultType="java.lang.Integer">
+        select
+        	ifnull(a.terminal_num, 0) + 1 new_terminal_num
+        from
+        	busi_terminal a
+        where
+        	not exists ( select 1 from busi_terminal b where b.terminal_num is not null and b.terminal_num = ifnull(a.terminal_num, 0) + 1 )
+        order by new_terminal_num
+        limit 1
+    </select>
+
+    <update id="updateTerminalNum" parameterType="BusiTerminal">
+        update busi_terminal
+        <trim prefix="SET" suffixOverrides=",">
+            terminal_num = #{terminalNum}
+        </trim>
+        where id = #{id}
+    </update>
+
+    <select id="getAvailableTerminalNumForZj" resultType="java.lang.Integer">
+        select
+        	ifnull(a.terminal_num, 0) + 1 new_terminal_num
+        from
+        	busi_terminal a
+        where
+        	and not exists ( select 1 from busi_terminal b where b.terminal_num is not null and b.terminal_num = ifnull(a.terminal_num, 0) + 1 )
+        order by new_terminal_num
+        limit 1
+    </select>
+
+    <select id="selectBusiTerminalForExpire" resultMap="BusiTerminalResult">
+        <include refid="selectBusiTerminalVo"/>
+        where available = 1
+        and expired_date <![CDATA[<]]> #{expireDate}
+    </select>
+
+    <select id="getAlreadyExistTerminalCredential" resultType="java.lang.Long">
+        select
+        	ifnull(a.credential, 0) + 1 new_terminal_num
+        from
+        	busi_terminal a
+        where
+        	not exists ( select 1 from busi_terminal b where b.credential is not null AND b.credential = ifnull(a.credential, 0) + 1)
+					AND a.type = #{type} AND a.credential is not null AND a.credential BETWEEN #{start} AND #{end}
+        order by new_terminal_num
+        limit 1
+    </select>
+</mapper>

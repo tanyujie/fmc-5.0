@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiSmartRoomParticipantMapper">
+
+    <resultMap type="BusiSmartRoomParticipant" id="BusiSmartRoomParticipantResult">
+        <result property="id"    column="id"    />
+        <result property="bookId"    column="book_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="userName"    column="user_name"    />
+        <result property="signInTime"    column="sign_in_time"    />
+        <result property="signInCode"    column="sign_in_code"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+    </resultMap>
+
+    <sql id="selectBusiSmartRoomParticipantVo">
+        select id, book_id, user_id, user_name, sign_in_time, sign_in_code, create_time, create_by, update_time, update_by from busi_smart_room_participant
+    </sql>
+
+    <select id="selectBusiSmartRoomParticipantList" parameterType="BusiSmartRoomParticipant" resultMap="BusiSmartRoomParticipantResult">
+        <include refid="selectBusiSmartRoomParticipantVo"/>
+        <where>
+            <if test="bookId != null "> and book_id = #{bookId}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="userName != null  and userName != ''"> and user_name like concat('%', #{userName}, '%')</if>
+            <if test="signInTime != null "> and sign_in_time = #{signInTime}</if>
+            <if test="signInCode != null "> and sign_in_code = #{signInCode}</if>
+        </where>
+        order by sign_in_time desc
+    </select>
+
+    <select id="selectBusiSmartRoomParticipantListForSignInCode" resultMap="BusiSmartRoomParticipantResult">
+        <include refid="selectBusiSmartRoomParticipantVo"/>
+        where sign_in_code is not null
+    </select>
+
+    <select id="selectBusiSmartRoomParticipantListForSignInCodeEnd" resultMap="BusiSmartRoomParticipantResult">
+        <include refid="selectBusiSmartRoomParticipantVo"/>
+        where sign_in_code is not null
+        and create_time <![CDATA[<]]> #{endTime}
+    </select>
+
+    <select id="selectBusiSmartRoomParticipantById" parameterType="Long" resultMap="BusiSmartRoomParticipantResult">
+        <include refid="selectBusiSmartRoomParticipantVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertBusiSmartRoomParticipant" parameterType="BusiSmartRoomParticipant" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_smart_room_participant
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="bookId != null">book_id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="userName != null and userName != ''">user_name,</if>
+            <if test="signInTime != null">sign_in_time,</if>
+            <if test="signInCode != null">sign_in_code,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="updateBy != null">update_by,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="bookId != null">#{bookId},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="userName != null and userName != ''">#{userName},</if>
+            <if test="signInTime != null">#{signInTime},</if>
+            <if test="signInCode != null">#{signInCode},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+        </trim>
+    </insert>
+
+    <update id="updateBusiSmartRoomParticipant" parameterType="BusiSmartRoomParticipant">
+        update busi_smart_room_participant
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="bookId != null">book_id = #{bookId},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="userName != null and userName != ''">user_name = #{userName},</if>
+            <if test="signInTime != null">sign_in_time = #{signInTime},</if>
+            sign_in_code = #{signInCode},
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null and createBy != ''">create_by = #{createBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiSmartRoomParticipantById" parameterType="Long">
+        delete from busi_smart_room_participant where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiSmartRoomParticipantByIds" parameterType="String">
+        delete from busi_smart_room_participant where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

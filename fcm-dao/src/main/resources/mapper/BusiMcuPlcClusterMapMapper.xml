@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiMcuPlcClusterMapMapper">
+    
+    <resultMap type="BusiMcuPlcClusterMap" id="BusiMcuPlcClusterMapResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="clusterId"    column="cluster_id"    />
+        <result property="mcuId"    column="mcu_id"    />
+        <result property="weight"    column="weight"    />
+    </resultMap>
+
+    <sql id="selectBusiMcuPlcClusterMapVo">
+        select id, create_time, update_time, cluster_id, mcu_id, weight from busi_mcu_plc_cluster_map
+    </sql>
+
+    <select id="selectBusiMcuPlcClusterMapList" parameterType="BusiMcuPlcClusterMap" resultMap="BusiMcuPlcClusterMapResult">
+        <include refid="selectBusiMcuPlcClusterMapVo"/>
+        <where>  
+            <if test="clusterId != null "> and cluster_id = #{clusterId}</if>
+            <if test="mcuId != null "> and mcu_id = #{mcuId}</if>
+            <if test="weight != null "> and weight = #{weight}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiMcuPlcClusterMapById" parameterType="Long" resultMap="BusiMcuPlcClusterMapResult">
+        <include refid="selectBusiMcuPlcClusterMapVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiMcuPlcClusterMap" parameterType="BusiMcuPlcClusterMap" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_mcu_plc_cluster_map
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="clusterId != null">cluster_id,</if>
+            <if test="mcuId != null">mcu_id,</if>
+            <if test="weight != null">weight,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="clusterId != null">#{clusterId},</if>
+            <if test="mcuId != null">#{mcuId},</if>
+            <if test="weight != null">#{weight},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiMcuPlcClusterMap" parameterType="BusiMcuPlcClusterMap">
+        update busi_mcu_plc_cluster_map
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="clusterId != null">cluster_id = #{clusterId},</if>
+            <if test="mcuId != null">mcu_id = #{mcuId},</if>
+            <if test="weight != null">weight = #{weight},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiMcuPlcClusterMapById" parameterType="Long">
+        delete from busi_mcu_plc_cluster_map where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiMcuPlcClusterMapByIds" parameterType="String">
+        delete from busi_mcu_plc_cluster_map where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

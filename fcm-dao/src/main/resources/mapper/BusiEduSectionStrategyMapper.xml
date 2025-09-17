@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiEduSectionStrategyMapper">
+    
+    <resultMap type="BusiEduSectionStrategy" id="BusiEduSectionStrategyResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="sectionSchemeId"    column="section_scheme_id"    />
+        <result property="sectionNumber"    column="section_number"    />
+        <result property="name"    column="name"    />
+        <result property="beginTime"    column="begin_time"    />
+    </resultMap>
+
+    <sql id="selectBusiEduSectionStrategyVo">
+        select id, create_time, update_time, section_scheme_id, section_number, name, begin_time from busi_edu_section_strategy
+    </sql>
+
+    <select id="selectBusiEduSectionStrategyList" parameterType="BusiEduSectionStrategy" resultMap="BusiEduSectionStrategyResult">
+        <include refid="selectBusiEduSectionStrategyVo"/>
+        <where>  
+            <if test="sectionSchemeId != null "> and section_scheme_id = #{sectionSchemeId}</if>
+            <if test="sectionNumber != null "> and section_number = #{sectionNumber}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="beginTime != null  and beginTime != ''"> and begin_time = #{beginTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiEduSectionStrategyById" parameterType="Long" resultMap="BusiEduSectionStrategyResult">
+        <include refid="selectBusiEduSectionStrategyVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiEduSectionStrategy" parameterType="BusiEduSectionStrategy" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_edu_section_strategy
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="sectionSchemeId != null">section_scheme_id,</if>
+            <if test="sectionNumber != null">section_number,</if>
+            <if test="name != null">name,</if>
+            <if test="beginTime != null">begin_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="sectionSchemeId != null">#{sectionSchemeId},</if>
+            <if test="sectionNumber != null">#{sectionNumber},</if>
+            <if test="name != null">#{name},</if>
+            <if test="beginTime != null">#{beginTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiEduSectionStrategy" parameterType="BusiEduSectionStrategy">
+        update busi_edu_section_strategy
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="sectionSchemeId != null">section_scheme_id = #{sectionSchemeId},</if>
+            <if test="sectionNumber != null">section_number = #{sectionNumber},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="beginTime != null">begin_time = #{beginTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiEduSectionStrategyBySectionSchemeId" parameterType="Long">
+        delete from busi_edu_section_strategy where section_scheme_id = #{id}
+    </delete>
+    
+    <delete id="deleteBusiEduSectionStrategyById" parameterType="Long">
+        delete from busi_edu_section_strategy where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiEduSectionStrategyByIds" parameterType="String">
+        delete from busi_edu_section_strategy where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

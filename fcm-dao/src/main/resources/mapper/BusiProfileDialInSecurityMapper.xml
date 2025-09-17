@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiProfileDialInSecurityMapper">
+    
+    <resultMap type="BusiProfileDialInSecurity" id="BusiProfileDialInSecurityResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="dialInSecurityProfileUuid"    column="dial_in_security_profile_uuid"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="isDefault"    column="is_default"    />
+    </resultMap>
+
+    <sql id="selectBusiProfileDialInSecurityVo">
+        select id, create_time, update_time, dial_in_security_profile_uuid, dept_id, is_default from busi_profile_dial_in_security
+    </sql>
+    
+    <resultMap type="DeptRecordCount" id="DeptRecordCountMap">
+        <result property="deptId"    column="dept_id"    />
+        <result property="count"    column="ct"    />
+    </resultMap>
+    
+    <select id="getDeptRecordCounts" resultMap="DeptRecordCountMap">
+        SELECT
+        	a.dept_id,
+        	count(*) ct 
+        FROM
+        	busi_profile_dial_in_security a
+        GROUP BY
+        	a.dept_id 
+        ORDER BY
+        	a.dept_id ASC
+    </select>
+
+    <select id="selectBusiProfileDialInSecurityList" parameterType="BusiProfileDialInSecurity" resultMap="BusiProfileDialInSecurityResult">
+        <include refid="selectBusiProfileDialInSecurityVo"/>
+        <where>  
+            <if test="dialInSecurityProfileUuid != null  and dialInSecurityProfileUuid != ''"> and dial_in_security_profile_uuid = #{dialInSecurityProfileUuid}</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="isDefault != null "> and is_default = #{isDefault}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiProfileDialInSecurityById" parameterType="Long" resultMap="BusiProfileDialInSecurityResult">
+        <include refid="selectBusiProfileDialInSecurityVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiProfileDialInSecurity" parameterType="BusiProfileDialInSecurity" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_profile_dial_in_security
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="dialInSecurityProfileUuid != null">dial_in_security_profile_uuid,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="isDefault != null">is_default,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="dialInSecurityProfileUuid != null">#{dialInSecurityProfileUuid},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="isDefault != null">#{isDefault},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiProfileDialInSecurity" parameterType="BusiProfileDialInSecurity">
+        update busi_profile_dial_in_security
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="dialInSecurityProfileUuid != null">dial_in_security_profile_uuid = #{dialInSecurityProfileUuid},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="isDefault != null">is_default = #{isDefault},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiProfileDialInSecurityById" parameterType="Long">
+        delete from busi_profile_dial_in_security where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiProfileDialInSecurityByIds" parameterType="String">
+        delete from busi_profile_dial_in_security where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

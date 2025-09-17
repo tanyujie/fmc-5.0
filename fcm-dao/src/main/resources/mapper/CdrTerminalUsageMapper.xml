@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.CdrTerminalUsageMapper">
+    
+    <resultMap type="CdrTerminalUsage" id="CdrTerminalUsageResult">
+        <result property="id"    column="id"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="terminalId"    column="terminal_id"    />
+        <result property="date"    column="date"    />
+        <result property="num"    column="num"    />
+        <result property="durationSeconds"    column="duration_seconds"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectCdrTerminalUsageVo">
+        select id, dept_id, terminal_id, date, num, duration_seconds, create_time, update_time from cdr_terminal_usage
+    </sql>
+
+    <select id="selectCdrTerminalUsageList" parameterType="CdrTerminalUsage" resultMap="CdrTerminalUsageResult">
+        <include refid="selectCdrTerminalUsageVo"/>
+        <where>  
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="terminalId != null "> and terminal_id = #{terminalId}</if>
+            <if test="date != null "> and date = #{date}</if>
+            <if test="num != null "> and num = #{num}</if>
+            <if test="durationSeconds != null "> and duration_seconds = #{durationSeconds}</if>
+        </where>
+    </select>
+    
+    <select id="selectCdrTerminalUsageById" parameterType="Long" resultMap="CdrTerminalUsageResult">
+        <include refid="selectCdrTerminalUsageVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertCdrTerminalUsage" parameterType="CdrTerminalUsage" useGeneratedKeys="true" keyProperty="id">
+        insert into cdr_terminal_usage
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="deptId != null">dept_id,</if>
+            <if test="terminalId != null">terminal_id,</if>
+            <if test="date != null">date,</if>
+            <if test="num != null">num,</if>
+            <if test="durationSeconds != null">duration_seconds,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="deptId != null">#{deptId},</if>
+            <if test="terminalId != null">#{terminalId},</if>
+            <if test="date != null">#{date},</if>
+            <if test="num != null">#{num},</if>
+            <if test="durationSeconds != null">#{durationSeconds},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCdrTerminalUsage" parameterType="CdrTerminalUsage">
+        update cdr_terminal_usage
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="terminalId != null">terminal_id = #{terminalId},</if>
+            <if test="date != null">date = #{date},</if>
+            <if test="num != null">num = #{num},</if>
+            <if test="durationSeconds != null">duration_seconds = #{durationSeconds},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCdrTerminalUsageById" parameterType="Long">
+        delete from cdr_terminal_usage where id = #{id}
+    </delete>
+
+    <delete id="deleteCdrTerminalUsageByIds" parameterType="String">
+        delete from cdr_terminal_usage where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <resultMap type="TerminalReportTerminalVo" id="TerminalReportTerminalMap">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="type"    column="type"    />
+        <result property="ip"    column="ip"    />
+        <result property="intranetIp"    column="intranet_ip"    />
+        <result property="credential"    column="credential"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="joinedTimes"    column="joined_times"    />
+        <result property="joinedSeconds"    column="joined_seconds"    />
+    </resultMap>
+
+    <select id="searchCdrTerminalUsageList" parameterType="ReportSearchVo" resultMap="CdrTerminalUsageResult">
+        <include refid="selectCdrTerminalUsageVo"/>
+        <where>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="startTime != null "> and date <![CDATA[>=]]> #{startTime}</if>
+            <if test="endTime != null "> and date <![CDATA[<=]]> #{endTime}</if>
+            <if test="name != null "> and name like concat('%', #{name},'%')</if>
+        </where>
+    </select>
+
+    <select id="selectTerminalListForReport"  resultMap="TerminalReportTerminalMap">
+        select t.id, t.name, t.type, t.ip, t.intranet_ip, t.credential, t.dept_id, ifnull(tusum.joined_times, 0) joined_times, ifnull(tusum.joined_seconds, 0) joined_seconds
+        from busi_terminal t
+            inner join (
+                select tu.terminal_id, sum(tu.num) joined_times, sum(tu.duration_seconds) joined_seconds
+                from cdr_terminal_usage tu
+                <where>
+                    <if test="deptId != null"> and tu.dept_id = #{deptId}</if>
+                    <if test="terminalId != null"> and tu.terminal_id = #{terminalId}</if>
+                    <if test="startDate != null"> and tu.date <![CDATA[>=]]> #{startDate}</if>
+                    <if test="endDate != null"> and tu.date <![CDATA[<=]]> #{endDate}</if>
+                </where>
+                group by tu.terminal_id
+            ) tusum on tusum.terminal_id = t.id
+        <where>
+            <if test="deptId != null"> and t.dept_id = #{deptId}</if>
+            <if test="terminalId != null"> and t.id = #{terminalId}</if>
+            <if test="terminalName != null"> and t.name like concat('%', #{terminalName}, '%')</if>
+            <if test="terminalType != null"> and t.type = #{terminalType}</if>
+        </where>
+    </select>
+
+    <resultMap type="TerminalReportTerminalOverviewVo" id="TerminalOverviewMap">
+        <result property="terminalCount"    column="terminal_count"    />
+        <result property="joinedSeconds"    column="joined_seconds"    />
+    </resultMap>
+
+    <select id="selectTerminalOverviewForReport"  resultMap="TerminalOverviewMap">
+        select count(tu.terminal_id) terminal_count, ifnull(sum(tu.duration_seconds), 0) joined_seconds
+        from cdr_terminal_usage tu
+        <where>
+            <if test="deptId != null"> and tu.dept_id = #{deptId}</if>
+            <if test="terminalId != null"> and tu.terminal_id = #{terminalId}</if>
+            <if test="startDate != null"> and tu.date <![CDATA[>=]]> #{startDate}</if>
+            <if test="endDate != null"> and tu.date <![CDATA[<=]]> #{endDate}</if>
+        </where>
+    </select>
+
+    <resultMap type="DeptTerminalUseCountVo" id="DeptTerminalUseCountMap">
+        <result property="deptId"    column="dept_id"    />
+        <result property="useCount"    column="use_count"    />
+    </resultMap>
+
+    <select id="selectTerminalUseCountForReport"  resultMap="DeptTerminalUseCountMap">
+        select t.dept_id, count(1) use_count
+        from busi_terminal t
+        where exists(
+            select 1
+            from cdr_terminal_usage tu
+            where tu.terminal_id = t.id
+            <if test="deptId != null"> and tu.dept_id = #{deptId}</if>
+            <if test="startDate != null"> and tu.date <![CDATA[>=]]> #{startDate}</if>
+            <if test="endDate != null "> and tu.date <![CDATA[<=]]> #{endDate}</if>
+            )
+        <if test="deptId != null"> and t.dept_id = #{deptId}</if>
+        group by t.dept_id
+    </select>
+
+    <resultMap type="TerminalTypeCountVo" id="TerminalTypeUseCountMap">
+        <result property="type"    column="type"    />
+        <result property="count"    column="use_count"    />
+    </resultMap>
+
+    <select id="selectTerminalTypeUseCountForReport"  resultMap="TerminalTypeUseCountMap">
+        select t.type, count(1) use_count
+        from busi_terminal t
+        where exists(
+            select 1
+            from cdr_terminal_usage tu
+            where tu.terminal_id = t.id
+            <if test="deptId != null"> and tu.dept_id = #{deptId}</if>
+            <if test="startDate != null"> and tu.date <![CDATA[>=]]> #{startDate}</if>
+            <if test="endDate != null "> and tu.date <![CDATA[<=]]> #{endDate}</if>
+            )
+        <if test="deptId != null"> and t.dept_id = #{deptId}</if>
+        group by t.type
+    </select>
+
+    <select id="selectCdrTerminalUsageListForJob" parameterType="CdrTerminalUsage" resultMap="CdrTerminalUsageResult">
+        <include refid="selectCdrTerminalUsageVo"/>
+        <where>
+            id <![CDATA[>=]]> #{startId}
+            and date = #{date}
+        </where>
+        limit 1000
+    </select>
+
+    <delete id="deleteHistory">
+        delete from cdr_terminal_usage where create_time &lt; #{beforeDate}
+    </delete>
+</mapper>

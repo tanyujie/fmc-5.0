@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiSmartRoomDoorplateMapper">
+
+    <resultMap type="BusiSmartRoomDoorplate" id="BusiSmartRoomDoorplateResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="sn"    column="sn"    />
+        <result property="ip"    column="ip"    />
+        <result property="mqttOnlineStatus"    column="mqtt_online_status"    />
+        <result property="appVersionCode"    column="app_version_code"    />
+        <result property="appVersionName"    column="app_version_name"    />
+        <result property="appType"    column="app_type"    />
+        <result property="connectIp"    column="connect_ip"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectBusiSmartRoomDoorplateVo">
+        select id, name, sn, ip, mqtt_online_status, app_version_code, app_version_name, app_type, connect_ip, create_time, create_by, remark from busi_smart_room_doorplate
+    </sql>
+
+    <select id="selectBusiSmartRoomDoorplateList" parameterType="BusiSmartRoomDoorplate" resultMap="BusiSmartRoomDoorplateResult">
+        <include refid="selectBusiSmartRoomDoorplateVo"/>
+        <where>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="sn != null  and sn != ''"> and sn = #{sn}</if>
+            <if test="ip != null  and ip != ''"> and ip = #{ip}</if>
+            <if test="mqttOnlineStatus != null "> and mqtt_online_status = #{mqttOnlineStatus}</if>
+            <if test="appVersionCode != null  and appVersionCode != ''"> and app_version_code = #{appVersionCode}</if>
+            <if test="appVersionName != null  and appVersionName != ''"> and app_version_name like concat('%', #{appVersionName}, '%')</if>
+            <if test="appType != null  and appType != ''"> and app_type = #{appType}</if>
+            <if test="connectIp != null  and connectIp != ''"> and connect_ip = #{connectIp}</if>
+
+            <if test="params.searchKey != null and params.searchKey != ''">
+                and (sn = #{params.searchKey} or name like concat('%', #{params.searchKey}, '%'))
+            </if>
+
+        </where>
+    </select>
+
+    <select id="selectBusiSmartRoomDoorplateById" parameterType="Long" resultMap="BusiSmartRoomDoorplateResult">
+        <include refid="selectBusiSmartRoomDoorplateVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertBusiSmartRoomDoorplate" parameterType="BusiSmartRoomDoorplate" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_smart_room_doorplate
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">name,</if>
+            <if test="sn != null and sn != ''">sn,</if>
+            <if test="ip != null">ip,</if>
+            <if test="mqttOnlineStatus != null">mqtt_online_status,</if>
+            <if test="appVersionCode != null">app_version_code,</if>
+            <if test="appVersionName != null">app_version_name,</if>
+            <if test="appType != null">app_type,</if>
+            <if test="connectIp != null">connect_ip,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            <if test="remark != null">remark,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="sn != null and sn != ''">#{sn},</if>
+            <if test="ip != null">#{ip},</if>
+            <if test="mqttOnlineStatus != null">#{mqttOnlineStatus},</if>
+            <if test="appVersionCode != null">#{appVersionCode},</if>
+            <if test="appVersionName != null">#{appVersionName},</if>
+            <if test="appType != null">#{appType},</if>
+            <if test="connectIp != null">#{connectIp},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            <if test="remark != null">#{remark},</if>
+        </trim>
+    </insert>
+
+    <update id="updateBusiSmartRoomDoorplate" parameterType="BusiSmartRoomDoorplate">
+        update busi_smart_room_doorplate
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="sn != null and sn != ''">sn = #{sn},</if>
+            <if test="ip != null">ip = #{ip},</if>
+            <if test="mqttOnlineStatus != null">mqtt_online_status = #{mqttOnlineStatus},</if>
+            <if test="appVersionCode != null">app_version_code = #{appVersionCode},</if>
+            <if test="appVersionName != null">app_version_name = #{appVersionName},</if>
+            <if test="appType != null">app_type = #{appType},</if>
+            <if test="connectIp != null">connect_ip = #{connectIp},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null and createBy != ''">create_by = #{createBy},</if>
+            remark = #{remark}
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiSmartRoomDoorplateById" parameterType="Long">
+        delete from busi_smart_room_doorplate where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiSmartRoomDoorplateByIds" parameterType="String">
+        delete from busi_smart_room_doorplate where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectNotBound" parameterType="Long" resultMap="BusiSmartRoomDoorplateResult">
+        select id, name, sn, ip, mqtt_online_status, app_version_code, app_version_name, app_type, connect_ip, create_time, create_by, remark from busi_smart_room_doorplate
+        where
+        	not exists (select * from busi_smart_room_device_map map WHERE map.device_id = busi_smart_room_doorplate.id AND map.device_type = 0)
+        <if test="roomId != null"> OR
+            exists (select * from busi_smart_room_device_map map WHERE map.device_id = busi_smart_room_doorplate.id AND map.room_id = #{roomId} AND map.device_type = 0)</if>
+    </select>
+</mapper>

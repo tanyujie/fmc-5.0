@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiLiveInformationMapper">
+
+    <resultMap type="BusiLiveInformation" id="BusiLiveInformationResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="url"    column="url"    />
+        <result property="liveBroadcastId"    column="live_broadcast_id"    />
+        <result property="name"    column="name"    />
+    </resultMap>
+
+    <sql id="selectBusiLiveInformationVo">
+        select id, create_time, update_time, create_by, update_by, url, live_broadcast_id, name from busi_live_information
+    </sql>
+
+    <select id="selectBusiLiveInformationList" parameterType="BusiLiveInformation" resultMap="BusiLiveInformationResult">
+        <include refid="selectBusiLiveInformationVo"/>
+        <where>
+            <if test="url != null  and url != ''"> and url = #{url}</if>
+            <if test="liveBroadcastId != null "> and live_broadcast_id = #{liveBroadcastId}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+        </where>
+    </select>
+
+    <select id="selectBusiLiveInformationById" parameterType="Long" resultMap="BusiLiveInformationResult">
+        <include refid="selectBusiLiveInformationVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertBusiLiveInformation" parameterType="BusiLiveInformation" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_live_information
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="url != null">url,</if>
+            <if test="liveBroadcastId != null">live_broadcast_id,</if>
+            <if test="name != null">name,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="url != null">#{url},</if>
+            <if test="liveBroadcastId != null">#{liveBroadcastId},</if>
+            <if test="name != null">#{name},</if>
+        </trim>
+    </insert>
+
+    <update id="updateBusiLiveInformation" parameterType="BusiLiveInformation">
+        update busi_live_information
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="url != null">url = #{url},</if>
+            <if test="liveBroadcastId != null">live_broadcast_id = #{liveBroadcastId},</if>
+            <if test="name != null">name = #{name},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiLiveInformationById" parameterType="Long">
+        delete from busi_live_information where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiLiveInformationByIds" parameterType="String">
+        delete from busi_live_information where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

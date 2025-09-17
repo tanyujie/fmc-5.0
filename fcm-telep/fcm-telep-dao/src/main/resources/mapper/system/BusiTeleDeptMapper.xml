@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.telep.dao.mapper.BusiTeleDeptMapper">
+    
+    <resultMap type="BusiTeleDept" id="BusiTeleDeptResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="teleType"    column="tele_type"    />
+        <result property="teleId"    column="tele_id"    />
+    </resultMap>
+
+    <sql id="selectBusiTeleDeptVo">
+        select id, create_time, update_time, dept_id, tele_type, tele_id from busi_tele_dept
+    </sql>
+
+    <select id="selectBusiTeleDeptList" parameterType="BusiTeleDept" resultMap="BusiTeleDeptResult">
+        <include refid="selectBusiTeleDeptVo"/>
+        <where>  
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="teleType != null "> and tele_type = #{teleType}</if>
+            <if test="teleId != null "> and tele_id = #{teleId}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiTeleDeptById" parameterType="Long" resultMap="BusiTeleDeptResult">
+        <include refid="selectBusiTeleDeptVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiTeleDept" parameterType="BusiTeleDept" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_tele_dept
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="teleType != null">tele_type,</if>
+            <if test="teleId != null">tele_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="teleType != null">#{teleType},</if>
+            <if test="teleId != null">#{teleId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiTeleDept" parameterType="BusiTeleDept">
+        update busi_tele_dept
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="teleType != null">tele_type = #{teleType},</if>
+            <if test="teleId != null">tele_id = #{teleId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiTeleDeptById" parameterType="Long">
+        delete from busi_tele_dept where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiTeleDeptByIds" parameterType="String">
+        delete from busi_tele_dept where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

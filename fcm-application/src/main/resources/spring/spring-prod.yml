@@ -1,0 +1,145 @@
+spring: 
+
+  # 资源信息
+  messages:
+  
+    # 国际化资源文件路径
+    basename: i18n/messages
+    
+  # 服务模块
+  devtools:
+    restart:
+    
+      # 热部署开关
+      enabled: true
+  pid: 
+    file: "${application.home}/tmp/application.pid"
+  mvc: 
+    servlet: 
+      load-on-startup: -1                               # Load on startup priority of the dispatcher servlet.
+    async: 
+      request-timeout: 30000                            # Amount of time before asynchronous request handling times out.
+    view: 
+      prefix: "/pages/"                                 # Spring MVC view prefix.
+      suffix: ".html"                                   # Spring MVC view suffix.
+
+  # 上传插件配置区     
+  servlet: 
+    multipart: 
+      enabled: true                                     # Whether to enable support of multipart uploads.
+      location: "${application.home}/tmp/upload"       # Intermediate location of uploaded files.
+      max-file-size: "600MB"                             # Max file size. Values can use the suffixes "MB" or "KB" to indicate megabytes or kilobytes, respectively.
+      max-request-size: "610MB"                         # Max request size. Values can use the suffixes "MB" or "KB" to indicate megabytes or kilobytes, respectively.
+      file-size-threshold: "0MB"                        # Threshold after which files are written to disk. Values can use the suffixes "MB" or "KB" to indicate megabytes or kilobytes, respectively.
+      resolve-lazily: true                              # Whether to resolve the multipart request lazily at the time of file or parameter access.
+  
+  # jackson配置区
+  jackson: 
+    joda-date-time-format: "yyyy-MM-dd HH:mm:ss"
+    date-format: "yyyy-MM-dd HH:mm:ss"
+    time-zone: "GMT+8"
+    locale: "zh"
+    
+  # redis配置区
+  redis:
+    # 数据库索引
+    database: 0
+    host: 127.0.0.1
+    port: 6379
+    password: P@rad1se
+    jedis:
+      pool:
+        # 连接池的最大数据库连接数。设为0表示无限制 
+        max-active: 600
+        # 最大建立连接等待时间。如果超过此时间将接到异常。设为-1表示无限制。
+        max-wait: -1
+        # 最大空闲数，数据库连接的最大空闲时间。超过空闲时间，数据库连接将被标记为不可用，然后被释放。设为0表示无限制
+        max-idle: 100
+        # 最小空闲
+        min-idle: 10
+    # 连接超时时间
+    timeout: 100000
+    
+# springdoc api文档开关，打开后会自动生成在线api文档，生产环境会关闭
+springdoc: 
+  swagger-ui: 
+    enabled: false
+  api-docs: 
+    enabled: false
+
+ttclouds:
+  #通知相关配置
+  notify:
+    mail:
+      enable: false
+      host: smtp.qq.com
+      username: ttclouds@qq.com
+      password: hpcwmagpwxrvgcad
+      sendfrom: ttclouds@qq.com
+      port: 465
+
+    # 短消息模版通知配置
+    # 短信息用于通知客户，例如发货短信通知，注意配置格式；template-name，template-templateId 请参考 NotifyType 枚举值
+    sms:
+      enable: false
+      # 如果是腾讯云短信，则设置active的值tencent
+      # 如果是阿里云短信，则设置active的值aliyun
+      active: tencent
+      sign: 成都天堂云科技
+      template:
+        # 您有一个会议通知，请于{1}到 “{2}” 参加 “{3}” 会议，签到码{4}，请在会议屏扫码签到！
+        - name: meetingInvite
+          templateId: 2126821
+        # 原定于{1} 召开的 “{2}” 会议取消，如有会议需要，将另行通知。
+        - name: meetingCancel
+          templateId: 2126822
+        # 有会议“{1}”将于{2}召开，会议号{3}。
+        - name: adminMeetingBook
+          templateId: 2198981
+        # 会议号{1}的会议“{2}”已于{3}开始。
+        - name: adminMeetingStart
+          templateId: 2198984
+        # 会议号{1}的会议“{2}”已于{3}结束。
+        - name: adminMeetingEnd
+          templateId: 2198985
+        # 原定于{1} 召开的 “{2}” 会议取消。
+        - name: adminMeetingCancel
+          templateId: 2198999
+        # 会议通知: 会议主题：{1} 会议时间：{2} 云会议号码：{3} 腾讯会议号码：77161895438 手机一键拨号入会 +8675536550000,77161895438 (中国大陆) 根据您的位置拨号 +86 (0)755 36550000 (中国大陆)
+        - name: adminTencentMeetingStart
+          templateId: 2211884
+      tencent:
+        appid: 1400901505
+        appkey: 3ef059e4d843535c3b68606c11ae376d
+      aliyun:
+        regionId: xxx
+        accessKeyId: xxx
+        accessKeySecret: xxx
+
+  # 直播
+  live:
+    enable: false
+    # 当前工作的直播模式，分别是tencent
+    active: tencent
+    # 腾讯云直播配置信息
+    tencent:
+      secretId:
+      secretKey:
+      authKey: 38e4f3c5b54eeb59d247ae96fbb21035
+      region:
+      domainName: 204317.push.tlivecloud.com
+      appName: live
+      pullDomainName: live.ttclouds.cn
+      playbackDomainName:
+      noticeSecretKey:
+  # IM
+  im:
+    enable: false
+    # 当前工作的直播模式，分别是tencent
+    active: tencent
+    # 腾讯云IM配置信息
+    tencent:
+      sdkAppId: 1600053381
+      secretKey: bdf932e468f2ee8f2ebd33d7063d3da842f771405e41a7fdfb391c779fe0b6dc
+      region: ap-guangzhou
+      adminUserId: admin

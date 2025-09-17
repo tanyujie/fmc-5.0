@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiConferenceMotionCaptureMapper">
+    
+    <resultMap type="BusiConferenceMotionCapture" id="BusiConferenceMotionCaptureResult">
+        <result property="id"    column="id"    />
+        <result property="historyConferenceId"    column="history_conference_id"    />
+        <result property="coSpace"    column="co_space"    />
+        <result property="motion"    column="motion"    />
+        <result property="imageName"    column="image_name"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectBusiConferenceMotionCaptureVo">
+        select id, history_conference_id, co_space, motion, image_name, create_time from busi_conference_motion_capture
+    </sql>
+
+    <select id="selectBusiConferenceMotionCaptureList" parameterType="BusiConferenceMotionCapture" resultMap="BusiConferenceMotionCaptureResult">
+        <include refid="selectBusiConferenceMotionCaptureVo"/>
+        <where>  
+            <if test="historyConferenceId != null "> and history_conference_id = #{historyConferenceId}</if>
+            <if test="coSpace != null  and coSpace != ''"> and co_space = #{coSpace}</if>
+            <if test="motion != null  and motion != ''"> and motion like concat('%', #{motion}, '%')</if>
+            <if test="imageName != null  and imageName != ''"> and image_name like concat('%', #{imageName}, '%')</if>
+            <if test="params.motions != null">
+                and
+                <foreach collection="params.motions" index="index" item="item" open="(" separator=" or " close=")">
+                    (motion like concat('%', #{item}, '%'))
+                </foreach>)
+            </if>
+        </where>
+    </select>
+    
+    <select id="selectBusiConferenceMotionCaptureById" parameterType="Long" resultMap="BusiConferenceMotionCaptureResult">
+        <include refid="selectBusiConferenceMotionCaptureVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiConferenceMotionCapture" parameterType="BusiConferenceMotionCapture" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_conference_motion_capture
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="historyConferenceId != null">history_conference_id,</if>
+            <if test="coSpace != null and coSpace != ''">co_space,</if>
+            <if test="motion != null and motion != ''">motion,</if>
+            <if test="imageName != null and imageName != ''">image_name,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="historyConferenceId != null">#{historyConferenceId},</if>
+            <if test="coSpace != null and coSpace != ''">#{coSpace},</if>
+            <if test="motion != null and motion != ''">#{motion},</if>
+            <if test="imageName != null and imageName != ''">#{imageName},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiConferenceMotionCapture" parameterType="BusiConferenceMotionCapture">
+        update busi_conference_motion_capture
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="historyConferenceId != null">history_conference_id = #{historyConferenceId},</if>
+            <if test="coSpace != null and coSpace != ''">co_space = #{coSpace},</if>
+            <if test="motion != null and motion != ''">motion = #{motion},</if>
+            <if test="imageName != null and imageName != ''">image_name = #{imageName},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiConferenceMotionCaptureById" parameterType="Long">
+        delete from busi_conference_motion_capture where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiConferenceMotionCaptureByIds" parameterType="String">
+        delete from busi_conference_motion_capture where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiLiveRecordsMapper">
+    
+    <resultMap type="BusiLiveRecords" id="BusiLiveRecordsResult">
+        <result property="id"    column="id"    />
+        <result property="liveId"    column="live_id"    />
+        <result property="fileName"    column="file_name"    />
+        <result property="fileUrl"    column="file_url"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="deleteTime"    column="delete_time"    />
+        <result property="deleteBy"    column="delete_by"    />
+    </resultMap>
+
+    <sql id="selectBusiLiveRecordsVo">
+        select id, live_id, file_name, file_url, create_time, create_by, update_time, update_by, delete_time, delete_by from busi_live_records
+    </sql>
+
+    <select id="selectBusiLiveRecordsList" parameterType="BusiLiveRecords" resultMap="BusiLiveRecordsResult">
+        <include refid="selectBusiLiveRecordsVo"/>
+        <where>  
+            <if test="liveId != null "> and live_id = #{liveId}</if>
+            <if test="fileName != null  and fileName != ''"> and file_name like concat('%', #{fileName}, '%')</if>
+            <if test="fileUrl != null  and fileUrl != ''"> and file_url = #{fileUrl}</if>
+             and delete_time is null
+        </where>
+    </select>
+    
+    <select id="selectBusiLiveRecordsById" parameterType="Long" resultMap="BusiLiveRecordsResult">
+        <include refid="selectBusiLiveRecordsVo"/>
+        where id = #{id}
+        and delete_time is null
+    </select>
+        
+    <insert id="insertBusiLiveRecords" parameterType="BusiLiveRecords" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_live_records
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="liveId != null">live_id,</if>
+            <if test="fileName != null">file_name,</if>
+            <if test="fileUrl != null">file_url,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="deleteTime != null">delete_time,</if>
+            <if test="deleteBy != null">delete_by,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="liveId != null">#{liveId},</if>
+            <if test="fileName != null">#{fileName},</if>
+            <if test="fileUrl != null">#{fileUrl},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="deleteTime != null">#{deleteTime},</if>
+            <if test="deleteBy != null">#{deleteBy},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiLiveRecords" parameterType="BusiLiveRecords">
+        update busi_live_records
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="liveId != null">live_id = #{liveId},</if>
+            <if test="fileName != null">file_name = #{fileName},</if>
+            <if test="fileUrl != null">file_url = #{fileUrl},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="deleteTime != null">delete_time = #{deleteTime},</if>
+            <if test="deleteBy != null">delete_by = #{deleteBy},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiLiveRecordsById" parameterType="Long">
+        delete from busi_live_records where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiLiveRecordsByIds" parameterType="String">
+        delete from busi_live_records where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

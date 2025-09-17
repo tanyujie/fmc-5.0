@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiSmc2AppointmentConferencePaticipantMapper">
+    
+    <resultMap type="com.paradisecloud.fcm.dao.model.BusiSmc2AppointmentConferencePaticipant" id="BusiSmc2AppointmentConferencePaticipantResult">
+        <result property="id"    column="id"    />
+        <result property="conferenceId"    column="conference_id"    />
+        <result property="appointmentId"    column="appointment_id"    />
+        <result property="terminalId"    column="terminal_id"    />
+        <result property="weight"    column="weight"    />
+        <result property="smcnumber"    column="smcnumber"    />
+        <result property="terminalName"    column="terminal_name"    />
+        <result property="terminalDeptId"    column="terminal_dept_id"    />
+        <result property="attendType"    column="attend_type"    />
+        <result property="participantId"    column="participant_id"    />
+    </resultMap>
+
+    <sql id="selectBusiSmc2AppointmentConferencePaticipantVo">
+        select id, conference_id, appointment_id, terminal_id, weight, smcnumber, terminal_name, terminal_dept_id,attend_type,participant_id from busi_smc2_appointment_conference_paticipant
+    </sql>
+
+    <select id="selectBusiSmc2AppointmentConferencePaticipantList" parameterType="BusiSmc2AppointmentConferencePaticipant" resultMap="BusiSmc2AppointmentConferencePaticipantResult">
+        <include refid="selectBusiSmc2AppointmentConferencePaticipantVo"/>
+        <where>  
+            <if test="conferenceId != null  and conferenceId != ''"> and conference_id = #{conferenceId}</if>
+            <if test="appointmentId != null "> and appointment_id = #{appointmentId}</if>
+            <if test="terminalId != null "> and terminal_id = #{terminalId}</if>
+            <if test="weight != null "> and weight = #{weight}</if>
+            <if test="smcnumber != null  and smcnumber != ''"> and smcnumber = #{smcnumber}</if>
+            <if test="terminalName != null  and terminalName != ''"> and terminal_name like concat('%', #{terminalName}, '%')</if>
+            <if test="terminalDeptId != null "> and terminal_dept_id = #{terminalDeptId}</if>
+            <if test="attendType != null "> and attend_type = #{attendType}</if>
+            <if test="participantId != null "> and participant_id = #{participantId}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiSmc2AppointmentConferencePaticipantById" parameterType="Integer" resultMap="BusiSmc2AppointmentConferencePaticipantResult">
+        <include refid="selectBusiSmc2AppointmentConferencePaticipantVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiSmc2AppointmentConferencePaticipant" parameterType="BusiSmc2AppointmentConferencePaticipant" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_smc2_appointment_conference_paticipant
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="conferenceId != null">conference_id,</if>
+            <if test="appointmentId != null">appointment_id,</if>
+            <if test="terminalId != null">terminal_id,</if>
+            <if test="weight != null">weight,</if>
+            <if test="smcnumber != null">smcnumber,</if>
+            <if test="terminalName != null">terminal_name,</if>
+            <if test="terminalDeptId != null">terminal_dept_id,</if>
+            <if test="attendType != null">attend_type,</if>
+            <if test="participantId != null">participant_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="conferenceId != null">#{conferenceId},</if>
+            <if test="appointmentId != null">#{appointmentId},</if>
+            <if test="terminalId != null">#{terminalId},</if>
+            <if test="weight != null">#{weight},</if>
+            <if test="smcnumber != null">#{smcnumber},</if>
+            <if test="terminalName != null">#{terminalName},</if>
+            <if test="terminalDeptId != null">#{terminalDeptId},</if>
+            <if test="attendType != null">#{attendType},</if>
+            <if test="participantId != null">#{participantId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiSmc2AppointmentConferencePaticipant" parameterType="BusiSmc2AppointmentConferencePaticipant">
+        update busi_smc2_appointment_conference_paticipant
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="conferenceId != null">conference_id = #{conferenceId},</if>
+            <if test="appointmentId != null">appointment_id = #{appointmentId},</if>
+            <if test="terminalId != null">terminal_id = #{terminalId},</if>
+            <if test="weight != null">weight = #{weight},</if>
+            <if test="smcnumber != null">smcnumber = #{smcnumber},</if>
+            <if test="terminalName != null">terminal_name = #{terminalName},</if>
+            <if test="terminalDeptId != null">terminal_dept_id = #{terminalDeptId},</if>
+            <if test="attendType != null">attend_type = #{attendType},</if>
+            <if test="participantId != null">participant_id = #{participantId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiSmc2AppointmentConferencePaticipantById" parameterType="Integer">
+        delete from busi_smc2_appointment_conference_paticipant where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiSmc2AppointmentConferencePaticipantByIds" parameterType="String">
+        delete from busi_smc2_appointment_conference_paticipant where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectBusiSmc2AppointmentConferencePaticipantListByAppointId" resultMap="BusiSmc2AppointmentConferencePaticipantResult">
+        select id, conference_id, appointment_id, terminal_id, weight, smcnumber, terminal_name,terminal_dept_id as deptId from busi_smc2_appointment_conference_paticipant where appointment_id = #{appointmentId}
+    </select>
+
+</mapper>

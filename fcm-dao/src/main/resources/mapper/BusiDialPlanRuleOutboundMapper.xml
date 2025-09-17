@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiDialPlanRuleOutboundMapper">
+    
+    <resultMap type="BusiDialPlanRuleOutbound" id="BusiDialPlanRuleOutboundResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="planUuid"    column="plan_uuid"    />
+        <result property="deptId"    column="dept_id"    />
+    </resultMap>
+
+    <sql id="selectBusiDialPlanRuleOutboundVo">
+        select id, create_time, update_time, plan_uuid, dept_id from busi_dial_plan_rule_outbound
+    </sql>
+
+    <select id="selectBusiDialPlanRuleOutboundList" parameterType="BusiDialPlanRuleOutbound" resultMap="BusiDialPlanRuleOutboundResult">
+        <include refid="selectBusiDialPlanRuleOutboundVo"/>
+        <where>  
+            <if test="planUuid != null  and planUuid != ''"> and plan_uuid = #{planUuid}</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiDialPlanRuleOutboundById" parameterType="Integer" resultMap="BusiDialPlanRuleOutboundResult">
+        <include refid="selectBusiDialPlanRuleOutboundVo"/>
+        where id = #{id}
+    </select>
+    
+    <resultMap type="DeptRecordCount" id="DeptRecordCountMap">
+        <result property="deptId"    column="dept_id"    />
+        <result property="count"    column="ct"    />
+    </resultMap>
+    
+    <select id="getDeptRecordCounts" resultMap="DeptRecordCountMap">
+        SELECT
+            a.dept_id,
+            count(*) ct 
+        FROM
+            busi_dial_plan_rule_outbound a
+        GROUP BY
+            a.dept_id 
+        ORDER BY
+            a.dept_id ASC
+    </select>  
+        
+    <insert id="insertBusiDialPlanRuleOutbound" useGeneratedKeys="true" keyProperty="id" parameterType="BusiDialPlanRuleOutbound">
+        insert into busi_dial_plan_rule_outbound
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="planUuid != null">plan_uuid,</if>
+            <if test="deptId != null">dept_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="planUuid != null">#{planUuid},</if>
+            <if test="deptId != null">#{deptId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiDialPlanRuleOutbound" parameterType="BusiDialPlanRuleOutbound">
+        update busi_dial_plan_rule_outbound
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="planUuid != null">plan_uuid = #{planUuid},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiDialPlanRuleOutboundById" parameterType="Integer">
+        delete from busi_dial_plan_rule_outbound where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiDialPlanRuleOutboundByIds" parameterType="String">
+        delete from busi_dial_plan_rule_outbound where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

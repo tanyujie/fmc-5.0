@@ -1,0 +1,1 @@
+ALTER TABLE `fcmdb`.`busi_template_conference` DROP FOREIGN KEY `busi_template_conference_ibfk_2`;

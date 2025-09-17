@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.smc.dao.model.mapper.BusiSmcConferenceStateMapper">
+
+    <resultMap type="com.paradisecloud.smc.dao.model.BusiSmcConferenceState" id="BusiSmcConferenceStateResult">
+        <result property="id"    column="id"    />
+        <result property="conferenceId"    column="conference_id"    />
+        <result property="chooseid"    column="chooseId"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectBusiSmcConferenceStateVo">
+        select id, conference_id, chooseId, create_time from busi_smc_conference_state
+    </sql>
+
+    <select id="selectBusiSmcConferenceStateList" parameterType="com.paradisecloud.smc.dao.model.BusiSmcConferenceState" resultMap="BusiSmcConferenceStateResult">
+        <include refid="selectBusiSmcConferenceStateVo"/>
+        <where>
+            <if test="conferenceId != null  and conferenceId != ''"> and conference_id = #{conferenceId}</if>
+            <if test="chooseid != null  and chooseid != ''"> and chooseId = #{chooseid}</if>
+        </where>
+    </select>
+
+    <select id="selectBusiSmcConferenceStateById" parameterType="Integer" resultMap="BusiSmcConferenceStateResult">
+        <include refid="selectBusiSmcConferenceStateVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertBusiSmcConferenceState" parameterType="com.paradisecloud.smc.dao.model.BusiSmcConferenceState" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_smc_conference_state
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="conferenceId != null and conferenceId != ''">conference_id,</if>
+            <if test="chooseid != null and chooseid != ''">chooseId,</if>
+            <if test="createTime != null">create_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="conferenceId != null and conferenceId != ''">#{conferenceId},</if>
+            <if test="chooseid != null and chooseid != ''">#{chooseid},</if>
+            <if test="createTime != null">#{createTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateBusiSmcConferenceState" parameterType="com.paradisecloud.smc.dao.model.BusiSmcConferenceState">
+        update busi_smc_conference_state
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="conferenceId != null and conferenceId != ''">conference_id = #{conferenceId},</if>
+            <if test="chooseid != null and chooseid != ''">chooseId = #{chooseid},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiSmcConferenceStateById" parameterType="Integer">
+        delete from busi_smc_conference_state where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiSmcConferenceStateByIds" parameterType="String">
+        delete from busi_smc_conference_state where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

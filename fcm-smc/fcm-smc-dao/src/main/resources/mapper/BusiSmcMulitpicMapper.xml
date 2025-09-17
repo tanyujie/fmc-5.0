@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.smc.dao.model.mapper.BusiSmcMulitpicMapper">
+
+    <resultMap type="com.paradisecloud.smc.dao.model.BusiSmcMulitpic" id="BusiSmcMulitpicResult">
+        <result property="id"    column="id"    />
+        <result property="conferenceId"    column="conference_id"    />
+        <result property="mulitpic"    column="mulitpic"    />
+    </resultMap>
+
+    <sql id="selectBusiSmcMulitpicVo">
+        select id, conference_id, mulitpic from busi_smc_mulitpic
+    </sql>
+
+    <select id="selectBusiSmcMulitpicList" parameterType="com.paradisecloud.smc.dao.model.BusiSmcMulitpic" resultMap="BusiSmcMulitpicResult">
+        <include refid="selectBusiSmcMulitpicVo"/>
+        <where>
+            <if test="conferenceId != null  and conferenceId != ''"> and conference_id = #{conferenceId}</if>
+            <if test="mulitpic != null  and mulitpic != ''"> and mulitpic = #{mulitpic}</if>
+        </where>
+    </select>
+
+    <select id="selectBusiSmcMulitpicById" parameterType="Integer" resultMap="BusiSmcMulitpicResult">
+        <include refid="selectBusiSmcMulitpicVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectBusiSmcMulitpicByConferenceId" parameterType="String" resultMap="BusiSmcMulitpicResult">
+        <include refid="selectBusiSmcMulitpicVo"/>
+        where conference_id = #{conferenceId}
+    </select>
+
+    <insert id="insertBusiSmcMulitpic" parameterType="com.paradisecloud.smc.dao.model.BusiSmcMulitpic" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_smc_mulitpic
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="conferenceId != null and conferenceId != ''">conference_id,</if>
+            <if test="mulitpic != null and mulitpic != ''">mulitpic,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="conferenceId != null and conferenceId != ''">#{conferenceId},</if>
+            <if test="mulitpic != null and mulitpic != ''">#{mulitpic},</if>
+        </trim>
+    </insert>
+
+    <update id="updateBusiSmcMulitpic" parameterType="com.paradisecloud.smc.dao.model.BusiSmcMulitpic">
+        update busi_smc_mulitpic
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="conferenceId != null and conferenceId != ''">conference_id = #{conferenceId},</if>
+            <if test="mulitpic != null and mulitpic != ''">mulitpic = #{mulitpic},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiSmcMulitpicById" parameterType="Integer">
+        delete from busi_smc_mulitpic where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiSmcMulitpicByConferenceId" parameterType="String">
+        delete from busi_smc_mulitpic where conference_id = #{conferenceId}
+    </delete>
+
+    <delete id="deleteBusiSmcMulitpicByIds" parameterType="String">
+        delete from busi_smc_mulitpic where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

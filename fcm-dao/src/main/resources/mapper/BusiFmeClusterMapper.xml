@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiFmeClusterMapper">
+    
+    <resultMap type="BusiFmeCluster" id="BusiFmeClusterResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="name"    column="name"    />
+        <result property="spareFmeType"    column="spare_fme_type"    />
+        <result property="spareFmeId"    column="spare_fme_id"    />
+        <result property="description"    column="description"    />
+    </resultMap>
+
+    <sql id="selectBusiFmeClusterVo">
+        select id, create_time, update_time, name, spare_fme_type, spare_fme_id, description from busi_fme_cluster
+    </sql>
+
+    <select id="selectBusiFmeClusterList" parameterType="BusiFmeCluster" resultMap="BusiFmeClusterResult">
+        <include refid="selectBusiFmeClusterVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="spareFmeType != null "> and spare_fme_type = #{spareFmeType}</if>
+            <if test="spareFmeId != null "> and spare_fme_id = #{spareFmeId}</if>
+            <if test="description != null  and description != ''"> and description = #{description}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiFmeClusterById" parameterType="Long" resultMap="BusiFmeClusterResult">
+        <include refid="selectBusiFmeClusterVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiFmeCluster" parameterType="BusiFmeCluster" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_fme_cluster
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="name != null">name,</if>
+            <if test="spareFmeType != null">spare_fme_type,</if>
+            <if test="spareFmeId != null">spare_fme_id,</if>
+            <if test="description != null">description,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="name != null">#{name},</if>
+            <if test="spareFmeType != null">#{spareFmeType},</if>
+            <if test="spareFmeId != null">#{spareFmeId},</if>
+            <if test="description != null">#{description},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiFmeCluster" parameterType="BusiFmeCluster">
+        update busi_fme_cluster
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="description != null">description = #{description},</if>
+            spare_fme_type = #{spareFmeType},
+            spare_fme_id = #{spareFmeId},
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiFmeClusterById" parameterType="Long">
+        delete from busi_fme_cluster where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiFmeClusterByIds" parameterType="String">
+        delete from busi_fme_cluster where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

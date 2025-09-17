@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiHistoryConferenceMapper">
+    
+    <resultMap type="BusiHistoryConference" id="BusiHistoryConferenceResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="name"    column="name"    />
+        <result property="createUserId"    column="create_user_id"    />
+        <result property="number"    column="number"    />
+        <result property="createUserName"    column="create_user_name"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="callLegProfileId"    column="call_leg_profile_id"    />
+        <result property="bandwidth"    column="bandwidth"    />
+        <result property="callId"    column="call_id"    />
+        <result property="coSpace"    column="co_space"    />
+        <result property="conferenceStartTime"    column="conference_start_time"    />
+        <result property="conferenceEndTime"    column="conference_end_time"    />
+        <result property="duration"    column="duration"    />
+        <result property="deviceNum"    column="device_num"    />
+        <result property="type"    column="type"    />
+        <result property="endReasonsType"    column="end_reasons_type"    />
+        <result property="mcuType"    column="mcu_type"    />
+        <result property="upCascadeId"    column="up_cascade_id"    />
+        <result property="templateId"    column="template_id"    />
+        <result property="minutesDoc"    column="minutes_doc"    />
+    </resultMap>
+
+    <sql id="selectBusiHistoryConferenceVo">
+        select id, create_time, update_time, create_user_id, name, create_user_name, number, dept_id, call_leg_profile_id, bandwidth, call_id, co_space, conference_start_time, conference_end_time, duration, device_num,type, end_reasons_type, mcu_type, up_cascade_id, template_id,minutes_doc from busi_history_conference
+    </sql>
+
+    <select id="selectBusiHistoryConferenceList" parameterType="BusiHistoryConference" resultMap="BusiHistoryConferenceResult">
+        <include refid="selectBusiHistoryConferenceVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="createUserId != null "> and create_user_id = #{createUserId}</if>
+            <if test="number != null "> and number = #{number}</if>
+            <if test="createUserName != null  and createUserName != ''"> and create_user_name like concat('%', #{createUserName}, '%')</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="callLegProfileId != null  and callLegProfileId != ''"> and call_leg_profile_id = #{callLegProfileId}</if>
+            <if test="bandwidth != null "> and bandwidth = #{bandwidth}</if>
+            <if test="callId != null  and callId != ''"> and call_id = #{callId}</if>
+            <if test="coSpace != null "> and co_space = #{coSpace}</if>
+            <if test="conferenceStartTime != null "> and conference_start_time = #{conferenceStartTime}</if>
+            <if test="conferenceEndTime != null "> and conference_end_time = #{conferenceEndTime}</if>
+            <if test="duration != null "> and duration = #{duration}</if>
+            <if test="deviceNum != null "> and device_num = #{deviceNum}</if>
+            <if test="type != null "> and type = #{type}</if>
+            <if test="endReasonsType != null "> and end_reasons_type = #{endReasonsType}</if>
+            <if test="mcuType != null  and mcuType != ''"> and mcu_type = #{mcuType}</if>
+            <if test="upCascadeId != null "> and up_cascade_id = #{upCascadeId}</if>
+            <if test="templateId != null "> and template_id = #{templateId}</if>
+            <if test="minutesDoc != null "> and minutes_doc = #{minutesDoc}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiHistoryConferenceByCoSpaceId" parameterType="String" resultMap="BusiHistoryConferenceResult">
+        <include refid="selectBusiHistoryConferenceVo" />
+        where co_space = #{coSpace} limit 0,1
+    </select>
+    
+    <select id="selectNotEndHistoryConferenceList" resultMap="BusiHistoryConferenceResult">
+        <include refid="selectBusiHistoryConferenceVo"/>
+        <where>  
+            conference_end_time is null
+            <if test="mcuType != null  and mcuType != ''"> and mcu_type = #{mcuType}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiHistoryConferenceById" parameterType="Long" resultMap="BusiHistoryConferenceResult">
+        <include refid="selectBusiHistoryConferenceVo"/>
+        where id = #{id}
+    </select>
+    
+    <select id="selectBusiHistoryConferenceByCallId" parameterType="String" resultMap="BusiHistoryConferenceResult">
+        <include refid="selectBusiHistoryConferenceVo"/>
+        where id = (select history_conference_id from busi_history_call where call_id=#{callId})
+    </select>
+    
+    <resultMap type="DeptRecordCount" id="DeptRecordCountMap">
+        <result property="deptId"    column="dept_id"    />
+        <result property="count"    column="ct"    />
+    </resultMap>
+    
+    <select id="getDeptRecordCounts" resultMap="DeptRecordCountMap">
+        SELECT
+        	a.dept_id,
+        	count(*) ct 
+        FROM
+        	busi_history_conference a
+        GROUP BY
+        	a.dept_id 
+        ORDER BY
+        	a.dept_id ASC
+    </select>
+        
+    <insert id="insertBusiHistoryConference" parameterType="BusiHistoryConference" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_history_conference
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="name != null">name,</if>
+            <if test="createUserId != null">create_user_id,</if>
+            <if test="number != null">number,</if>
+            <if test="createUserName != null">create_user_name,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="callLegProfileId != null">call_leg_profile_id,</if>
+            <if test="bandwidth != null">bandwidth,</if>
+            <if test="callId != null">call_id,</if>
+            <if test="coSpace != null">co_space,</if>
+            <if test="conferenceStartTime != null">conference_start_time,</if>
+            <if test="conferenceEndTime != null">conference_end_time,</if>
+            <if test="duration != null">duration,</if>
+            <if test="deviceNum != null">device_num,</if>
+            <if test="type != null">type,</if>
+            <if test="endReasonsType != null ">end_reasons_type,</if>
+            <if test="mcuType != null ">mcu_type,</if>
+            <if test="upCascadeId != null ">up_cascade_id,</if>
+            <if test="templateId != null ">template_id,</if>
+            <if test="minutesDoc != null ">minutes_doc,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="name != null">#{name},</if>
+            <if test="createUserId != null">#{createUserId},</if>
+            <if test="number != null">#{number},</if>
+            <if test="createUserName != null">#{createUserName},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="callLegProfileId != null">#{callLegProfileId},</if>
+            <if test="bandwidth != null">#{bandwidth},</if>
+            <if test="callId != null">#{callId},</if>
+            <if test="coSpace != null">#{coSpace},</if>
+            <if test="conferenceStartTime != null">#{conferenceStartTime},</if>
+            <if test="conferenceEndTime != null">#{conferenceEndTime},</if>
+            <if test="duration != null">#{duration},</if>
+            <if test="deviceNum != null">#{deviceNum},</if>
+            <if test="type != null">#{type},</if>
+            <if test="endReasonsType != null ">#{endReasonsType},</if>
+            <if test="mcuType != null ">#{mcuType},</if>
+            <if test="upCascadeId != null ">#{upCascadeId},</if>
+            <if test="templateId != null ">#{templateId},</if>
+            <if test="minutesDoc != null ">#{minutesDoc},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiHistoryConference" parameterType="BusiHistoryConference">
+        update busi_history_conference
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="createUserId != null">create_user_id = #{createUserId},</if>
+            <if test="number != null">number = #{number},</if>
+            <if test="createUserName != null">create_user_name = #{createUserName},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="callLegProfileId != null">call_leg_profile_id = #{callLegProfileId},</if>
+            <if test="bandwidth != null">bandwidth = #{bandwidth},</if>
+            <if test="callId != null">call_id = #{callId},</if>
+            <if test="coSpace != null">co_space = #{coSpace},</if>
+            <if test="conferenceStartTime != null">conference_start_time = #{conferenceStartTime},</if>
+            <if test="conferenceEndTime != null">conference_end_time = #{conferenceEndTime},</if>
+            <if test="duration != null">duration = #{duration},</if>
+            <if test="deviceNum != null">device_num = #{deviceNum},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="endReasonsType != null ">end_reasons_type = #{endReasonsType},</if>
+            <if test="mcuType != null ">mcu_type = #{mcuType},</if>
+            <if test="upCascadeId != null ">up_cascade_id = #{upCascadeId},</if>
+            <if test="templateId != null ">template_id = #{templateId},</if>
+            <if test="minutesDoc != null ">minutes_doc = #{minutesDoc},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiHistoryConferenceById" parameterType="Long">
+        delete from busi_history_conference where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiHistoryConferenceByIds" parameterType="String">
+        delete from busi_history_conference where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <update id="updateHistoryByConferenceNumber">
+        update busi_history_conference
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where number = #{conferenceNumber} and update_time is null
+    </update>
+
+    <update id="updateHistoryConferenceByCoSpace">
+        update busi_history_conference
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="busiHistoryConference.updateTime != null">update_time = #{busiHistoryConference.updateTime},</if>
+            <if test="busiHistoryConference.conferenceStartTime != null">conference_start_time = #{busiHistoryConference.conferenceStartTime},</if>
+            <if test="busiHistoryConference.conferenceEndTime != null">conference_end_time = #{busiHistoryConference.conferenceEndTime},</if>
+            <if test="busiHistoryConference.duration != null">duration = #{busiHistoryConference.duration},</if>
+            <if test="busiHistoryConference.callId != null">call_id = #{busiHistoryConference.callId},</if>
+            <if test="busiHistoryConference.deviceNum != null">device_num = #{busiHistoryConference.deviceNum},</if>
+            <if test="busiHistoryConference.endReasonsType != null ">end_reasons_type = #{busiHistoryConference.endReasonsType},</if>
+            <if test="busiHistoryConference.mcuType != null ">mcu_type = #{busiHistoryConference.mcuType},</if>
+            <if test="busiHistoryConference.upCascadeId != null ">up_cascade_id = #{busiHistoryConference.upCascadeId},</if>
+        </trim>
+        <where>
+            <if test="busiHistoryConference.id != null"> and id = #{busiHistoryConference.id}</if>
+            <if test="busiHistoryConference.coSpace != null"> and co_space = #{busiHistoryConference.coSpace}</if>
+            <if test="busiHistoryConference.id == null"> and update_time is null</if>
+            <choose>
+                <when test="recordType == 1"> ORDER BY id DESC LIMIT 1</when>
+            </choose>
+        </where>
+    </update>
+
+    <select id="reportByDept" resultMap="BusiHistoryConferenceResult">
+        select h.id,h.name,h.number,h.dept_id,h.bandwidth,h.conference_start_time,h.conference_end_time,h.duration,h.device_num,type from busi_history_conference h
+        <where>
+            <if test="deptId !=null"> and h.dept_id=#{deptId}</if>
+            <if test="type !=null"> and h.type=#{type}</if>
+            <if test="startTime != null "> and conference_start_time <![CDATA[>=]]> #{startTime}</if>
+            <if test="endTime != null "> and conference_end_time <![CDATA[<=]]> #{endTime}</if>
+        </where>
+    </select>
+
+    <resultMap id="noJoinConferenceResultMap" type="BusiHistoryConference">
+        <result property="id"    column="id"    />
+        <result property="number"    column="number"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="conferenceStartTime"    column="conference_start_time"    />
+        <result property="conferenceEndTime"    column="conference_end_time"    />
+        <result property="type"    column="type"    />
+        <association property="sysDept">
+            <result property="deptName"    column="dept_name"    />
+        </association>
+        <collection property="participantList" ofType="BusiHistoryParticipant">
+            <result property="id"    column="id"    />
+            <result property="name"    column="name"    />
+            <association property="cdrCallLegEnd">
+                <result property="cdrId"    column="cdr_id"/>
+                <result property="reason"    column="reason" typeHandler="com.paradisecloud.fcm.dao.enums.EnumHandler"/>
+            </association>
+        </collection>
+    </resultMap>
+    <select id="reportNoJoinConference" resultType="map">
+        select c.number,c.dept_id deptId,d.dept_name deptName,p.`name`,c.conference_start_time conferenceStartTime,c.conference_end_time conferenceEndTime,e.reason,c.type from busi_history_conference c
+        inner join busi_history_participant p on c.id=p.history_conference_id
+        inner join cdr_call_leg_end e on e.id = p.call_leg_id
+        inner join sys_dept d on d.dept_id=c.dept_id
+        <where>
+            e.activated_duration=0
+            <if test="deptId !=null"> and c.dept_id=#{deptId}</if>
+            <if test="startTime != null "> and c.conference_start_time <![CDATA[>=]]> #{startTime}</if>
+            <if test="endTime != null "> and c.conference_end_time <![CDATA[<=]]> #{endTime}</if>
+        </where>
+    </select>
+
+    <select id="selectBySearchVo" resultMap="BusiHistoryConferenceResult" parameterType="ReportSearchVo">
+        <include refid="selectBusiHistoryConferenceVo"/>
+        <where>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="minutesDoc !=null"> and minutes_doc=#{minutesDoc}</if>
+            <if test="startTime != null "> and conference_start_time <![CDATA[>=]]> #{startTime}</if>
+            <if test="endTime != null "> and conference_start_time <![CDATA[<=]]> #{endTime}</if>
+            <if test="number != null "> and (number like concat('%', #{number},'%') or co_space like concat(#{number},'%'))</if>
+            <if test="name != null "> and name like concat('%', #{name},'%')</if>
+            <if test="modeConference == true ">
+                and conference_end_time is not null and exists (select 1 from busi_template_conference btc where btc.id = busi_history_conference.template_id and btc.conference_mode is not null)
+            </if>
+        </where>
+        order by conference_start_time desc
+    </select>
+
+    <select id="selectBySearchVoAndHistoryId" resultMap="BusiHistoryConferenceResult">
+        <include refid="selectBusiHistoryConferenceVo"/>
+        <where>
+            <if test="searchVo.deptId != null "> and dept_id = #{searchVo.deptId}</if>
+            <if test="searchVo.minutesDoc != null "> and minutes_doc = #{searchVo.minutesDoc}</if>
+            <if test="searchVo.startTime != null "> and conference_start_time <![CDATA[>=]]> #{searchVo.startTime}</if>
+            <if test="searchVo.endTime != null "> and conference_start_time <![CDATA[<=]]> #{searchVo.endTime}</if>
+            <if test="searchVo.number != null "> and number like concat('%', #{searchVo.number},'%')</if>
+            <if test="searchVo.name != null "> and name like concat('%', #{searchVo.name},'%')</if>
+            <if test="historyIdList !=null">
+                 and id in
+                <foreach collection="historyIdList" item="id" open="(" close=")" separator=",">
+                    #{id}
+                </foreach>
+            </if>
+        </where>
+        order by conference_start_time desc
+    </select>
+
+    <select id="selectNotEndCalcDayHistoryConferenceDeptList" resultType="long">
+        select hc.dept_id deptId
+        from busi_history_conference hc
+        inner join sys_dept d on d.dept_id = hc.dept_id
+        <where>
+            (hc.conference_end_time is null or hc.conference_end_time <![CDATA[>]]> #{endTime})
+            group by hc.dept_id
+        </where>
+    </select>
+
+    <select id="selectNotEndCalcDayHistoryConferenceList" resultMap="BusiHistoryConferenceResult">
+        <include refid="selectBusiHistoryConferenceVo"/>
+        <where>
+            dept_id = #{deptId}
+            and (conference_end_time is null or conference_end_time <![CDATA[>]]> #{endTime})
+        </where>
+    </select>
+
+    <select id="selectEndedCalcDayHistoryConferenceList" resultMap="BusiHistoryConferenceResult">
+        <include refid="selectBusiHistoryConferenceVo"/>
+        <where>
+            dept_id = #{deptId}
+            and conference_end_time between #{startTime} and #{endTime}
+        </where>
+    </select>
+
+    <delete id="deleteHistory">
+        delete from busi_history_conference where create_time &lt; #{beforeDate}
+    </delete>
+
+    <update id="updateModeHistoryConference" parameterType="BusiHistoryConference">
+        update busi_history_conference
+        <trim prefix="SET" suffixOverrides=",">
+            template_id = #{templateId},
+        </trim>
+        where id = #{id}
+    </update>
+
+    <update id="deleteModeHistoryConference" parameterType="BusiHistoryConference">
+        update busi_history_conference
+        <trim prefix="SET" suffixOverrides=",">
+            template_id = null,
+        </trim>
+        where template_id = #{templateId}
+    </update>
+
+    <update id="deleteAllModeHistoryConference">
+        update busi_history_conference
+        <trim prefix="SET" suffixOverrides=",">
+            template_id = null,
+        </trim>
+        where template_id is not null
+    </update>
+
+    <select id="selectBusiHistoryConferenceModeList" resultMap="BusiHistoryConferenceResult">
+        <include refid="selectBusiHistoryConferenceVo"/>
+        <where>
+            template_id is not null
+        </where>
+        order by id desc
+    </select>
+
+    <update id="deleteAllMinutesHistoryConference">
+        update busi_history_conference
+        <trim prefix="SET" suffixOverrides=",">
+            minutes_doc = 0,
+        </trim>
+        where minutes_doc > 0
+    </update>
+</mapper>

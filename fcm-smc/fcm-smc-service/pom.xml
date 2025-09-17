@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>fcm-smc</artifactId>
+        <groupId>com.paradisecloud</groupId>
+        <version>2.0-RELEASE</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>fcm-smc-service</artifactId>
+
+    <properties>
+        <maven.compiler.source>14</maven.compiler.source>
+        <maven.compiler.target>14</maven.compiler.target>
+    </properties>
+    <dependencies>
+
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>28.2-android</version>
+        </dependency>
+        <dependency>
+            <groupId>com.paradisecloud</groupId>
+            <artifactId>fcm-smc-model</artifactId>
+            <version>2.0-RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.paradisecloud</groupId>
+            <artifactId>fcm-smc-dao</artifactId>
+            <version>2.0-RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.paradisecloud</groupId>
+            <artifactId>fcm-smc-cache</artifactId>
+            <version>2.0-RELEASE</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>com.paradisecloud</groupId>
+            <artifactId>fcm-smc-websocket</artifactId>
+            <version>2.0-RELEASE</version>
+        </dependency>
+
+
+
+    </dependencies>
+
+</project>

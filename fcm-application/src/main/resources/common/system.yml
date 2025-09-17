@@ -1,0 +1,75 @@
+application: 
+  
+  # 名称
+  name: "云视讯管理系统"
+  
+  # 版本
+  version: "4.1.0"
+  
+  # 描述
+  description: "云视讯管理系统"
+  
+  # 版权年份
+  copyrightYear: 2021
+  
+  # 公司
+  copyrightCompany: "成都天堂云科技有限公司"
+  
+  # 实例演示开关
+  demoEnabled: true
+  
+  # 文件路径 示例（ Windows配置D:/ruoyi/uploadPath，Linux配置 /home/ruoyi/uploadPath）
+  profile: "${application.home}/uploadPath"
+  
+  # 获取ip地址开关
+  addressEnabled: false
+  
+  # 验证码类型 math 数组计算 char 字符验证
+  captchaType: math
+
+  # 是否单点登录
+  singleLogin: false
+
+recordConfig:
+  recordingFilesStorageSpaceMax: 2000
+# token配置
+token:
+    # 令牌自定义标识
+    header: Authorization
+    
+    # 令牌密钥
+    secret: n0RtnEYL7eq7hvT73CrzPvxAWdnggXGD
+    
+    # 令牌有效期（默认30分钟），这里设置为3天
+    expireTime: 4320
+  
+# MyBatis配置
+mybatis:
+
+    # 搜索指定包别名
+    typeAliasesPackage: com.paradisecloud.**.dao.model
+    
+    # 配置mapper的扫描，找到所有的mapper.xml映射文件
+    mapperLocations: classpath*:mapper/**/*Mapper.xml
+    
+    # 加载全局的配置文件
+    configLocation: classpath:META-INF/mybatis-config.xml
+    
+# PageHelper分页插件
+pagehelper: 
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+  
+# 防止XSS攻击
+xss: 
+  # 过滤开关
+  enabled: true
+  # 排除链接（多个用逗号分隔）
+  excludes: /system/notice/*
+  # 匹配链接
+  urlPatterns: /system/*,/monitor/*,/tool/*
+  
+group: 
+  name: com.paradisecloud

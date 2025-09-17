@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiLiveCommentsMapper">
+    
+    <resultMap type="BusiLiveComments" id="BusiLiveCommentsResult">
+        <result property="id"    column="id"    />
+        <result property="liveId"    column="live_id"    />
+        <result property="commentContent"    column="comment_content"    />
+        <result property="commentUserId"    column="comment_user_id"    />
+        <result property="commentUserName"    column="comment_user_name"    />
+        <result property="parentCommentId"    column="parent_comment_id"    />
+        <result property="replyCommentId"    column="reply_comment_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="deleteTime"    column="delete_time"    />
+        <result property="deleteBy"    column="delete_by"    />
+    </resultMap>
+
+    <sql id="selectBusiLiveCommentsVo">
+        select id, live_id, comment_content, comment_user_id, comment_user_name, parent_comment_id, reply_comment_id, create_time, create_by, delete_time, delete_by from busi_live_comments
+    </sql>
+
+    <select id="selectBusiLiveCommentsList" parameterType="BusiLiveComments" resultMap="BusiLiveCommentsResult">
+        <include refid="selectBusiLiveCommentsVo"/>
+        <where>  
+            <if test="liveId != null "> and live_id = #{liveId}</if>
+            <if test="commentContent != null  and commentContent != ''"> and comment_content = #{commentContent}</if>
+            <if test="commentUserId != null "> and comment_user_id = #{commentUserId}</if>
+            <if test="commentUserName != null  and commentUserName != ''"> and comment_user_name like concat('%', #{commentUserName}, '%')</if>
+            <if test="parentCommentId != null "> and parent_comment_id = #{parentCommentId}</if>
+            <if test="replyCommentId != null "> and reply_comment_id = #{replyCommentId}</if>
+            and delete_time is null
+        </where>
+    </select>
+    
+    <select id="selectBusiLiveCommentsById" parameterType="Long" resultMap="BusiLiveCommentsResult">
+        <include refid="selectBusiLiveCommentsVo"/>
+        where id = #{id}
+        and delete_time is null
+    </select>
+        
+    <insert id="insertBusiLiveComments" parameterType="BusiLiveComments" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_live_comments
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="liveId != null">live_id,</if>
+            <if test="commentContent != null">comment_content,</if>
+            <if test="commentUserId != null">comment_user_id,</if>
+            <if test="commentUserName != null">comment_user_name,</if>
+            <if test="parentCommentId != null">parent_comment_id,</if>
+            <if test="replyCommentId != null">reply_comment_id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="deleteTime != null">delete_time,</if>
+            <if test="deleteBy != null">delete_by,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="liveId != null">#{liveId},</if>
+            <if test="commentContent != null">#{commentContent},</if>
+            <if test="commentUserId != null">#{commentUserId},</if>
+            <if test="commentUserName != null">#{commentUserName},</if>
+            <if test="parentCommentId != null">#{parentCommentId},</if>
+            <if test="replyCommentId != null">#{replyCommentId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="deleteTime != null">#{deleteTime},</if>
+            <if test="deleteBy != null">#{deleteBy},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiLiveComments" parameterType="BusiLiveComments">
+        update busi_live_comments
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="liveId != null">live_id = #{liveId},</if>
+            <if test="commentContent != null">comment_content = #{commentContent},</if>
+            <if test="commentUserId != null">comment_user_id = #{commentUserId},</if>
+            <if test="commentUserName != null">comment_user_name = #{commentUserName},</if>
+            <if test="parentCommentId != null">parent_comment_id = #{parentCommentId},</if>
+            <if test="replyCommentId != null">reply_comment_id = #{replyCommentId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="deleteTime != null">delete_time = #{deleteTime},</if>
+            <if test="deleteBy != null">delete_by = #{deleteBy},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiLiveCommentsById" parameterType="Long">
+        delete from busi_live_comments where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiLiveCommentsByIds" parameterType="String">
+        delete from busi_live_comments where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 2.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiMcuTencentMapper">
+
+    <resultMap type="BusiMcuTencent" id="BusiMcuTencentResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="appId"    column="app_id"    />
+        <result property="sdkId"    column="sdk_id"    />
+        <result property="secretId"    column="secret_id"    />
+        <result property="secretKey"    column="secret_key"    />
+        <result property="name"    column="name"    />
+        <result property="status"    column="status"    />
+        <result property="capacity"    column="capacity"    />
+        <result property="spareSmcId"    column="spare_smc_id"    />
+    </resultMap>
+
+    <sql id="selectBusiMcuTencentVo">
+        select id, create_time, update_time, app_id, sdk_id, secret_id, secret_key, name, status, capacity, spare_smc_id  from busi_mcu_tencent
+    </sql>
+
+    <select id="selectBusiMcuTencentList" parameterType="BusiMcuTencent" resultMap="BusiMcuTencentResult">
+        <include refid="selectBusiMcuTencentVo"/>
+        <where>
+            <if test="appId != null  and appId != ''"> and app_id = #{appId}</if>
+            <if test="sdkId != null  and sdkId != ''"> and sdk_id = #{sdkId}</if>
+            <if test="secretId != null  and secretId != ''"> and secret_id = #{secretId}</if>
+            <if test="secretKey != null  and secretKey != ''"> and secret_key = #{secretKey}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="capacity != null "> and capacity = #{capacity}</if>
+            <if test="spareSmcId != null "> and spare_smc_id = #{spareSmcId}</if>
+        </where>
+    </select>
+
+    <select id="selectBusiMcuTencentById" parameterType="Long" resultMap="BusiMcuTencentResult">
+        <include refid="selectBusiMcuTencentVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertBusiMcuTencent" parameterType="BusiMcuTencent" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_mcu_tencent
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="appId != null">app_id,</if>
+            <if test="sdkId != null">sdk_id,</if>
+            <if test="secretId != null">secret_id,</if>
+            <if test="secretKey != null">secret_key,</if>
+            <if test="name != null">name,</if>
+            <if test="status != null">status,</if>
+            <if test="capacity != null">capacity,</if>
+            <if test="spareSmcId != null">spare_smc_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="appId != null">#{appId},</if>
+            <if test="sdkId != null">#{sdkId},</if>
+            <if test="secretId != null">#{secretId},</if>
+            <if test="secretKey != null">#{secretKey},</if>
+            <if test="name != null">#{name},</if>
+            <if test="status != null">#{status},</if>
+            <if test="capacity != null">#{capacity},</if>
+            <if test="spareSmcId != null">#{spareSmcId},</if>
+        </trim>
+    </insert>
+
+    <update id="updateBusiMcuTencent" parameterType="BusiMcuTencent">
+        update busi_mcu_tencent
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="appId != null">app_id = #{appId},</if>
+            <if test="sdkId != null">sdk_id = #{sdkId},</if>
+            <if test="secretId != null">secret_id = #{secretId},</if>
+            <if test="secretKey != null">secret_key = #{secretKey},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="capacity != null">capacity = #{capacity},</if>
+            <if test="spareSmcId != null">spare_smc_id = #{spareSmcId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiMcuTencentById" parameterType="Long">
+        delete from busi_mcu_tencent where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiMcuTencentByIds" parameterType="String">
+        delete from busi_mcu_tencent where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

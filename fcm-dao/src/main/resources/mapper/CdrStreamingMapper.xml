@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.CdrStreamingMapper">
+    
+    <resultMap type="CdrStreaming" id="CdrStreamingResult">
+        <result property="cdrId"    column="cdr_id"    />
+        <result property="id"    column="id"    />
+        <result property="session"    column="session"    />
+        <result property="callBridge"    column="call_bridge"    />
+        <result property="recordIndex"    column="record_index"    />
+        <result property="correlatorIndex"    column="correlator_index"    />
+        <result property="streamUrl"    column="stream_url"    />
+        <result property="streamerUri"    column="streamer_uri"    />
+        <result property="call"    column="call"    />
+        <result property="callleg"    column="callLeg"    />
+        <result property="time"    column="time"    />
+        <result property="recordType"    column="record_type"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="createUserId"    column="create_user_id"    />
+        <result property="createUserName"    column="create_user_name"    />
+    </resultMap>
+
+    <sql id="selectCdrStreamingVo">
+        select cdr_id, id, session, call_bridge, record_index, correlator_index, stream_url, streamer_uri, call, callLeg, time, record_type from cdr_streaming
+    </sql>
+
+    <select id="selectCdrStreamingList" parameterType="CdrStreaming" resultMap="CdrStreamingResult">
+        <include refid="selectCdrStreamingVo"/>
+        <where>
+            <if test="cdrId != null  and cdrId != ''"> and cdr_id = #{cdrId}</if>
+            <if test="session != null  and session != ''"> and session = #{session}</if>
+            <if test="callBridge != null  and callBridge != ''"> and call_bridge = #{callBridge}</if>
+            <if test="recordIndex != null "> and record_index = #{recordIndex}</if>
+            <if test="correlatorIndex != null "> and correlator_index = #{correlatorIndex}</if>
+            <if test="streamUrl != null  and streamUrl != ''"> and stream_url = #{streamUrl}</if>
+            <if test="streamerUri != null  and streamerUri != ''"> and streamer_uri = #{streamerUri}</if>
+            <if test="call != null  and call != ''"> and call = #{call}</if>
+            <if test="callleg != null  and callleg != ''"> and callLeg = #{callleg}</if>
+            <if test="time != null "> and time = #{time}</if>
+            <if test="recordType != null "> and record_type = #{recordType}</if>
+        </where>
+    </select>
+    
+    <select id="selectCdrStreamingById" parameterType="Integer" resultMap="CdrStreamingResult">
+        <include refid="selectCdrStreamingVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertCdrStreaming" parameterType="CdrStreaming">
+        insert into cdr_streaming
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="cdrId != null">cdr_id,</if>
+            <if test="id != null">id,</if>
+            <if test="session != null">session,</if>
+            <if test="callBridge != null">call_bridge,</if>
+            <if test="recordIndex != null">record_index,</if>
+            <if test="correlatorIndex != null">correlator_index,</if>
+            <if test="streamUrl != null">stream_url,</if>
+            <if test="streamerUri != null">streamer_uri,</if>
+            <if test="call != null">call,</if>
+            <if test="callleg != null">callLeg,</if>
+            <if test="time != null">time,</if>
+            <if test="recordType != null">record_type,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="createUserId != null">create_user_id,</if>
+            <if test="createUserName != null">create_user_name,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="cdrId != null">#{cdrId},</if>
+            <if test="id != null">#{id},</if>
+            <if test="session != null">#{session},</if>
+            <if test="callBridge != null">#{callBridge},</if>
+            <if test="recordIndex != null">#{recordIndex},</if>
+            <if test="correlatorIndex != null">#{correlatorIndex},</if>
+            <if test="streamUrl != null">#{streamUrl},</if>
+            <if test="streamerUri != null">#{streamerUri},</if>
+            <if test="call != null">#{call},</if>
+            <if test="callleg != null">#{callleg},</if>
+            <if test="time != null">#{time},</if>
+            <if test="recordType != null">#{recordType},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="createUserId != null">#{createUserId},</if>
+            <if test="createUserName != null">#{createUserName},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCdrStreaming" parameterType="CdrStreaming">
+        update cdr_streaming
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="cdrId != null">cdr_id = #{cdrId},</if>
+            <if test="session != null">session = #{session},</if>
+            <if test="callBridge != null">call_bridge = #{callBridge},</if>
+            <if test="recordIndex != null">record_index = #{recordIndex},</if>
+            <if test="correlatorIndex != null">correlator_index = #{correlatorIndex},</if>
+            <if test="streamUrl != null">stream_url = #{streamUrl},</if>
+            <if test="streamerUri != null">streamer_uri = #{streamerUri},</if>
+            <if test="call != null">call = #{call},</if>
+            <if test="callleg != null">callLeg = #{callleg},</if>
+            <if test="time != null">time = #{time},</if>
+            <if test="recordType != null">record_type = #{recordType},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="createUserId != null">create_user_id = #{createUserId},</if>
+            <if test="createUserName != null">create_user_name = #{createUserName},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCdrStreamingById" parameterType="Integer">
+        delete from cdr_streaming where id = #{id}
+    </delete>
+
+    <delete id="deleteCdrStreamingByIds" parameterType="String">
+        delete from cdr_streaming where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+
+    <select id="selectBySearchVo" parameterType="ReportSearchVo">
+        <include refid="selectCdrStreamingVo"/>
+        <where>
+            <if test="startTime"> and s.time <![CDATA[>=]]> #{startTime}</if>
+            <if test="endTime"> and es.time <![CDATA[<=]]> #{endTime}</if>
+        </where>
+    </select>
+
+    <delete id="deleteHistory">
+        delete from cdr_streaming where create_time &lt; #{beforeDate}
+    </delete>
+</mapper>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.smc.dao.model.mapper.BusiSmcDeptConferenceMapper">
+
+    <resultMap type="com.paradisecloud.smc.dao.model.BusiSmcDeptConference" id="BusiSmcDeptConferenceResult">
+        <result property="id" column="id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="deptId" column="dept_id"/>
+        <result property="smcConferenceId" column="smc_conference_id"/>
+    </resultMap>
+
+    <sql id="selectBusiSmcDeptConferenceVo">
+        select id, create_time, dept_id, smc_conference_id
+        from busi_smc_dept_conference
+    </sql>
+
+
+    <select id="selectBusiSmcDeptConferenceById" parameterType="Long" resultMap="BusiSmcDeptConferenceResult">
+        <include refid="selectBusiSmcDeptConferenceVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectBusiSmcDeptConferenceByConferenceId" parameterType="String"
+            resultMap="BusiSmcDeptConferenceResult">
+        <include refid="selectBusiSmcDeptConferenceVo"/>
+        where smc_conference_id = #{smcConferenceId}
+    </select>
+
+    <select id="selectBusiSmcDeptConference" parameterType="String" resultMap="BusiSmcDeptConferenceResult">
+        <include refid="selectBusiSmcDeptConferenceVo"/>
+        <where>
+            <if test="id != null">
+                id=#{id}
+            </if>
+            <if test="deptId != null">
+                and dept=#{deptId}
+            </if>
+            <if test="smcTemplateId != null">
+                and smc_conference_id = #{smcConferenceId}
+            </if>
+        </where>
+        limit 1
+    </select>
+
+    <insert id="insertBusiSmcDeptConference" parameterType="com.paradisecloud.smc.dao.model.BusiSmcDeptConference">
+        insert into busi_smc_dept_conference
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="smc_conference_id != null">smcConferenceId,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="smcConferenceId != null">#{smcConferenceId},</if>
+        </trim>
+    </insert>
+
+    <update id="updateBusiSmcDeptConference" parameterType="com.paradisecloud.smc.dao.model.BusiSmcDeptConference">
+        update busi_smc_dept_conference
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="smcConferenceId != null">smc_conference_id = #{smcConferenceId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiSmcDeptConference" parameterType="Long">
+        delete
+        from busi_smc_dept_conference
+        where id = #{id}
+    </delete>
+
+
+</mapper>

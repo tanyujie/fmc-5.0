@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiMqttClusterMapMapper">
+    
+    <resultMap type="BusiMqttClusterMap" id="BusiMqttClusterMapResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="clusterId"    column="cluster_id"    />
+        <result property="mqttId"    column="mqtt_id"    />
+        <result property="weight"    column="weight"    />
+    </resultMap>
+
+    <sql id="selectBusiMqttClusterMapVo">
+        select id, create_time, update_time, cluster_id, mqtt_id, weight from busi_mqtt_cluster_map
+    </sql>
+
+    <select id="selectBusiMqttClusterMapList" parameterType="BusiMqttClusterMap" resultMap="BusiMqttClusterMapResult">
+        <include refid="selectBusiMqttClusterMapVo"/>
+        <where>  
+            <if test="clusterId != null "> and cluster_id = #{clusterId}</if>
+            <if test="mqttId != null "> and mqtt_id = #{mqttId}</if>
+            <if test="weight != null "> and weight = #{weight}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiMqttClusterMapById" parameterType="Long" resultMap="BusiMqttClusterMapResult">
+        <include refid="selectBusiMqttClusterMapVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiMqttClusterMap" parameterType="BusiMqttClusterMap" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_mqtt_cluster_map
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="clusterId != null">cluster_id,</if>
+            <if test="mqttId != null">mqtt_id,</if>
+            <if test="weight != null">weight,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="clusterId != null">#{clusterId},</if>
+            <if test="mqttId != null">#{mqttId},</if>
+            <if test="weight != null">#{weight},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiMqttClusterMap" parameterType="BusiMqttClusterMap">
+        update busi_mqtt_cluster_map
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="clusterId != null">cluster_id = #{clusterId},</if>
+            <if test="mqttId != null">mqtt_id = #{mqttId},</if>
+            <if test="weight != null">weight = #{weight},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiMqttClusterMapById" parameterType="Long">
+        delete from busi_mqtt_cluster_map where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiMqttClusterMapByIds" parameterType="String">
+        delete from busi_mqtt_cluster_map where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

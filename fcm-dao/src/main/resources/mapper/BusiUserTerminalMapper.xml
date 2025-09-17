@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiUserTerminalMapper">
+    
+    <resultMap type="BusiUserTerminal" id="BusiUserTerminalResult">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="terminalId"    column="terminal_id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectBusiUserTerminalVo">
+        select id, user_id, terminal_id, create_by, create_time from busi_user_terminal
+    </sql>
+
+    <select id="selectBusiUserTerminalList" parameterType="BusiUserTerminal" resultMap="BusiUserTerminalResult">
+        <include refid="selectBusiUserTerminalVo"/>
+        <where>  
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="terminalId != null "> and terminal_id = #{terminalId}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiUserTerminalById" parameterType="Long" resultMap="BusiUserTerminalResult">
+        <include refid="selectBusiUserTerminalVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiUserTerminal" parameterType="BusiUserTerminal" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_user_terminal
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="terminalId != null">terminal_id,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="terminalId != null">#{terminalId},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiUserTerminal" parameterType="BusiUserTerminal">
+        update busi_user_terminal
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="terminalId != null">terminal_id = #{terminalId},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiUserTerminalById" parameterType="Long">
+        delete from busi_user_terminal where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiUserTerminalByIds" parameterType="String">
+        delete from busi_user_terminal where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectBusiUserTerminalByUserId" resultMap="BusiUserTerminalResult">
+        <include refid="selectBusiUserTerminalVo"/>
+        where user_id = #{userId}
+    </select>
+
+    <select id="selectBusiUserTerminalByTerminalId" resultMap="BusiUserTerminalResult">
+        <include refid="selectBusiUserTerminalVo"/>
+        where terminal_id = #{terminalId}
+    </select>
+</mapper>

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiFcmNumberSectionMapper">
+    
+    <resultMap type="BusiFcmNumberSection" id="BusiFcmNumberSectionResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="startValue"    column="start_value"    />
+        <result property="endValue"    column="end_value"    />
+    </resultMap>
+    
+        <resultMap type="FcmDeptRecordCount" id="DeptRecordCountMap">
+        <result property="deptId"    column="dept_id"    />
+        <result property="count"    column="ct"    />
+    </resultMap>
+
+   <select id="getDeptRecordCounts" resultMap="DeptRecordCountMap">
+        SELECT
+        	a.dept_id,
+        	count(*) ct
+        FROM
+        	busi_fcm_number_section a
+        GROUP BY
+        	a.dept_id
+        ORDER BY
+        	a.dept_id ASC
+    </select>
+
+    <sql id="selectBusiFcmNumberSectionVo">
+        select id, create_time, update_time, dept_id, start_value, end_value from busi_fcm_number_section
+    </sql>
+
+    <select id="selectBusiFcmNumberSectionList" parameterType="BusiFcmNumberSection" resultMap="BusiFcmNumberSectionResult">
+        <include refid="selectBusiFcmNumberSectionVo"/>
+        <where>  
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="startValue != null "> and start_value = #{startValue}</if>
+            <if test="endValue != null "> and end_value = #{endValue}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiFcmNumberSectionById" parameterType="Long" resultMap="BusiFcmNumberSectionResult">
+        <include refid="selectBusiFcmNumberSectionVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiFcmNumberSection" parameterType="BusiFcmNumberSection" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_fcm_number_section
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="startValue != null">start_value,</if>
+            <if test="endValue != null">end_value,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="startValue != null">#{startValue},</if>
+            <if test="endValue != null">#{endValue},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiFcmNumberSection" parameterType="BusiFcmNumberSection">
+        update busi_fcm_number_section
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="startValue != null">start_value = #{startValue},</if>
+            <if test="endValue != null">end_value = #{endValue},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <select id="countSection" resultType="Integer" >
+        select count(*) from busi_fcm_number_section where start_value
+        <![CDATA[
+            <= #{val} and #{val} <= end_value
+        ]]>
+        <if test="id != null"> and id != #{id}</if>
+    </select>
+    <select id="selectBusiFcmNumberSectionVo" parameterType="BusiFcmNumberSection" resultMap="BusiFcmNumberSectionResult">
+
+        select id, dept_id, start_value, end_value from busi_fcm_number_section
+    </select>
+
+
+    <delete id="deleteBusiFcmNumberSectionById" parameterType="Long">
+        delete from busi_fcm_number_section where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiFcmNumberSectionByIds" parameterType="String">
+        delete from busi_fcm_number_section where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

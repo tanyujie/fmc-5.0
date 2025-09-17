@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiRegisterTerminalMapper">
+    
+    <resultMap type="BusiRegisterTerminal" id="BusiRegisterTerminalResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="sn"    column="sn"    />
+        <result property="ip"    column="ip"    />
+        <result property="code"    column="code"    />
+        <result property="mac"    column="mac"    />
+        <result property="terminalType"    column="terminal_type"    />
+        <result property="terminalId"    column="terminal_id"    />
+        <result property="isRelated"    column="is_related"    />
+        <result property="credential"    column="credential"    />
+        <result property="appVersionCode"    column="app_version_code"    />
+        <result property="appVersionName"    column="app_version_name"    />
+        <result property="connectIp"    column="connect_ip"    />
+    </resultMap>
+
+    <sql id="selectBusiRegisterTerminalVo">
+        select id, create_time, update_time, sn, ip, code, mac, terminal_type, terminal_id, is_related, credential, app_version_code, app_version_name, connect_ip from busi_register_terminal
+    </sql>
+
+    <select id="selectBusiRegisterTerminalList" parameterType="BusiRegisterTerminal" resultMap="BusiRegisterTerminalResult">
+        <include refid="selectBusiRegisterTerminalVo"/>
+        <where>  
+            <if test="sn != null  and sn != ''"> and sn = #{sn}</if>
+            <if test="ip != null  and ip != ''"> and ip = #{ip}</if>
+            <if test="code != null  and code != ''"> and code like concat('%', #{code}, '%')</if>
+            <if test="mac != null  and mac != ''"> and mac = #{mac}</if>
+            <if test="terminalType != null  and terminalType != ''"> and terminal_type = #{terminalType}</if>
+            <if test="terminalId != null "> and terminal_id = #{terminalId}</if>
+            <if test="isRelated != null  and isRelated != ''"> and is_related = #{isRelated}</if>
+            <if test="credential != null  and credential != ''"> and credential = #{credential}</if>
+            <if test="appVersionCode != null and appVersionCode != ''"> and app_version_code = #{appVersionCode}</if>
+            <if test="appVersionName != null and appVersionName != ''"> and app_version_name = #{appVersionName}</if>
+            <if test="connectIp != null and connectIp != ''"> and connect_ip = #{connectIp}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiRegisterTerminalById" parameterType="Long" resultMap="BusiRegisterTerminalResult">
+        <include refid="selectBusiRegisterTerminalVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiRegisterTerminal" parameterType="BusiRegisterTerminal" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_register_terminal
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="sn != null">sn,</if>
+            <if test="ip != null">ip,</if>
+            <if test="code != null">code,</if>
+            <if test="mac != null">mac,</if>
+            <if test="terminalType != null">terminal_type,</if>
+            <if test="terminalId != null">terminal_id,</if>
+            <if test="isRelated != null">is_related,</if>
+            <if test="credential != null">credential,</if>
+            <if test="appVersionCode != null">app_version_code,</if>
+            <if test="appVersionName != null">app_version_name,</if>
+            <if test="connectIp != null">connect_ip,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="sn != null">#{sn},</if>
+            <if test="ip != null">#{ip},</if>
+            <if test="code != null">#{code},</if>
+            <if test="mac != null">#{mac},</if>
+            <if test="terminalType != null">#{terminalType},</if>
+            <if test="terminalId != null">#{terminalId},</if>
+            <if test="isRelated != null">#{isRelated},</if>
+            <if test="credential != null">#{credential},</if>
+            <if test="appVersionCode != null">#{appVersionCode},</if>
+            <if test="appVersionName != null">#{appVersionName},</if>
+            <if test="connectIp != null">#{connectIp},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiRegisterTerminal" parameterType="BusiRegisterTerminal">
+        update busi_register_terminal
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="sn != null">sn = #{sn},</if>
+            <if test="ip != null">ip = #{ip},</if>
+            <if test="code != null">code = #{code},</if>
+            <if test="mac != null">mac = #{mac},</if>
+            <if test="terminalType != null">terminal_type = #{terminalType},</if>
+            <if test="terminalId != null">terminal_id = #{terminalId},</if>
+            <if test="isRelated != null">is_related = #{isRelated},</if>
+            <if test="credential != null">credential = #{credential},</if>
+            <if test="appVersionCode != null">app_version_code = #{appVersionCode},</if>
+            <if test="appVersionName != null">app_version_name = #{appVersionName},</if>
+            connect_ip = #{connectIp},
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiRegisterTerminalById" parameterType="Long">
+        delete from busi_register_terminal where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiRegisterTerminalByIds" parameterType="String">
+        delete from busi_register_terminal where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectBusiRegisterTerminalByCodeAndMac" parameterType="BusiRegisterTerminal" resultMap="BusiRegisterTerminalResult">
+        select id, create_time, update_time, sn, ip, code, mac, terminal_type, terminal_id, is_related, credential, app_version_code, app_version_name, connect_ip from busi_register_terminal
+        <where>
+            <if test="sn != null  and sn != ''"> and sn = #{sn}</if>
+            <if test="ip != null  and ip != ''"> and ip = #{ip}</if>
+            <if test="code != null  and code != ''"> and (code like concat('%', #{code}, '%') or mac like concat('%', #{code}, '%'))</if>
+            <if test="mac != null  and mac != ''"> and mac = #{mac}</if>
+            <if test="terminalType != null  and terminalType != ''"> and terminal_type = #{terminalType}</if>
+            <if test="terminalId != null "> and terminal_id = #{terminalId}</if>
+            <if test="isRelated != null  and isRelated != ''"> and is_related = #{isRelated}</if>
+            <if test="credential != null  and credential != ''"> and credential = #{credential}</if>
+            <if test="appVersionCode != null and appVersionCode != ''"> and app_version_code = #{appVersionCode}</if>
+            <if test="appVersionName != null and appVersionName != ''"> and app_version_name = #{appVersionName}</if>
+            <if test="connectIp != null and connectIp != ''"> and connect_ip = #{connectIp}</if>
+        </where>
+    </select>
+</mapper>

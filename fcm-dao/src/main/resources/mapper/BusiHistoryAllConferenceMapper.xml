@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiHistoryAllConferenceMapper">
+    
+    <resultMap type="BusiHistoryAllConference" id="BusiHistoryAllConferenceResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="name"    column="name"    />
+        <result property="createUserId"    column="create_user_id"    />
+        <result property="number"    column="number"    />
+        <result property="createUserName"    column="create_user_name"    />
+        <result property="callLegProfileId"    column="call_leg_profile_id"    />
+        <result property="bandwidth"    column="bandwidth"    />
+        <result property="callId"    column="call_id"    />
+        <result property="coSpace"    column="co_space"    />
+        <result property="conferenceStartTime"    column="conference_start_time"    />
+        <result property="conferenceEndTime"    column="conference_end_time"    />
+        <result property="duration"    column="duration"    />
+        <result property="deviceNum"    column="device_num"    />
+        <result property="type"    column="type"    />
+    </resultMap>
+
+    <sql id="selectBusiHistoryAllConferenceVo">
+        select id, create_time, update_time, create_user_id, name, create_user_name, number, call_leg_profile_id, bandwidth, call_id, co_space, conference_start_time, conference_end_time, duration, device_num,type from busi_history_all_conference
+    </sql>
+
+    <select id="selectBusiHistoryAllConferenceList" parameterType="BusiHistoryAllConference" resultMap="BusiHistoryAllConferenceResult">
+        <include refid="selectBusiHistoryAllConferenceVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="createUserId != null "> and create_user_id = #{createUserId}</if>
+            <if test="number != null "> and number = #{number}</if>
+            <if test="createUserName != null  and createUserName != ''"> and create_user_name like concat('%', #{createUserName}, '%')</if>
+            <if test="callLegProfileId != null  and callLegProfileId != ''"> and call_leg_profile_id = #{callLegProfileId}</if>
+            <if test="bandwidth != null "> and bandwidth = #{bandwidth}</if>
+            <if test="callId != null  and callId != ''"> and call_id = #{callId}</if>
+            <if test="coSpace != null "> and co_space = #{coSpace}</if>
+            <if test="conferenceStartTime != null "> and conference_start_time = #{conferenceStartTime}</if>
+            <if test="conferenceEndTime != null "> and conference_end_time = #{conferenceEndTime}</if>
+            <if test="duration != null "> and duration = #{duration}</if>
+            <if test="deviceNum != null "> and device_num = #{deviceNum}</if>
+            <if test="type != null "> and type = #{type}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiHistoryAllConferenceByCoSpaceId" parameterType="String" resultMap="BusiHistoryAllConferenceResult">
+        <include refid="selectBusiHistoryAllConferenceVo" />
+        where co_space = #{coSpace} limit 0,1
+    </select>
+    
+    <select id="selectNotEndHistoryConferenceList" resultMap="BusiHistoryAllConferenceResult">
+        <include refid="selectBusiHistoryAllConferenceVo"/>
+        <where>  
+            conference_end_time is null
+        </where>
+    </select>
+
+    <select id="selectNotEndHistoryAllConferenceByCoSpaceId" parameterType="String" resultMap="BusiHistoryAllConferenceResult">
+        <include refid="selectBusiHistoryAllConferenceVo"/>
+        where co_space = #{coSpace} and conference_end_time is null limit 0,1
+    </select>
+    
+    <select id="selectBusiHistoryAllConferenceById" parameterType="Long" resultMap="BusiHistoryAllConferenceResult">
+        <include refid="selectBusiHistoryAllConferenceVo"/>
+        where id = #{id}
+    </select>
+    
+    <select id="selectBusiHistoryAllConferenceByCallId" parameterType="String" resultMap="BusiHistoryAllConferenceResult">
+        <include refid="selectBusiHistoryAllConferenceVo"/>
+        where id = (select history_conference_id from busi_history_all_call where call_id=#{callId})
+    </select>
+    
+    <resultMap type="RecordCount" id="RecordCountMap">
+        <result property="count"    column="ct"    />
+    </resultMap>
+    
+    <select id="getRecordCounts" resultMap="RecordCountMap">
+        SELECT
+        	count(*) ct 
+        FROM
+        	busi_history_all_conference a
+    </select>
+        
+    <insert id="insertBusiHistoryAllConference" parameterType="BusiHistoryAllConference" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_history_all_conference
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="name != null">name,</if>
+            <if test="createUserId != null">create_user_id,</if>
+            <if test="number != null">number,</if>
+            <if test="createUserName != null">create_user_name,</if>
+            <if test="callLegProfileId != null">call_leg_profile_id,</if>
+            <if test="bandwidth != null">bandwidth,</if>
+            <if test="callId != null">call_id,</if>
+            <if test="coSpace != null">co_space,</if>
+            <if test="conferenceStartTime != null">conference_start_time,</if>
+            <if test="conferenceEndTime != null">conference_end_time,</if>
+            <if test="duration != null">duration,</if>
+            <if test="deviceNum != null">device_num,</if>
+            <if test="type != null">type,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="name != null">#{name},</if>
+            <if test="createUserId != null">#{createUserId},</if>
+            <if test="number != null">#{number},</if>
+            <if test="createUserName != null">#{createUserName},</if>
+            <if test="callLegProfileId != null">#{callLegProfileId},</if>
+            <if test="bandwidth != null">#{bandwidth},</if>
+            <if test="callId != null">#{callId},</if>
+            <if test="coSpace != null">#{coSpace},</if>
+            <if test="conferenceStartTime != null">#{conferenceStartTime},</if>
+            <if test="conferenceEndTime != null">#{conferenceEndTime},</if>
+            <if test="duration != null">#{duration},</if>
+            <if test="deviceNum != null">#{deviceNum},</if>
+            <if test="type != null">#{type},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiHistoryAllConference" parameterType="BusiHistoryAllConference">
+        update busi_history_all_conference
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="createUserId != null">create_user_id = #{createUserId},</if>
+            <if test="number != null">number = #{number},</if>
+            <if test="createUserName != null">create_user_name = #{createUserName},</if>
+            <if test="callLegProfileId != null">call_leg_profile_id = #{callLegProfileId},</if>
+            <if test="bandwidth != null">bandwidth = #{bandwidth},</if>
+            <if test="callId != null">call_id = #{callId},</if>
+            <if test="coSpace != null">co_space = #{coSpace},</if>
+            <if test="conferenceStartTime != null">conference_start_time = #{conferenceStartTime},</if>
+            <if test="conferenceEndTime != null">conference_end_time = #{conferenceEndTime},</if>
+            <if test="duration != null">duration = #{duration},</if>
+            <if test="deviceNum != null">device_num = #{deviceNum},</if>
+            <if test="type != null">type = #{type},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiHistoryAllConferenceById" parameterType="Long">
+        delete from busi_history_all_conference where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiHistoryAllConferenceByIds" parameterType="String">
+        delete from busi_history_all_conference where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <update id="updateHistoryByConferenceNumber">
+        update busi_history_all_conference
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where number = #{conferenceNumber} and update_time is null
+    </update>
+
+    <update id="updateHistoryConferenceByCoSpace">
+        update busi_history_all_conference
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="busiHistoryAllConference.updateTime != null">update_time = #{busiHistoryAllConference.updateTime},</if>
+            <if test="busiHistoryAllConference.conferenceStartTime != null">conference_start_time = #{busiHistoryAllConference.conferenceStartTime},</if>
+            <if test="busiHistoryAllConference.conferenceEndTime != null">conference_end_time = #{busiHistoryAllConference.conferenceEndTime},</if>
+            <if test="busiHistoryAllConference.duration != null">duration = #{busiHistoryAllConference.duration},</if>
+            <if test="busiHistoryAllConference.callId != null">call_id = #{busiHistoryAllConference.callId},</if>
+            <if test="busiHistoryAllConference.deviceNum != null">device_num = #{busiHistoryAllConference.deviceNum},</if>
+        </trim>
+        <where>
+            <if test="busiHistoryAllConference.id != null"> and id = #{busiHistoryAllConference.id}</if>
+            <if test="busiHistoryAllConference.coSpace != null"> and co_space = #{busiHistoryAllConference.coSpace}</if>
+            <if test="busiHistoryAllConference.id == null"> and update_time is null</if>
+            <choose>
+                <when test="recordType == 1"> ORDER BY id DESC LIMIT 1</when>
+            </choose>
+        </where>
+    </update>
+
+    <select id="report" resultMap="BusiHistoryAllConferenceResult">
+        select h.id,h.name,h.number,h.bandwidth,h.conference_start_time,h.conference_end_time,h.duration,h.device_num,type from busi_history_all_conference h
+        <where>
+            <if test="type !=null"> and h.type=#{type}</if>
+            <if test="startTime != null "> and conference_start_time <![CDATA[>=]]> #{startTime}</if>
+            <if test="endTime != null "> and conference_end_time <![CDATA[<=]]> #{endTime}</if>
+        </where>
+    </select>
+
+    <resultMap id="noJoinConferenceResultMap" type="BusiHistoryAllConference">
+        <result property="id"    column="id"    />
+        <result property="number"    column="number"    />
+        <result property="conferenceStartTime"    column="conference_start_time"    />
+        <result property="conferenceEndTime"    column="conference_end_time"    />
+        <result property="type"    column="type"    />
+        <collection property="participantList" ofType="BusiHistoryAllParticipant">
+            <result property="id"    column="id"    />
+            <result property="name"    column="name"    />
+            <association property="cdrCallLegEnd">
+                <result property="cdrId"    column="cdr_id"/>
+                <result property="reason"    column="reason" typeHandler="com.paradisecloud.fcm.dao.enums.EnumHandler"/>
+            </association>
+        </collection>
+    </resultMap>
+    <select id="reportNoJoinConference" resultType="map">
+        select c.number,p.`name`,c.conference_start_time conferenceStartTime,c.conference_end_time conferenceEndTime,e.reason,c.type from busi_history_all_conference c
+        inner join busi_history_all_participant p on c.id=p.history_conference_id
+        inner join cdr_call_leg_end e on e.id = p.call_leg_id
+        <where>
+            e.activated_duration=0
+            <if test="type !=null"> and c.type=#{type}</if>
+            <if test="startTime != null "> and c.conference_start_time <![CDATA[>=]]> #{startTime}</if>
+            <if test="endTime != null "> and c.conference_end_time <![CDATA[<=]]> #{endTime}</if>
+        </where>
+    </select>
+
+    <select id="selectBySearchVo" resultMap="BusiHistoryAllConferenceResult" parameterType="ReportSearchVo">
+        <include refid="selectBusiHistoryAllConferenceVo"/>
+        <where>
+            <if test="startTime != null "> and conference_start_time <![CDATA[>=]]> #{startTime}</if>
+            <if test="endTime != null "> and conference_start_time <![CDATA[<=]]> #{endTime}</if>
+            <if test="number != null "> and number like concat('%', #{number},'%')</if>
+            <if test="name != null "> and name like concat('%', #{name},'%')</if>
+        </where>
+        order by conference_start_time desc
+    </select>
+
+    <select id="selectBySearchVoAndHistoryId" resultMap="BusiHistoryAllConferenceResult">
+        <include refid="selectBusiHistoryAllConferenceVo"/>
+        <where>
+            <if test="searchVo.startTime != null "> and conference_start_time <![CDATA[>=]]> #{searchVo.startTime}</if>
+            <if test="searchVo.endTime != null "> and conference_start_time <![CDATA[<=]]> #{searchVo.endTime}</if>
+            <if test="searchVo.number != null "> and number like concat('%', #{searchVo.number},'%')</if>
+            <if test="searchVo.name != null "> and name like concat('%', #{searchVo.name},'%')</if>
+            <if test="historyIdList !=null">
+                 and id in
+                <foreach collection="historyIdList" item="id" open="(" close=")" separator=",">
+                    #{id}
+                </foreach>
+            </if>
+        </where>
+        order by conference_start_time desc
+    </select>
+</mapper>

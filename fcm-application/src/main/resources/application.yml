@@ -1,0 +1,17 @@
+# 先查找jar文件同级目录下的 ./config 子目录 有无配置文件 （外置)
+# 再查找jar同级目录 有无配置文件（外置)
+# 再查找config这个package下有无配置文件（内置)
+# 最后才是查找classpath 下有无配置文件（内置)
+# 激活哪个环境，默认激活本地环境
+# 各个环境公共的配置写在application.properties中
+# 各个模块独有的配置配置在自己的application-{xxx}.properties文件中
+# 程序读取的时候优先读取application.properties中选中的profile的配置，若读不到才会从application.properties去读
+spring:
+  main: 
+    banner-mode: "LOG"
+  profiles: 
+    active: "local"
+    mvc:
+      hiddenmethod:
+        filter:
+          enabled: true

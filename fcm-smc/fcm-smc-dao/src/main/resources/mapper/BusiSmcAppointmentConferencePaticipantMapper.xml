@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.smc.dao.model.mapper.BusiSmcAppointmentConferencePaticipantMapper">
+    
+    <resultMap type="com.paradisecloud.smc.dao.model.BusiSmcAppointmentConferencePaticipant" id="BusiSmcAppointmentConferencePaticipantResult">
+        <result property="id"    column="id"    />
+        <result property="conferenceId"    column="conference_id"    />
+        <result property="appointmentId"    column="appointment_id"    />
+        <result property="terminalId"    column="terminal_id"    />
+        <result property="weight"    column="weight"    />
+        <result property="smcnumber"    column="smcnumber"    />
+        <result property="terminalName"    column="terminal_name"    />
+        <result property="terminalDeptId"    column="terminal_dept_id"    />
+    </resultMap>
+
+
+    <sql id="selectBusiSmcAppointmentConferencePaticipantVo">
+        select id, conference_id, appointment_id, terminal_id, weight, smcnumber, terminal_name,terminal_dept_id from busi_smc_appointment_conference_paticipant
+    </sql>
+
+    <select id="selectBusiSmcAppointmentConferencePaticipantList" parameterType="com.paradisecloud.smc.dao.model.BusiSmcAppointmentConferencePaticipant" resultMap="BusiSmcAppointmentConferencePaticipantResult">
+        <include refid="selectBusiSmcAppointmentConferencePaticipantVo"/>
+        <where>  
+            <if test="conferenceId != null  and conferenceId != ''"> and conference_id = #{conferenceId}</if>
+            <if test="appointmentId != null "> and appointment_id = #{appointmentId}</if>
+            <if test="terminalId != null "> and terminal_id = #{terminalId}</if>
+            <if test="weight != null "> and weight = #{weight}</if>
+            <if test="smcnumber != null  and smcnumber != ''"> and smcnumber = #{smcnumber}</if>
+            <if test="terminalName != null  and terminalName != ''"> and terminal_name like concat('%', #{terminalName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiSmcAppointmentConferencePaticipantById" parameterType="Integer" resultMap="BusiSmcAppointmentConferencePaticipantResult">
+        <include refid="selectBusiSmcAppointmentConferencePaticipantVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectBusiSmcAppointmentConferencePaticipantListByAppointId" resultMap="BusiSmcAppointmentConferencePaticipantResult">
+        select id, conference_id, appointment_id, terminal_id, weight, smcnumber, terminal_name,terminal_dept_id as deptId from busi_smc_appointment_conference_paticipant where appointment_id = #{appointmentId}
+    </select>
+        
+    <insert id="insertBusiSmcAppointmentConferencePaticipant" parameterType="com.paradisecloud.smc.dao.model.BusiSmcAppointmentConferencePaticipant" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_smc_appointment_conference_paticipant
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="conferenceId != null">conference_id,</if>
+            <if test="appointmentId != null">appointment_id,</if>
+            <if test="terminalId != null">terminal_id,</if>
+            <if test="weight != null">weight,</if>
+            <if test="smcnumber != null">smcnumber,</if>
+            <if test="terminalName != null">terminal_name,</if>
+            <if test="terminalDeptId != null">terminal_dept_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="conferenceId != null">#{conferenceId},</if>
+            <if test="appointmentId != null">#{appointmentId},</if>
+            <if test="terminalId != null">#{terminalId},</if>
+            <if test="weight != null">#{weight},</if>
+            <if test="smcnumber != null">#{smcnumber},</if>
+            <if test="terminalName != null">#{terminalName},</if>
+            <if test="terminalDeptId != null">#{terminalDeptId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiSmcAppointmentConferencePaticipant" parameterType="com.paradisecloud.smc.dao.model.BusiSmcAppointmentConferencePaticipant">
+        update busi_smc_appointment_conference_paticipant
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="conferenceId != null">conference_id = #{conferenceId},</if>
+            <if test="appointmentId != null">appointment_id = #{appointmentId},</if>
+            <if test="terminalId != null">terminal_id = #{terminalId},</if>
+            <if test="weight != null">weight = #{weight},</if>
+            <if test="smcnumber != null">smcnumber = #{smcnumber},</if>
+            <if test="terminalName != null">terminal_name = #{terminalName},</if>
+            <if test="terminalDeptId != null">terminal_dept_id = #{terminalDeptId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiSmcAppointmentConferencePaticipantById" parameterType="Integer">
+        delete from busi_smc_appointment_conference_paticipant where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiSmcAppointmentConferencePaticipantByIds" parameterType="String">
+        delete from busi_smc_appointment_conference_paticipant where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <delete id="deleteBusiSmcAppointmentConferencePaticipantByConferenceId">
+        delete from busi_smc_appointment_conference_paticipant where conference_id=#{conferenceId}
+    </delete>
+</mapper>

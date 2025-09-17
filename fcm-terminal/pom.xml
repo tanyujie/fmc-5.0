@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>com.paradisecloud</groupId>
+        <artifactId>fcm</artifactId>
+        <version>2.0-RELEASE</version>
+    </parent>
+    
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>fcm-terminal</artifactId>
+    <name>${project.artifactId}</name>
+	<packaging>pom</packaging>
+    <modules>
+        <module>fcm-terminal-fs</module>
+        <module>fcm-terminal-fsbc</module>
+        <module>fcm-terminal-core</module>
+    </modules>
+    <dependencies>
+        <dependency>
+            <groupId>com.paradisecloud</groupId>
+            <artifactId>fcm-common</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.paradisecloud</groupId>
+            <artifactId>fcm-dao</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>

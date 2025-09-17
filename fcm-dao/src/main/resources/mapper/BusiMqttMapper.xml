@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiMqttMapper">
+    
+    <resultMap type="BusiMqtt" id="BusiMqttResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="userName"    column="user_name"    />
+        <result property="password"    column="password"    />
+        <result property="mqttName"    column="mqtt_name"    />
+        <result property="ip"    column="ip"    />
+        <result property="tcpPort"    column="tcp_port"    />
+        <result property="dashboardPort"    column="dashboard_port"    />
+        <result property="managementPort"    column="management_port"    />
+        <result property="status"    column="status"    />
+        <result property="serverPort"    column="server_port"    />
+        <result property="mqttStartupPath"    column="mqtt_startup_path"    />
+        <result property="serverUserName"    column="server_user_name"    />
+        <result property="serverPassword"    column="server_password"    />
+        <result property="nodeName"    column="node_name"    />
+        <result property="domainName"    column="domain_name"    />
+        <result property="useSsl"    column="use_ssl"    />
+    </resultMap>
+
+    <sql id="selectBusiMqttVo">
+        select id, create_time, update_time, user_name, password, mqtt_name, ip, tcp_port, dashboard_port, management_port, status, server_port, mqtt_startup_path, server_user_name, server_password, node_name, domain_name, use_ssl from busi_mqtt
+    </sql>
+
+    <select id="selectBusiMqttList" parameterType="BusiMqtt" resultMap="BusiMqttResult">
+        <include refid="selectBusiMqttVo"/>
+        <where>  
+            <if test="userName != null  and userName != ''"> and user_name like concat('%', #{userName}, '%')</if>
+            <if test="password != null  and password != ''"> and password = #{password}</if>
+            <if test="mqttName != null  and mqttName != ''"> and mqtt_name like concat('%', #{mqttName}, '%')</if>
+            <if test="ip != null  and ip != ''"> and ip = #{ip}</if>
+            <if test="tcpPort != null "> and tcp_port = #{tcpPort}</if>
+            <if test="dashboardPort != null "> and dashboard_port = #{dashboardPort}</if>
+            <if test="managementPort != null "> and management_port = #{managementPort}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="serverPort != null "> and server_port = #{serverPort}</if>
+            <if test="mqttStartupPath != null  and mqttStartupPath != ''"> and mqtt_startup_path = #{mqttStartupPath}</if>
+            <if test="serverUserName != null  and serverUserName != ''"> and server_user_name like concat('%', #{serverUserName}, '%')</if>
+            <if test="serverPassword != null  and serverPassword != ''"> and server_password = #{serverPassword}</if>
+            <if test="nodeName != null  and nodeName != ''"> and node_name like concat('%', #{nodeName}, '%')</if>
+            <if test="domainName != null  and domainName != ''"> and domain_name like concat('%', #{domainName}, '%')</if>
+            <if test="useSsl != null  and useSsl != ''"> and use_ssl like concat('%', #{useSsl}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiMqttById" parameterType="Long" resultMap="BusiMqttResult">
+        <include refid="selectBusiMqttVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiMqtt" parameterType="BusiMqtt" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_mqtt
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="userName != null">user_name,</if>
+            <if test="password != null">password,</if>
+            <if test="mqttName != null">mqtt_name,</if>
+            <if test="ip != null">ip,</if>
+            <if test="tcpPort != null">tcp_port,</if>
+            <if test="dashboardPort != null">dashboard_port,</if>
+            <if test="managementPort != null">management_port,</if>
+            <if test="status != null">status,</if>
+            <if test="serverPort != null">server_port,</if>
+            <if test="mqttStartupPath != null">mqtt_startup_path,</if>
+            <if test="serverUserName != null">server_user_name,</if>
+            <if test="serverPassword != null">server_password,</if>
+            <if test="nodeName != null">node_name,</if>
+            <if test="domainName != null">domain_name,</if>
+            <if test="useSsl != null">use_ssl,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="userName != null">#{userName},</if>
+            <if test="password != null">#{password},</if>
+            <if test="mqttName != null">#{mqttName},</if>
+            <if test="ip != null">#{ip},</if>
+            <if test="tcpPort != null">#{tcpPort},</if>
+            <if test="dashboardPort != null">#{dashboardPort},</if>
+            <if test="managementPort != null">#{managementPort},</if>
+            <if test="status != null">#{status},</if>
+            <if test="serverPort != null">#{serverPort},</if>
+            <if test="mqttStartupPath != null">#{mqttStartupPath},</if>
+            <if test="serverUserName != null">#{serverUserName},</if>
+            <if test="serverPassword != null">#{serverPassword},</if>
+            <if test="nodeName != null">#{nodeName},</if>
+            <if test="domainName != null">#{domainName},</if>
+            <if test="useSsl != null">#{useSsl},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiMqtt" parameterType="BusiMqtt">
+        update busi_mqtt
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="userName != null">user_name = #{userName},</if>
+            <if test="password != null">password = #{password},</if>
+            <if test="mqttName != null">mqtt_name = #{mqttName},</if>
+            <if test="ip != null">ip = #{ip},</if>
+            <if test="tcpPort != null">tcp_port = #{tcpPort},</if>
+            <if test="dashboardPort != null">dashboard_port = #{dashboardPort},</if>
+            <if test="managementPort != null">management_port = #{managementPort},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="serverPort != null">server_port = #{serverPort},</if>
+            <if test="mqttStartupPath != null">mqtt_startup_path = #{mqttStartupPath},</if>
+            <if test="serverUserName != null">server_user_name = #{serverUserName},</if>
+            <if test="serverPassword != null">server_password = #{serverPassword},</if>
+            <if test="nodeName != null">node_name = #{nodeName},</if>
+            <if test="domainName != null">domain_name = #{domainName},</if>
+            <if test="useSsl != null">use_ssl = #{useSsl},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiMqttById" parameterType="Long">
+        delete from busi_mqtt where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiMqttByIds" parameterType="String">
+        delete from busi_mqtt where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

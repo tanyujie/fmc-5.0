@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiMcuKdcDeptMapper">
+    
+    <resultMap type="BusiMcuKdcDept" id="BusiMcuKdcDeptResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="mcuType"    column="mcu_type"    />
+        <result property="mcuId"    column="mcu_id"    />
+    </resultMap>
+
+    <sql id="selectBusiMcuKdcDeptVo">
+        select id, create_time, update_time, dept_id, mcu_type, mcu_id from busi_mcu_kdc_dept
+    </sql>
+
+    <select id="selectBusiMcuKdcDeptList" parameterType="BusiMcuKdcDept" resultMap="BusiMcuKdcDeptResult">
+        <include refid="selectBusiMcuKdcDeptVo"/>
+        <where>  
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="mcuType != null "> and mcu_type = #{mcuType}</if>
+            <if test="mcuId != null "> and mcu_id = #{mcuId}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiMcuKdcDeptById" parameterType="Long" resultMap="BusiMcuKdcDeptResult">
+        <include refid="selectBusiMcuKdcDeptVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectBusiMcuKdcDeptByDeptId" parameterType="Long" resultMap="BusiMcuKdcDeptResult">
+        <include refid="selectBusiMcuKdcDeptVo"/>
+        where dept_id = #{deptId}
+    </select>
+        
+    <insert id="insertBusiMcuKdcDept" parameterType="BusiMcuKdcDept" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_mcu_kdc_dept
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="mcuType != null">mcu_type,</if>
+            <if test="mcuId != null">mcu_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="mcuType != null">#{mcuType},</if>
+            <if test="mcuId != null">#{mcuId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiMcuKdcDept" parameterType="BusiMcuKdcDept">
+        update busi_mcu_kdc_dept
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="mcuType != null">mcu_type = #{mcuType},</if>
+            <if test="mcuId != null">mcu_id = #{mcuId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiMcuKdcDeptById" parameterType="Long">
+        delete from busi_mcu_kdc_dept where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiMcuKdcDeptByIds" parameterType="String">
+        delete from busi_mcu_kdc_dept where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

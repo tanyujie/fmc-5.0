@@ -1,0 +1,5 @@
+ALTER TABLE `fcmdb`.`busi_mcu_hwcloud`
+ADD COLUMN `api_ip` VARCHAR(64) NULL DEFAULT NULL COMMENT 'API调用IP' AFTER `spare_smc_id`,
+ADD COLUMN `api_port` INT NULL DEFAULT NULL COMMENT 'API调用端口' AFTER `api_ip`,
+ADD COLUMN `call_ip` VARCHAR(64) NULL DEFAULT NULL COMMENT '呼叫IP' AFTER `api_port`,
+ADD COLUMN `call_port` INT NULL DEFAULT NULL COMMENT '呼叫端口' AFTER `call_ip`;

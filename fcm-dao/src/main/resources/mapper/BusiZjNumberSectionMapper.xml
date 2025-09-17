@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiZjNumberSectionMapper">
+
+    <resultMap type="BusiZjNumberSection" id="BusiZjNumberSectionResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="startValue"    column="start_value"    />
+        <result property="endValue"    column="end_value"    />
+    </resultMap>
+
+    <sql id="selectBusiZjNumberSectionVo">
+        select id, create_time, update_time, dept_id, start_value, end_value from busi_zj_number_section
+    </sql>
+
+    <select id="selectBusiZjNumberSectionList" parameterType="BusiZjNumberSection" resultMap="BusiZjNumberSectionResult">
+        <include refid="selectBusiZjNumberSectionVo"/>
+        <where>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="startValue != null "> and start_value = #{startValue}</if>
+            <if test="endValue != null "> and end_value = #{endValue}</if>
+        </where>
+    </select>
+
+    <select id="selectBusiZjNumberSectionById" parameterType="Integer" resultMap="BusiZjNumberSectionResult">
+        <include refid="selectBusiZjNumberSectionVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertBusiZjNumberSection" parameterType="BusiZjNumberSection">
+        insert into busi_zj_number_section
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="startValue != null">start_value,</if>
+            <if test="endValue != null">end_value,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="startValue != null">#{startValue},</if>
+            <if test="endValue != null">#{endValue},</if>
+        </trim>
+    </insert>
+
+    <update id="updateBusiZjNumberSection" parameterType="BusiZjNumberSection">
+        update busi_zj_number_section
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="startValue != null">start_value = #{startValue},</if>
+            <if test="endValue != null">end_value = #{endValue},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiZjNumberSectionById" parameterType="Long">
+        delete from busi_zj_number_section where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiZjNumberSectionByIds" parameterType="String">
+        delete from busi_zj_number_section where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="countSection" resultType="Integer" >
+        select count(*) from busi_zj_number_section where start_value
+        <![CDATA[
+            <= #{val} and #{val} <= end_value
+        ]]>
+        <if test="id != null"> and id != #{id}</if>
+    </select>
+
+    <resultMap type="ZjDeptRecordCount" id="DeptRecordCountMap">
+        <result property="deptId"    column="dept_id"    />
+        <result property="count"    column="ct"    />
+    </resultMap>
+
+    <select id="getDeptRecordCounts" resultMap="DeptRecordCountMap">
+        SELECT
+        	a.dept_id,
+        	count(*) ct
+        FROM
+        	busi_zj_number_section a
+        GROUP BY
+        	a.dept_id
+        ORDER BY
+        	a.dept_id ASC
+    </select>
+
+</mapper>

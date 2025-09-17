@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiHistoryParticipantTerminalMapper">
+    
+    <resultMap type="BusiHistoryParticipantTerminal" id="BusiHistoryParticipantTerminalResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="historyConferenceId"    column="history_conference_id"    />
+        <result property="terminalId"    column="terminal_id"    />
+        <result property="remoteParty"    column="remote_party"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="name"    column="name"    />
+        <result property="joinTime"    column="join_time"    />
+        <result property="outgoingTime"    column="outgoing_time"    />
+        <result property="durationSeconds"    column="duration_seconds"    />
+        <result property="joined"    column="joined"    />
+        <result property="joinedTimes"    column="joined_times"    />
+        <result property="mediaInfo"    column="media_info" typeHandler="com.paradisecloud.fcm.dao.typehandler.JSONTypeMapHandler" jdbcType="OTHER"   />
+    </resultMap>
+
+    <sql id="selectBusiHistoryParticipantTerminalVo">
+        select id, create_time, update_time, history_conference_id, terminal_id, remote_party, dept_id, name, join_time, outgoing_time, duration_seconds, joined, joined_times, media_info from busi_history_participant_terminal
+    </sql>
+
+    <select id="selectBusiHistoryParticipantTerminalList" parameterType="BusiHistoryParticipantTerminal" resultMap="BusiHistoryParticipantTerminalResult">
+        <include refid="selectBusiHistoryParticipantTerminalVo"/>
+        <where>  
+            <if test="historyConferenceId != null "> and history_conference_id = #{historyConferenceId}</if>
+            <if test="terminalId != null "> and terminal_id = #{terminalId}</if>
+            <if test="remoteParty != null  and remoteParty != ''"> and remote_party = #{remoteParty}</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="joinTime != null "> and join_time = #{joinTime}</if>
+            <if test="outgoingTime != null "> and outgoing_time = #{outgoingTime}</if>
+            <if test="durationSeconds != null "> and duration_seconds = #{durationSeconds}</if>
+            <if test="joined != null "> and joined = #{joined}</if>
+            <if test="joinedTimes != null "> and joined_times = #{joinedTimes}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiHistoryParticipantTerminalById" parameterType="Long" resultMap="BusiHistoryParticipantTerminalResult">
+        <include refid="selectBusiHistoryParticipantTerminalVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiHistoryParticipantTerminal" parameterType="BusiHistoryParticipantTerminal" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_history_participant_terminal
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="historyConferenceId != null">history_conference_id,</if>
+            <if test="terminalId != null">terminal_id,</if>
+            <if test="remoteParty != null and remoteParty != ''">remote_party,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="name != null">name,</if>
+            <if test="joinTime != null">join_time,</if>
+            <if test="outgoingTime != null">outgoing_time,</if>
+            <if test="durationSeconds != null">duration_seconds,</if>
+            <if test="joined != null">joined,</if>
+            <if test="joinedTimes != null">joined_times,</if>
+            <if test="mediaInfo != null">media_info,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="historyConferenceId != null">#{historyConferenceId},</if>
+            <if test="terminalId != null">#{terminalId},</if>
+            <if test="remoteParty != null and remoteParty != ''">#{remoteParty},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="name != null">#{name},</if>
+            <if test="joinTime != null">#{joinTime},</if>
+            <if test="outgoingTime != null">#{outgoingTime},</if>
+            <if test="durationSeconds != null">#{durationSeconds},</if>
+            <if test="joined != null">#{joined},</if>
+            <if test="joinedTimes != null">#{joinedTimes},</if>
+            <if test="mediaInfo != null">#{mediaInfo, typeHandler=com.paradisecloud.fcm.dao.typehandler.JSONTypeMapHandler},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiHistoryParticipantTerminal" parameterType="BusiHistoryParticipantTerminal">
+        update busi_history_participant_terminal
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="historyConferenceId != null">history_conference_id = #{historyConferenceId},</if>
+            <if test="terminalId != null">terminal_id = #{terminalId},</if>
+            <if test="remoteParty != null and remoteParty != ''">remote_party = #{remoteParty},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="joinTime != null">join_time = #{joinTime},</if>
+            <if test="outgoingTime != null">outgoing_time = #{outgoingTime},</if>
+            <if test="durationSeconds != null">duration_seconds = #{durationSeconds},</if>
+            <if test="joined != null">joined = #{joined},</if>
+            <if test="joinedTimes != null">joined_times = #{joinedTimes},</if>
+            <if test="mediaInfo != null">media_info = #{mediaInfo, typeHandler=com.paradisecloud.fcm.dao.typehandler.JSONTypeMapHandler},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiHistoryParticipantTerminalById" parameterType="Long">
+        delete from busi_history_participant_terminal where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiHistoryParticipantTerminalByIds" parameterType="String">
+        delete from busi_history_participant_terminal where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectHistoryParticipantTerminalDetailList" resultMap="BusiHistoryParticipantTerminalResult">
+        <include refid="selectBusiHistoryParticipantTerminalVo"/>
+        <where>
+            <if test="historyConferenceId != null "> and history_conference_id = #{historyConferenceId}</if>
+            <if test="isJoin != null "> and joined = #{isJoin}</if>
+        </where>
+        order by join_time desc
+    </select>
+
+    <delete id="deleteHistory">
+        delete from busi_history_participant_terminal where create_time &lt; #{beforeDate}
+    </delete>
+</mapper>

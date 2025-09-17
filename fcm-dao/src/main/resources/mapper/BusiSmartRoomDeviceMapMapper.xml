@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiSmartRoomDeviceMapMapper">
+
+    <resultMap type="BusiSmartRoomDeviceMap" id="BusiSmartRoomDeviceMapResult">
+        <result property="id"    column="id"    />
+        <result property="roomId"    column="room_id"    />
+        <result property="deviceId"    column="device_id"    />
+        <result property="deviceType"    column="device_type"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+    </resultMap>
+
+    <sql id="selectBusiSmartRoomDeviceMapVo">
+        select id, room_id, device_id, device_type, create_time, create_by from busi_smart_room_device_map
+    </sql>
+
+    <select id="selectBusiSmartRoomDeviceMapList" parameterType="BusiSmartRoomDeviceMap" resultMap="BusiSmartRoomDeviceMapResult">
+        <include refid="selectBusiSmartRoomDeviceMapVo"/>
+        <where>
+            <if test="roomId != null "> and room_id = #{roomId}</if>
+            <if test="deviceId != null "> and device_id = #{deviceId}</if>
+            <if test="deviceType != null "> and device_type = #{deviceType}</if>
+        </where>
+    </select>
+
+    <select id="selectBusiSmartRoomDeviceMapById" parameterType="Long" resultMap="BusiSmartRoomDeviceMapResult">
+        <include refid="selectBusiSmartRoomDeviceMapVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertBusiSmartRoomDeviceMap" parameterType="BusiSmartRoomDeviceMap" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_smart_room_device_map
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="roomId != null">room_id,</if>
+            <if test="deviceId != null">device_id,</if>
+            <if test="deviceType != null">device_type,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="roomId != null">#{roomId},</if>
+            <if test="deviceId != null">#{deviceId},</if>
+            <if test="deviceType != null">#{deviceType},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+        </trim>
+    </insert>
+
+    <update id="updateBusiSmartRoomDeviceMap" parameterType="BusiSmartRoomDeviceMap">
+        update busi_smart_room_device_map
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="roomId != null">room_id = #{roomId},</if>
+            <if test="deviceId != null">device_id = #{deviceId},</if>
+            <if test="deviceType != null">device_type = #{deviceType},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null and createBy != ''">create_by = #{createBy},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiSmartRoomDeviceMapById" parameterType="Long">
+        delete from busi_smart_room_device_map where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiSmartRoomDeviceMapByIds" parameterType="String">
+        delete from busi_smart_room_device_map where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

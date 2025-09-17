@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiMeetingFileMapper">
+    
+    <resultMap type="com.paradisecloud.fcm.dao.model.BusiMeetingFile" id="BusiMeetingFileResult">
+        <result property="id"    column="id"    />
+        <result property="fileName"    column="file_name"    />
+        <result property="url"    column="url"    />
+        <result property="participantName"    column="participant_name"    />
+        <result property="codecStatus"    column="codec_status"    />
+        <result property="fileType"    column="file_type"    />
+        <result property="fileSize"    column="file_size"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createUserId"    column="create_user_id"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="fileStatus"    column="file_status"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="remark"    column="remark"    />
+        <result property="outFile"    column="out_file"    />
+    </resultMap>
+
+    <sql id="selectBusiMeetingFileVo">
+        select id, file_name, url, participant_name, codec_status, file_type, file_size, create_time, create_user_id, update_time, file_status, dept_id,remark,out_file from busi_meeting_file
+    </sql>
+
+    <select id="selectBusiMeetingFileList" parameterType="com.paradisecloud.fcm.dao.model.BusiMeetingFile" resultMap="BusiMeetingFileResult">
+        <include refid="selectBusiMeetingFileVo"/>
+        <where>  
+            <if test="fileName != null  and fileName != ''"> and file_name like concat('%', #{fileName}, '%')</if>
+            <if test="url != null  and url != ''"> and url = #{url}</if>
+            <if test="participantName != null  and participantName != ''"> and participant_name like concat('%', #{participantName}, '%')</if>
+            <if test="codecStatus != null "> and codec_status = #{codecStatus}</if>
+            <if test="fileType != null  and fileType != ''"> and file_type = #{fileType}</if>
+            <if test="fileSize != null  and fileSize != ''"> and file_size = #{fileSize}</if>
+            <if test="createUserId != null "> and create_user_id = #{createUserId}</if>
+            <if test="fileStatus != null "> and file_status = #{fileStatus}</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+        </where>
+        order by create_time desc
+    </select>
+    
+    <select id="selectBusiMeetingFileById" parameterType="Long" resultMap="BusiMeetingFileResult">
+        <include refid="selectBusiMeetingFileVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiMeetingFile" parameterType="com.paradisecloud.fcm.dao.model.BusiMeetingFile" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_meeting_file
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="fileName != null and fileName != ''">file_name,</if>
+            <if test="url != null and url != ''">url,</if>
+            <if test="participantName != null and participantName != ''">participant_name,</if>
+            <if test="codecStatus != null">codec_status,</if>
+            <if test="fileType != null and fileType != ''">file_type,</if>
+            <if test="fileSize != null and fileSize != ''">file_size,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createUserId != null">create_user_id,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="fileStatus != null">file_status,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="remark != null">remark,</if>
+            <if test="outFile != null">out_file,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="fileName != null and fileName != ''">#{fileName},</if>
+            <if test="url != null and url != ''">#{url},</if>
+            <if test="participantName != null and participantName != ''">#{participantName},</if>
+            <if test="codecStatus != null">#{codecStatus},</if>
+            <if test="fileType != null and fileType != ''">#{fileType},</if>
+            <if test="fileSize != null and fileSize != ''">#{fileSize},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createUserId != null">#{createUserId},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="fileStatus != null">#{fileStatus},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="outFile != null">out_file,</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiMeetingFile" parameterType="com.paradisecloud.fcm.dao.model.BusiMeetingFile">
+        update busi_meeting_file
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="fileName != null and fileName != ''">file_name = #{fileName},</if>
+            <if test="url != null and url != ''">url = #{url},</if>
+            <if test="participantName != null and participantName != ''">participant_name = #{participantName},</if>
+            <if test="codecStatus != null">codec_status = #{codecStatus},</if>
+            <if test="fileType != null and fileType != ''">file_type = #{fileType},</if>
+            <if test="fileSize != null and fileSize != ''">file_size = #{fileSize},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createUserId != null">create_user_id = #{createUserId},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="fileStatus != null">file_status = #{fileStatus},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="outFile != null">out_file = #{outFile},</if>
+            remark = #{remark}
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiMeetingFileById" parameterType="Long">
+        delete from busi_meeting_file where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiMeetingFileByIds" parameterType="String">
+        delete from busi_meeting_file where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiSmartRoomBookSignInMapper">
+
+    <resultMap type="BusiSmartRoomBookSignIn" id="BusiSmartRoomBookSignInResult">
+        <result property="id"    column="id"    />
+        <result property="bookId"    column="book_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="userName"    column="user_name"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectBusiSmartRoomBookSignInVo">
+        select id, book_id, user_id, user_name, create_time from busi_smart_room_book_sign_in
+    </sql>
+
+    <select id="selectBusiSmartRoomBookSignInList" parameterType="BusiSmartRoomBookSignIn" resultMap="BusiSmartRoomBookSignInResult">
+        <include refid="selectBusiSmartRoomBookSignInVo"/>
+        <where>
+            <if test="bookId != null "> and book_id = #{bookId}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="userName != null  and userName != ''"> and user_name like concat('%', #{userName}, '%')</if>
+        </where>
+    </select>
+
+    <select id="selectBusiSmartRoomBookSignInById" parameterType="Long" resultMap="BusiSmartRoomBookSignInResult">
+        <include refid="selectBusiSmartRoomBookSignInVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertBusiSmartRoomBookSignIn" parameterType="BusiSmartRoomBookSignIn" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_smart_room_book_sign_in
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="bookId != null">book_id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="userName != null and userName != ''">user_name,</if>
+            <if test="createTime != null">create_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="bookId != null">#{bookId},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="userName != null and userName != ''">#{userName},</if>
+            <if test="createTime != null">#{createTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateBusiSmartRoomBookSignIn" parameterType="BusiSmartRoomBookSignIn">
+        update busi_smart_room_book_sign_in
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="bookId != null">book_id = #{bookId},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="userName != null and userName != ''">user_name = #{userName},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiSmartRoomBookSignInById" parameterType="Long">
+        delete from busi_smart_room_book_sign_in where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiSmartRoomBookSignInByIds" parameterType="String">
+        delete from busi_smart_room_book_sign_in where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

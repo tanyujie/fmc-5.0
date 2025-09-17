@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiConferenceNumberMapper">
+    
+    <resultMap type="BusiConferenceNumber" id="BusiConferenceNumberResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="createUserId"    column="create_user_id"    />
+        <result property="createUserName"    column="create_user_name"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="type"    column="type"    />
+        <result property="status"    column="status"    />
+        <result property="createType"    column="create_type"    />
+        <result property="remarks"    column="remarks"    />
+        <result property="mcuType"    column="mcu_type"    />
+    </resultMap>
+
+    <sql id="selectBusiConferenceNumberVo">
+        select id, create_time, update_time, create_user_id, create_user_name, dept_id, type, status, create_type, remarks, mcu_type from busi_conference_number
+    </sql>
+    
+    <resultMap type="DeptRecordCount" id="DeptRecordCountMap">
+        <result property="deptId"    column="dept_id"    />
+        <result property="count"    column="ct"    />
+    </resultMap>
+    
+    <select id="getDeptRecordCounts" resultMap="DeptRecordCountMap">
+        SELECT
+        	a.dept_id,
+        	count(*) ct 
+        FROM
+        	busi_conference_number a
+        where create_type=2
+        GROUP BY
+        	a.dept_id 
+        ORDER BY
+        	a.dept_id ASC
+    </select>
+
+    <select id="selectBusiConferenceNumberList" parameterType="BusiConferenceNumber" resultMap="BusiConferenceNumberResult">
+        <include refid="selectBusiConferenceNumberVo"/>
+        <where>  
+            <if test="createUserId != null "> and create_user_id = #{createUserId}</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="createUserName != null  and createUserName != ''"> and create_user_name like concat('%', #{createUserName}, '%')</if>
+            <if test="type != null "> and type = #{type}</if>
+            <if test="remarks != null  and remarks != ''"> and remarks = #{remarks}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="createType != null "> and create_type = #{createType}</if>
+            <if test="params.statuses != null ">
+                and status in (${params.statuses})
+            </if>
+            <if test="mcuType != null and mcuType != ''"> and mcu_type = #{mcuType}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiConferenceNumberById" parameterType="Long" resultMap="BusiConferenceNumberResult">
+        <include refid="selectBusiConferenceNumberVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiConferenceNumber" parameterType="BusiConferenceNumber">
+        insert into busi_conference_number
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="createUserId != null">create_user_id,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="createUserName != null">create_user_name,</if>
+            <if test="type != null">type,</if>
+            <if test="remarks != null">remarks,</if>
+            <if test="status != null">status,</if>
+            <if test="createType != null">create_type,</if>
+            <if test="mcuType != null">mcu_type,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="createUserId != null">#{createUserId},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="createUserName != null">#{createUserName},</if>
+            <if test="type != null">#{type},</if>
+            <if test="remarks != null">#{remarks},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createType != null">#{createType},</if>
+            <if test="mcuType != null">#{mcuType},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiConferenceNumber" parameterType="BusiConferenceNumber">
+        update busi_conference_number
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="createUserId != null">create_user_id = #{createUserId},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="createUserName != null">create_user_name = #{createUserName},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="remarks != null">remarks = #{remarks},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createType != null">create_type = #{createType},</if>
+            <if test="mcuType != null">mcu_type = #{mcuType},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiConferenceNumberById" parameterType="Long">
+        delete from busi_conference_number where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiConferenceNumberByIds" parameterType="String">
+        delete from busi_conference_number where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

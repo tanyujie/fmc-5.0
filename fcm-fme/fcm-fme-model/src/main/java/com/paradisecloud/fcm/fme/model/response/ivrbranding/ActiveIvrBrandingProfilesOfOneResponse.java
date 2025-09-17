@@ -1,0 +1,30 @@
+package com.paradisecloud.fcm.fme.model.response.ivrbranding;
+
+import com.alibaba.fastjson.annotation.JSONField;
+import com.paradisecloud.fcm.fme.model.cms.IvrBrandingProfile;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+/**
+ * 多个callProfile
+ *
+ */
+@Getter
+@Setter
+@ToString
+public class ActiveIvrBrandingProfilesOfOneResponse
+{
+    
+    /**
+     * ivrBrandingProfile 总数
+     */
+    @JSONField(name = "@total")
+    private Integer total;
+    
+    /**
+     * 单个ivrBrandingProfile
+     */
+    private IvrBrandingProfile ivrBrandingProfile;
+}

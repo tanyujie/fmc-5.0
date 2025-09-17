@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiHistoryCallMapper">
+
+    <resultMap type="BusiHistoryCall" id="BusiHistoryCallResult">
+        <result property="id"    column="id"    />
+        <result property="callId"    column="call_id"    />
+        <result property="coSpace"    column="co_space"    />
+        <result property="historyConferenceId"    column="history_conference_id"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectBusiHistoryCallVo">
+        select id, call_id, co_space, history_conference_id, dept_id, create_time, update_time from busi_history_call
+    </sql>
+
+    <select id="selectBusiHistoryCallList" parameterType="BusiHistoryCall" resultMap="BusiHistoryCallResult">
+        <include refid="selectBusiHistoryCallVo"/>
+        <where>
+            <if test="callId != null  and callId != ''"> and call_id = #{callId}</if>
+            <if test="coSpace != null  and coSpace != ''"> and co_space = #{coSpace}</if>
+            <if test="historyConferenceId != null "> and history_conference_id = #{historyConferenceId}</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+        </where>
+    </select>
+
+    <select id="selectBusiHistoryCallById" parameterType="Long" resultMap="BusiHistoryCallResult">
+        <include refid="selectBusiHistoryCallVo"/>
+        where id = #{id}
+    </select>
+    
+    <select id="selectBusiHistoryCallByCallId" parameterType="String" resultMap="BusiHistoryCallResult">
+        <include refid="selectBusiHistoryCallVo"/>
+        where call_id = #{callId}
+    </select>
+
+    <insert id="insertBusiHistoryCall" parameterType="BusiHistoryCall" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_history_call
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="callId != null">call_id,</if>
+            <if test="coSpace != null">co_space,</if>
+            <if test="historyConferenceId != null">history_conference_id,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="callId != null">#{callId},</if>
+            <if test="coSpace != null">#{coSpace},</if>
+            <if test="historyConferenceId != null">#{historyConferenceId},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateBusiHistoryCall" parameterType="BusiHistoryCall">
+        update busi_history_call
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="callId != null">call_id = #{callId},</if>
+            <if test="coSpace != null">co_space = #{coSpace},</if>
+            <if test="historyConferenceId != null">history_conference_id = #{historyConferenceId},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiHistoryCallById" parameterType="Long">
+        delete from busi_history_call where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiHistoryCallByIds" parameterType="String">
+        delete from busi_history_call where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <!-- 批量添加记录 -->
+    <insert id="batchAddHistoryCall" parameterType="list" useGeneratedKeys="false" keyProperty="id">
+        insert into busi_history_call (call_id,co_space,history_conference_id,dept_id,create_time,update_time) values
+        <foreach collection="callList" item="call" index="index" separator=",">
+            (#{call.callId},#{call.coSpace},#{call.historyConferenceId},#{call.deptId},#{call.createTime},#{call.updateTime})
+        </foreach>
+    </insert>
+    <select id="findHistoryCallByCoSpaceAndCall" resultMap="BusiHistoryCallResult">
+        <include refid="selectBusiHistoryCallVo"/>
+        <where>
+            <if test="callId != null  and callId != ''"> and call_id = #{callId}</if>
+            <if test="coSpaceId != null  and coSpaceId != ''"> and co_space = #{coSpaceId}</if>
+        </where>
+    </select>
+
+    <delete id="deleteHistory">
+        delete from busi_history_call where create_time &lt; #{beforeDate}
+    </delete>
+</mapper>

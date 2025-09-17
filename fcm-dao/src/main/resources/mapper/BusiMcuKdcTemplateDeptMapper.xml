@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiMcuKdcTemplateDeptMapper">
+    
+    <resultMap type="BusiMcuKdcTemplateDept" id="BusiMcuKdcTemplateDeptResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="uuid"    column="uuid"    />
+        <result property="templateConferenceId"    column="template_conference_id"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="weight"    column="weight"    />
+    </resultMap>
+
+    <sql id="selectBusiMcuKdcTemplateDeptVo">
+        select id, create_time, update_time, uuid, template_conference_id, dept_id, weight from busi_mcu_kdc_template_dept
+    </sql>
+
+    <select id="selectBusiMcuKdcTemplateDeptList" parameterType="BusiMcuKdcTemplateDept" resultMap="BusiMcuKdcTemplateDeptResult">
+        <include refid="selectBusiMcuKdcTemplateDeptVo"/>
+        <where>  
+            <if test="uuid != null  and uuid != ''"> and uuid = #{uuid}</if>
+            <if test="templateConferenceId != null "> and template_conference_id = #{templateConferenceId}</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="weight != null "> and weight = #{weight}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiMcuKdcTemplateDeptById" parameterType="Long" resultMap="BusiMcuKdcTemplateDeptResult">
+        <include refid="selectBusiMcuKdcTemplateDeptVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiMcuKdcTemplateDept" parameterType="BusiMcuKdcTemplateDept" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_mcu_kdc_template_dept
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="uuid != null">uuid,</if>
+            <if test="templateConferenceId != null">template_conference_id,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="weight != null">weight,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="uuid != null">#{uuid},</if>
+            <if test="templateConferenceId != null">#{templateConferenceId},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="weight != null">#{weight},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiMcuKdcTemplateDept" parameterType="BusiMcuKdcTemplateDept">
+        update busi_mcu_kdc_template_dept
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="uuid != null">uuid = #{uuid},</if>
+            <if test="templateConferenceId != null">template_conference_id = #{templateConferenceId},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="weight != null">weight = #{weight},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiMcuKdcTemplateDeptById" parameterType="Long">
+        delete from busi_mcu_kdc_template_dept where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiMcuKdcTemplateDeptByIds" parameterType="String">
+        delete from busi_mcu_kdc_template_dept where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

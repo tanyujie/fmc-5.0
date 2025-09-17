@@ -1,0 +1,8 @@
+#fs服务的配置信息
+fs:
+      
+  #端口号
+  port: 8021
+     
+  #密码
+  password: "ClueCon"

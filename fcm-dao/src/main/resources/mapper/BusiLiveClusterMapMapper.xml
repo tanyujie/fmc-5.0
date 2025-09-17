@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiLiveClusterMapMapper">
+    
+    <resultMap type="BusiLiveClusterMap" id="BusiLiveClusterMapResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="clusterId"    column="cluster_id"    />
+        <result property="liveId"    column="live_id"    />
+        <result property="weight"    column="weight"    />
+        <result property="liveType"    column="live_type"    />
+    </resultMap>
+
+    <sql id="selectBusiLiveClusterMapVo">
+        select id, create_time, update_time, cluster_id, live_id, weight, live_type from busi_live_cluster_map
+    </sql>
+
+    <select id="selectBusiLiveClusterMapList" parameterType="BusiLiveClusterMap" resultMap="BusiLiveClusterMapResult">
+        <include refid="selectBusiLiveClusterMapVo"/>
+        <where>  
+            <if test="clusterId != null "> and cluster_id = #{clusterId}</if>
+            <if test="liveId != null "> and live_id = #{liveId}</if>
+            <if test="weight != null "> and weight = #{weight}</if>
+            <if test="liveType != null "> and live_type = #{liveType}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiLiveClusterMapById" parameterType="Long" resultMap="BusiLiveClusterMapResult">
+        <include refid="selectBusiLiveClusterMapVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiLiveClusterMap" parameterType="BusiLiveClusterMap" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_live_cluster_map
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="clusterId != null">cluster_id,</if>
+            <if test="liveId != null">live_id,</if>
+            <if test="weight != null">weight,</if>
+            <if test="liveType != null">live_type,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="clusterId != null">#{clusterId},</if>
+            <if test="liveId != null">#{liveId},</if>
+            <if test="weight != null">#{weight},</if>
+            <if test="liveType != null">#{liveType},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiLiveClusterMap" parameterType="BusiLiveClusterMap">
+        update busi_live_cluster_map
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="clusterId != null">cluster_id = #{clusterId},</if>
+            <if test="liveId != null">live_id = #{liveId},</if>
+            <if test="weight != null">weight = #{weight},</if>
+            <if test="liveType != null">live_type = #{liveType},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiLiveClusterMapById" parameterType="Long">
+        delete from busi_live_cluster_map where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiLiveClusterMapByIds" parameterType="String">
+        delete from busi_live_cluster_map where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

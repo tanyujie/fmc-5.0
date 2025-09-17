@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiInfoDisplayMapper">
+    
+    <resultMap type="BusiInfoDisplay" id="BusiInfoDisplayResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="type"    column="type"    />
+        <result property="displayType"    column="display_type"    />
+        <result property="urlData"    column="url_data"    />
+        <result property="pushType"    column="push_type"    />
+        <result property="pushObject"    column="push_object"    />
+        <result property="pushTerminalIds"    column="push_terminal_ids"    />
+        <result property="lastPushTime"    column="last_push_time"    />
+        <result property="status"    column="status"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="durationTime"    column="duration_time"    />
+    </resultMap>
+
+    <sql id="selectBusiInfoDisplayVo">
+        select id, name, dept_id, type, display_type, url_data, push_type, push_terminal_ids, last_push_time, status, create_by, create_time, update_by, update_time, push_object, duration_time from busi_info_display
+    </sql>
+
+    <select id="selectBusiInfoDisplayList" parameterType="BusiInfoDisplay" resultMap="BusiInfoDisplayResult">
+        <include refid="selectBusiInfoDisplayVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="type != null "> and type = #{type}</if>
+            <if test="displayType != null "> and display_type = #{displayType}</if>
+            <if test="urlData != null  and urlData != ''"> and url_data = #{urlData}</if>
+            <if test="pushType != null "> and push_type = #{pushType}</if>
+            <if test="pushObject != null "> and push_object = #{pushObject}</if>
+            <if test="pushTerminalIds != null  and pushTerminalIds != ''"> and push_terminal_ids = #{pushTerminalIds}</if>
+            <if test="lastPushTime != null "> and last_push_time = #{lastPushTime}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="durationTime != null "> and duration_time = #{durationTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiInfoDisplayById" parameterType="Long" resultMap="BusiInfoDisplayResult">
+        <include refid="selectBusiInfoDisplayVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiInfoDisplay" parameterType="BusiInfoDisplay" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_info_display
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">name,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="type != null">type,</if>
+            <if test="displayType != null">display_type,</if>
+            <if test="urlData != null and urlData != ''">url_data,</if>
+            <if test="pushType != null">push_type,</if>
+            <if test="pushObject != null">push_object,</if>
+            <if test="pushTerminalIds != null">push_terminal_ids,</if>
+            <if test="lastPushTime != null">last_push_time,</if>
+            <if test="status != null">status,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="durationTime != null">duration_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="type != null">#{type},</if>
+            <if test="displayType != null">#{displayType},</if>
+            <if test="urlData != null and urlData != ''">#{urlData},</if>
+            <if test="pushType != null">#{pushType},</if>
+            <if test="pushObject != null">#{pushObject},</if>
+            <if test="pushTerminalIds != null">#{pushTerminalIds},</if>
+            <if test="lastPushTime != null">#{lastPushTime},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="durationTime != null">#{durationTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiInfoDisplay" parameterType="BusiInfoDisplay">
+        update busi_info_display
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="displayType != null">display_type = #{displayType},</if>
+            <if test="urlData != null and urlData != ''">url_data = #{urlData},</if>
+            <if test="pushType != null">push_type = #{pushType},</if>
+            <if test="pushObject != null">push_object = #{pushObject},</if>
+            <if test="pushTerminalIds != null">push_terminal_ids = #{pushTerminalIds},</if>
+            <if test="lastPushTime != null">last_push_time = #{lastPushTime},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="durationTime != null">duration_time = #{durationTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiInfoDisplayById" parameterType="Long">
+        delete from busi_info_display where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiInfoDisplayByIds" parameterType="String">
+        delete from busi_info_display where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <resultMap type="DeptRecordCount" id="DeptRecordCountMap">
+        <result property="deptId"    column="dept_id"    />
+        <result property="count"    column="live_count"    />
+    </resultMap>
+
+
+    <select id="getDeptRecordCounts" parameterType="Integer" resultMap="DeptRecordCountMap">
+        SELECT
+        	a.dept_id,
+        	count(*) live_count
+        FROM
+        	busi_info_display a
+        WHERE
+	        a.push_type = 1
+        GROUP BY
+        	a.dept_id
+        ORDER BY
+        	a.dept_id ASC
+    </select>
+</mapper>

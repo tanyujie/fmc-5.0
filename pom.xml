@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <artifactId>paradisecloud</artifactId>
+        <groupId>com.paradisecloud</groupId>
+        <version>3.3.0</version>
+    </parent>
+
+    <!-- 公共变量定义，定义各大模块的版本号等属性 -->
+    <properties>
+        <!-- 项目属性定义 -->
+        <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <!-- POM项目自身 -->
+    <artifactId>fcm</artifactId>
+    <version>2.0-RELEASE</version>
+    <name>${project.artifactId}</name>
+    <packaging>pom</packaging>
+
+    <!-- 各模块 -->
+    <modules>
+        <module>fcm-application</module>
+        <module>fcm-dao</module>
+        <module>fcm-fme</module>
+        <module>fcm-sdk</module>
+        <module>fcm-common</module>
+        <module>fcm-service</module>
+		<module>fcm-terminal</module>
+        <module>fcm-web</module>
+        <module>fcm-cdr</module>
+        <module>fcm-mqtt</module>
+        <module>fcm-edu</module>
+        <module>fcm-business</module>
+        <module>fcm-license</module>
+        <module>fcm-mcu-zj</module>
+        <module>fcm-mcu-plc</module>
+        <module>fcm-mcu-kdc</module>
+        <module>fcm-smc</module>
+        <module>fcm-telep</module>
+        <module>fcm-tencent</module>
+        <module>fcm-smc2</module>
+        <module>fcm-smc3.0</module>
+        <module>fcm-smart-room</module>
+        <module>fcm-ding</module>
+        <module>fcm-huaweicloud</module>
+        <module>fcm-zte</module>
+        <module>fcm-ops</module>
+        <module>fcm-ops-cloud</module>
+        <module>fcm-gb28181</module>
+        <module>fcm-im</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.paradisecloud</groupId>
+                <artifactId>fcm-license</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.paradisecloud</groupId>
+                <artifactId>fcm-dao</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.paradisecloud</groupId>
+                <artifactId>fcm-edu</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.paradisecloud</groupId>
+                <artifactId>fcm-fme-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.paradisecloud</groupId>
+                <artifactId>fcm-common</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.paradisecloud</groupId>
+                <artifactId>fcm-service</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.paradisecloud</groupId>
+                <artifactId>fcm-terminal</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.paradisecloud</groupId>
+                <artifactId>fcm-web</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.paradisecloud</groupId>
+                <artifactId>fcm-cdr</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.paradisecloud</groupId>
+                <artifactId>fcm-mqtt</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.paradisecloud</groupId>
+                <artifactId>fcm-mcu-zj-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.paradisecloud</groupId>
+                <artifactId>fcm-mcu-plc-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.paradisecloud</groupId>
+                <artifactId>fcm-mcu-kdc-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.paradisecloud</groupId>
+                <artifactId>fcm-smart-room-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.paradisecloud</groupId>
+                <artifactId>fcm-ops-cloud</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+		</dependencies>
+    </dependencyManagement>
+
+    <!-- 即使在子项目中不写该依赖项，那么子项目仍然会从父项目中继承该依赖项。 -->
+    <dependencies>
+
+    </dependencies>
+
+    <!-- 公共插件定义 -->
+    <build>
+        <pluginManagement>
+            <plugins>
+                
+            </plugins>
+        </pluginManagement>
+        <plugins>
+		
+        </plugins>
+    </build>
+</project>

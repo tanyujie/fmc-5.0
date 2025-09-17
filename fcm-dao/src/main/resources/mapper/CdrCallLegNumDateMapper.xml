@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.CdrCallLegNumDateMapper">
+
+    <resultMap type="CdrCallLegNumDate" id="CdrCallLegNumDateResult">
+        <result property="id"    column="id"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="fmeIp"    column="fme_ip"    />
+        <result property="number"    column="number"    />
+        <result property="recordDate"    column="record_date"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectCdrCallLegNumDateVo">
+        select id, dept_id, fme_ip, number, record_date, create_time, update_time from cdr_call_leg_num_date
+    </sql>
+
+    <select id="selectCdrCallLegNumDateList" parameterType="CdrCallLegNumDate" resultMap="CdrCallLegNumDateResult">
+        <include refid="selectCdrCallLegNumDateVo"/>
+        <where>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="fmeIp != null "> and fme_ip = #{fmeIp}</if>
+            <if test="number != null "> and number = #{number}</if>
+            <if test="recordDate != null "> and record_date = #{recordDate}</if>
+        </where>
+    </select>
+
+    <select id="selectCdrCallLegNumDateById" parameterType="Long" resultMap="CdrCallLegNumDateResult">
+        <include refid="selectCdrCallLegNumDateVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertCdrCallLegNumDate" parameterType="CdrCallLegNumDate" useGeneratedKeys="true" keyProperty="id">
+        insert into cdr_call_leg_num_date
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="deptId != null">dept_id,</if>
+            <if test="fmeIp != null">fme_ip,</if>
+            <if test="number != null">number,</if>
+            <if test="recordDate != null">record_date,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="deptId != null">#{deptId},</if>
+            <if test="fmeIp != null">#{fmeIp},</if>
+            <if test="number != null">#{number},</if>
+            <if test="recordDate != null">#{recordDate},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateCdrCallLegNumDate" parameterType="CdrCallLegNumDate">
+        update cdr_call_leg_num_date
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="fmeIp != null">fme_ip = #{fmeIp},</if>
+            <if test="number != null">number = #{number},</if>
+            <if test="recordDate != null">record_date = #{recordDate},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <update id="updateByCurrentDate" parameterType="CdrCallLegNumDate">
+        update cdr_call_leg_num_date
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="number != null">number = #{number},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        <where>
+            <if test="fmeIp != null "> and fme_ip = #{fmeIp}</if>
+            <if test="recordDate != null "> and record_date = #{recordDate,jdbcType=DATE}</if>
+        </where>
+    </update>
+
+    <delete id="deleteCdrCallLegNumDateById" parameterType="Long">
+        delete from cdr_call_leg_num_date where id = #{id}
+    </delete>
+
+    <delete id="deleteCdrCallLegNumDateByIds" parameterType="String">
+        delete from cdr_call_leg_num_date where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <select id="selectByDeptIdAndFmeIpAndDate" resultMap="CdrCallLegNumDateResult">
+        <include refid="selectCdrCallLegNumDateVo"/>
+        <where>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="fmeIp != null "> and fme_ip = #{fmeIp}</if>
+            <if test="recordDate != null "> and record_date = #{recordDate}</if>
+        </where>
+    </select>
+
+    <select id="selectByFmeIpAndDate" resultMap="CdrCallLegNumDateResult">
+        <include refid="selectCdrCallLegNumDateVo"/>
+        <where>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="fmeIp != null "> and fme_ip = #{fmeIp}</if>
+            <if test="startTime != null "> and record_date <![CDATA[>=]]> #{startTime}</if>
+            <if test="endTime != null "> and record_date <![CDATA[<=]]> #{endTime}</if>
+        </where>
+    </select>
+
+    <delete id="deleteHistory">
+        delete from cdr_call_leg_num_date where create_time &lt; #{beforeDate}
+    </delete>
+</mapper>

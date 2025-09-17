@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiFsbcServerDeptMapper">
+    
+    <resultMap type="BusiFsbcServerDept" id="BusiFsbcServerDeptResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="fsbcServerId"    column="fsbc_server_id"    />
+        <result property="deptId"    column="dept_id"    />
+    </resultMap>
+
+    <sql id="selectBusiFsbcServerDeptVo">
+        select id, create_time, update_time, fsbc_server_id, dept_id from busi_fsbc_server_dept
+    </sql>
+
+    <select id="selectBusiFsbcServerDeptList" parameterType="BusiFsbcServerDept" resultMap="BusiFsbcServerDeptResult">
+        <include refid="selectBusiFsbcServerDeptVo"/>
+        <where>  
+            <if test="fsbcServerId != null "> and fsbc_server_id = #{fsbcServerId}</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiFsbcServerDeptById" parameterType="Long" resultMap="BusiFsbcServerDeptResult">
+        <include refid="selectBusiFsbcServerDeptVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiFsbcServerDept" parameterType="BusiFsbcServerDept" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_fsbc_server_dept
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="fsbcServerId != null">fsbc_server_id,</if>
+            <if test="deptId != null">dept_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="fsbcServerId != null">#{fsbcServerId},</if>
+            <if test="deptId != null">#{deptId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiFsbcServerDept" parameterType="BusiFsbcServerDept">
+        update busi_fsbc_server_dept
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="fsbcServerId != null">fsbc_server_id = #{fsbcServerId},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiFsbcServerDeptById" parameterType="Long">
+        delete from busi_fsbc_server_dept where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiFsbcServerDeptByIds" parameterType="String">
+        delete from busi_fsbc_server_dept where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

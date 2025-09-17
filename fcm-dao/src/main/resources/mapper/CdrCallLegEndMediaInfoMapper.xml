@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.CdrCallLegEndMediaInfoMapper">
+    
+    <resultMap type="CdrCallLegEndMediaInfo" id="CdrCallLegEndMediaInfoResult">
+        <result property="cdrId"    column="cdr_id"    />
+        <result property="id"    column="id"    />
+        <result property="session"    column="session"    />
+        <result property="callBridge"    column="call_bridge"    />
+        <result property="recordIndex"    column="record_index"    />
+        <result property="correlatorIndex"    column="correlator_index"    />
+        <result property="codec"    column="codec"    />
+        <result property="maxSizeWidth"    column="max_size_width"    />
+        <result property="maxSizeHeight"    column="max_size_height"    />
+        <result property="type"    column="type"    />
+        <result property="packetLossBurstsDuration"    column="packet_loss_bursts_duration"    />
+        <result property="packetLossBurstsDensity"    column="packet_loss_bursts_density"    />
+        <result property="packetGapDuration"    column="packet_gap_duration"    />
+        <result property="packetGapDensity"    column="packet_gap_density"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="createUserId"    column="create_user_id"    />
+        <result property="createUserName"    column="create_user_name"    />
+    </resultMap>
+
+    <sql id="selectCdrCallLegEndMediaInfoVo">
+        select cdr_id, id, session, call_bridge, record_index, correlator_index, codec, max_size_width, max_size_height, type, packet_loss_bursts_duration, packet_loss_bursts_density, packet_gap_duration, packet_gap_density from cdr_call_leg_end_media_info
+    </sql>
+
+    <select id="selectCdrCallLegEndMediaInfoList" parameterType="CdrCallLegEndMediaInfo" resultMap="CdrCallLegEndMediaInfoResult">
+        <include refid="selectCdrCallLegEndMediaInfoVo"/>
+        <where>
+            <if test="id != null  and id != ''"> and id = #{id}</if>
+            <if test="cdrId != null  and cdrId != ''"> and cdr_id = #{cdrId}</if>
+            <if test="session != null  and session != ''"> and session = #{session}</if>
+            <if test="callBridge != null  and callBridge != ''"> and call_bridge = #{callBridge}</if>
+            <if test="recordIndex != null "> and record_index = #{recordIndex}</if>
+            <if test="correlatorIndex != null "> and correlator_index = #{correlatorIndex}</if>
+            <if test="codec != null  and codec != ''"> and codec = #{codec}</if>
+            <if test="maxSizeWidth != null "> and max_size_width = #{maxSizeWidth}</if>
+            <if test="maxSizeHeight != null "> and max_size_height = #{maxSizeHeight}</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="packetLossBurstsDuration != null "> and packet_loss_bursts_duration = #{packetLossBurstsDuration}</if>
+            <if test="packetLossBurstsDensity != null "> and packet_loss_bursts_density = #{packetLossBurstsDensity}</if>
+            <if test="packetGapDuration != null "> and packet_gap_duration = #{packetGapDuration}</if>
+            <if test="packetGapDensity != null "> and packet_gap_density = #{packetGapDensity}</if>
+        </where>
+    </select>
+    
+    <select id="selectCdrCallLegEndMediaInfoById" parameterType="Integer" resultMap="CdrCallLegEndMediaInfoResult">
+        <include refid="selectCdrCallLegEndMediaInfoVo"/>
+        where id = #{id}
+    </select>
+    
+    <select id="selectCdrCallLegEndMediaInfo" resultMap="CdrCallLegEndMediaInfoResult">
+        <include refid="selectCdrCallLegEndMediaInfoVo"/>
+        where cdr_id = #{callLegId} and type = #{type}
+    </select>
+        
+    <insert id="insertCdrCallLegEndMediaInfo" parameterType="CdrCallLegEndMediaInfo">
+        insert into cdr_call_leg_end_media_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="cdrId != null">cdr_id,</if>
+            <if test="id != null">id,</if>
+            <if test="session != null">session,</if>
+            <if test="callBridge != null">call_bridge,</if>
+            <if test="recordIndex != null">record_index,</if>
+            <if test="correlatorIndex != null">correlator_index,</if>
+            <if test="codec != null">codec,</if>
+            <if test="maxSizeWidth != null">max_size_width,</if>
+            <if test="maxSizeHeight != null">max_size_height,</if>
+            <if test="type != null">type,</if>
+            <if test="packetLossBurstsDuration != null">packet_loss_bursts_duration,</if>
+            <if test="packetLossBurstsDensity != null">packet_loss_bursts_density,</if>
+            <if test="packetGapDuration != null">packet_gap_duration,</if>
+            <if test="packetGapDensity != null">packet_gap_density,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="createUserId != null">create_user_id,</if>
+            <if test="createUserName != null">create_user_name,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="cdrId != null">#{cdrId},</if>
+            <if test="id != null">#{id},</if>
+            <if test="session != null">#{session},</if>
+            <if test="callBridge != null">#{callBridge},</if>
+            <if test="recordIndex != null">#{recordIndex},</if>
+            <if test="correlatorIndex != null">#{correlatorIndex},</if>
+            <if test="codec != null">#{codec},</if>
+            <if test="maxSizeWidth != null">#{maxSizeWidth},</if>
+            <if test="maxSizeHeight != null">#{maxSizeHeight},</if>
+            <if test="type != null">#{type},</if>
+            <if test="packetLossBurstsDuration != null">#{packetLossBurstsDuration},</if>
+            <if test="packetLossBurstsDensity != null">#{packetLossBurstsDensity},</if>
+            <if test="packetGapDuration != null">#{packetGapDuration},</if>
+            <if test="packetGapDensity != null">#{packetGapDensity},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="createUserId != null">#{createUserId},</if>
+            <if test="createUserName != null">#{createUserName},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCdrCallLegEndMediaInfo" parameterType="CdrCallLegEndMediaInfo">
+        update cdr_call_leg_end_media_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="id != null">id = #{id},</if>
+            <if test="session != null">session = #{session},</if>
+            <if test="callBridge != null">call_bridge = #{callBridge},</if>
+            <if test="recordIndex != null">record_index = #{recordIndex},</if>
+            <if test="correlatorIndex != null">correlator_index = #{correlatorIndex},</if>
+            <if test="codec != null">codec = #{codec},</if>
+            <if test="maxSizeWidth != null">max_size_width = #{maxSizeWidth},</if>
+            <if test="maxSizeHeight != null">max_size_height = #{maxSizeHeight},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="packetLossBurstsDuration != null">packet_loss_bursts_duration = #{packetLossBurstsDuration},</if>
+            <if test="packetLossBurstsDensity != null">packet_loss_bursts_density = #{packetLossBurstsDensity},</if>
+            <if test="packetGapDuration != null">packet_gap_duration = #{packetGapDuration},</if>
+            <if test="packetGapDensity != null">packet_gap_density = #{packetGapDensity},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="createUserId != null">create_user_id = #{createUserId},</if>
+            <if test="createUserName != null">create_user_name = #{createUserName},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCdrCallLegEndMediaInfoById" parameterType="Integer">
+        delete from cdr_call_leg_end_media_info where id = #{id}
+    </delete>
+
+    <delete id="deleteCdrCallLegEndMediaInfoByIds" parameterType="String">
+        delete from cdr_call_leg_end_media_info where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <resultMap id="mediaInfoMap" type="CdrCallLegEndMediaInfo">
+        <result property="cdrId"    column="cdr_id"    />
+        <result property="id"    column="id"    />
+        <result property="type"    column="type"    />
+        <result property="packetLossBurstsDuration"    column="packet_loss_bursts_duration"    />
+        <result property="packetLossBurstsDensity"    column="packet_loss_bursts_density"    />
+        <result property="packetGapDuration"    column="packet_gap_duration"    />
+        <result property="packetGapDensity"    column="packet_gap_density"    />
+        <association property="busiTerminal">
+            <result property="name"    column="name"    />
+            <result property="type"    column="device_type"    />
+            <result property="vendor"    column="vendor"    />
+        </association>
+        <association property="busiHistoryParticipant">
+            <result property="deptId"    column="dept_id"    />
+        </association>
+    </resultMap>
+    <select id="selectMediaInfo" resultMap="mediaInfoMap">
+        select m.cdr_id,m.id,t.name,t.type device_type,t.vendor,p.dept_id,m.type,m.packet_loss_bursts_density,m.packet_loss_bursts_duration,m.packet_gap_density,m.packet_gap_duration
+        from busi_history_participant p,cdr_call_leg_end_media_info m,busi_terminal t
+        <where>
+            p.call_leg_id = m.id
+            <if test="deptId != null"> and p.dept_id = #{deptId}</if>
+            <if test="joinTime != null"> and p.join_time = #{joinTime}</if>
+            <if test="outgoingTime != null"> and p.outgoing_time = #{outgoingTime}</if>
+        </where>
+    </select>
+
+    <delete id="deleteHistory">
+        delete from cdr_call_leg_end_media_info where create_time &lt; #{beforeDate}
+    </delete>
+
+</mapper>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiClientResourceMapper">
+    
+    <resultMap type="BusiClientResource" id="BusiClientResourceResult">
+        <result property="id"    column="id"    />
+        <result property="sn"    column="sn"    />
+        <result property="freeMinutes"    column="free_minutes"    />
+        <result property="conferenceNumber"    column="conference_number"    />
+        <result property="purchaseDuration"    column="purchase_duration"    />
+        <result property="purchaseQuantity"    column="purchase_quantity"    />
+        <result property="usingNumber"    column="using_number"    />
+        <result property="userId"    column="user_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="purchaseType"    column="purchase_type"    />
+        <result property="enableType"    column="enable_type"    />
+        <result property="usedTime"    column="used_time"    />
+        <result property="mcuType"    column="mcu_type"    />
+    </resultMap>
+
+    <sql id="selectBusiClientResourceVo">
+        select id, sn, free_minutes, conference_number, purchase_duration, purchase_quantity, using_number, user_id, create_time, update_time, purchase_type, enable_type,used_time,mcu_type from busi_client_resource
+    </sql>
+
+    <select id="selectBusiClientResourceList" parameterType="BusiClientResource" resultMap="BusiClientResourceResult">
+        <include refid="selectBusiClientResourceVo"/>
+        <where>  
+            <if test="sn != null  and sn != ''"> and sn = #{sn}</if>
+            <if test="freeMinutes != null "> and free_minutes = #{freeMinutes}</if>
+            <if test="conferenceNumber != null "> and conference_number = #{conferenceNumber}</if>
+            <if test="purchaseDuration != null "> and purchase_duration = #{purchaseDuration}</if>
+            <if test="purchaseQuantity != null "> and purchase_quantity = #{purchaseQuantity}</if>
+            <if test="usingNumber != null "> and using_number = #{usingNumber}</if>
+            <if test="userId != null  and userId != ''"> and user_id = #{userId}</if>
+            <if test="purchaseType != null  and purchaseType != ''"> and purchase_type = #{purchaseType}</if>
+            <if test="enableType != null  and enableType != ''"> and enable_type = #{enableType}</if>
+            <if test="usedTime != null "> and used_time = #{usedTime}</if>
+            <if test="mcuType != null "> and mcu_type = #{mcuType}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiClientResourceById" parameterType="Long" resultMap="BusiClientResourceResult">
+        <include refid="selectBusiClientResourceVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiClientResource" parameterType="BusiClientResource" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_client_resource
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="sn != null">sn,</if>
+            <if test="freeMinutes != null">free_minutes,</if>
+            <if test="conferenceNumber != null">conference_number,</if>
+            <if test="purchaseDuration != null">purchase_duration,</if>
+            <if test="purchaseQuantity != null">purchase_quantity,</if>
+            <if test="usingNumber != null">using_number,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="purchaseType != null">purchase_type,</if>
+            <if test="enableType != null">enable_type,</if>
+            <if test="usedTime != null">used_time,</if>
+            <if test="mcuType != null">mcu_type,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="sn != null">#{sn},</if>
+            <if test="freeMinutes != null">#{freeMinutes},</if>
+            <if test="conferenceNumber != null">#{conferenceNumber},</if>
+            <if test="purchaseDuration != null">#{purchaseDuration},</if>
+            <if test="purchaseQuantity != null">#{purchaseQuantity},</if>
+            <if test="usingNumber != null">#{usingNumber},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="purchaseType != null">#{purchaseType},</if>
+            <if test="enableType != null">#{enableType},</if>
+            <if test="usedTime != null">#{usedTime},</if>
+            <if test="mcuType != null">#{mcuType},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiClientResource" parameterType="BusiClientResource">
+        update busi_client_resource
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="sn != null">sn = #{sn},</if>
+            <if test="freeMinutes != null">free_minutes = #{freeMinutes},</if>
+            <if test="conferenceNumber != null">conference_number = #{conferenceNumber},</if>
+            <if test="purchaseDuration != null">purchase_duration = #{purchaseDuration},</if>
+            <if test="purchaseQuantity != null">purchase_quantity = #{purchaseQuantity},</if>
+            <if test="usingNumber != null">using_number = #{usingNumber},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="purchaseType != null">purchase_type = #{purchaseType},</if>
+            <if test="enableType != null">enable_type = #{enableType},</if>
+            <if test="usedTime != null">used_time = #{usedTime},</if>
+            <if test="mcuType != null">mcu_type = #{mcuType},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiClientResourceById" parameterType="Long">
+        delete from busi_client_resource where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiClientResourceByIds" parameterType="String">
+        delete from busi_client_resource where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiSipAccountAutoMapper">
+    
+    <resultMap type="BusiSipAccountAuto" id="BusiSipAccountAutoResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectBusiSipAccountAutoVo">
+        select id, create_time from busi_sip_account_auto
+    </sql>
+
+    <select id="selectBusiSipAccountAutoList" parameterType="BusiSipAccountAuto" resultMap="BusiSipAccountAutoResult">
+        <include refid="selectBusiSipAccountAutoVo"/>
+        <where>  
+        </where>
+    </select>
+    
+    <select id="selectBusiSipAccountAutoById" parameterType="Integer" resultMap="BusiSipAccountAutoResult">
+        <include refid="selectBusiSipAccountAutoVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiSipAccountAuto" parameterType="BusiSipAccountAuto" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_sip_account_auto
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiSipAccountAuto" parameterType="BusiSipAccountAuto">
+        update busi_sip_account_auto
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiSipAccountAutoById" parameterType="Integer">
+        delete from busi_sip_account_auto where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiSipAccountAutoByIds" parameterType="String">
+        delete from busi_sip_account_auto where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <delete id="deleteBusiSipAccountAutoOfOld">
+        delete from busi_sip_account_auto
+        where create_time <![CDATA[<]]> #{dateTime}
+    </delete>
+</mapper>

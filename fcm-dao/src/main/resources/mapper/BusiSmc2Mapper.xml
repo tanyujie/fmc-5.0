@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiSmc2Mapper">
+    
+    <resultMap type="com.paradisecloud.fcm.dao.model.BusiSmc2" id="BusiSmc2Result">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="username"    column="username"    />
+        <result property="password"    column="password"    />
+        <result property="meetingUsername"    column="meeting_username"    />
+        <result property="meetingPassword"    column="meeting_password"    />
+        <result property="name"    column="name"    />
+        <result property="ip"    column="ip"    />
+        <result property="scIp"    column="sc_ip"    />
+        <result property="status"    column="status"    />
+        <result property="capacity"    column="capacity"    />
+        <result property="spareSmcId"    column="spare_smc_id"    />
+    </resultMap>
+
+    <sql id="selectBusiSmc2Vo">
+        select id, create_time, update_time, username, password, meeting_username, meeting_password, name, ip, sc_ip, status, capacity, spare_smc_id from busi_smc2
+    </sql>
+
+    <select id="selectBusiSmc2List" parameterType="com.paradisecloud.fcm.dao.model.BusiSmc2" resultMap="BusiSmc2Result">
+        <include refid="selectBusiSmc2Vo"/>
+        <where>  
+            <if test="username != null  and username != ''"> and username like concat('%', #{username}, '%')</if>
+            <if test="password != null  and password != ''"> and password = #{password}</if>
+            <if test="meetingUsername != null  and meetingUsername != ''"> and meeting_username like concat('%', #{meetingUsername}, '%')</if>
+            <if test="meetingPassword != null  and meetingPassword != ''"> and meeting_password = #{meetingPassword}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="ip != null  and ip != ''"> and ip = #{ip}</if>
+            <if test="scIp != null  and scIp != ''"> and sc_ip = #{scIp}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="capacity != null "> and capacity = #{capacity}</if>
+            <if test="spareSmcId != null "> and spare_smc_id = #{spareSmcId}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiSmc2ById" parameterType="Long" resultMap="BusiSmc2Result">
+        <include refid="selectBusiSmc2Vo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiSmc2" parameterType="com.paradisecloud.fcm.dao.model.BusiSmc2" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_smc2
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="username != null">username,</if>
+            <if test="password != null">password,</if>
+            <if test="meetingUsername != null">meeting_username,</if>
+            <if test="meetingPassword != null">meeting_password,</if>
+            <if test="name != null">name,</if>
+            <if test="ip != null and ip != ''">ip,</if>
+            <if test="scIp != null">sc_ip,</if>
+            <if test="status != null">status,</if>
+            <if test="capacity != null">capacity,</if>
+            <if test="spareSmcId != null">spare_smc_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="username != null">#{username},</if>
+            <if test="password != null">#{password},</if>
+            <if test="meetingUsername != null">#{meetingUsername},</if>
+            <if test="meetingPassword != null">#{meetingPassword},</if>
+            <if test="name != null">#{name},</if>
+            <if test="ip != null and ip != ''">#{ip},</if>
+            <if test="scIp != null">#{scIp},</if>
+            <if test="status != null">#{status},</if>
+            <if test="capacity != null">#{capacity},</if>
+            <if test="spareSmcId != null">#{spareSmcId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiSmc2" parameterType="com.paradisecloud.fcm.dao.model.BusiSmc2">
+        update busi_smc2
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="username != null">username = #{username},</if>
+            <if test="password != null">password = #{password},</if>
+            <if test="meetingUsername != null">meeting_username = #{meetingUsername},</if>
+            <if test="meetingPassword != null">meeting_password = #{meetingPassword},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="ip != null and ip != ''">ip = #{ip},</if>
+            <if test="scIp != null">sc_ip = #{scIp},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="capacity != null">capacity = #{capacity},</if>
+            <if test="spareSmcId != null">spare_smc_id = #{spareSmcId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiSmc2ById" parameterType="Long">
+        delete from busi_smc2 where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiSmc2ByIds" parameterType="String">
+        delete from busi_smc2 where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

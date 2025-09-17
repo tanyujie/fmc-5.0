@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiSmc2DeptMapper">
+    
+    <resultMap type="com.paradisecloud.fcm.dao.model.BusiSmc2Dept" id="BusiSmc2DeptResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="smcType"    column="smc_type"    />
+        <result property="smcId"    column="smc_id"    />
+    </resultMap>
+
+    <sql id="selectBusiSmc2DeptVo">
+        select id, create_time, update_time, dept_id, smc_type, smc_id from busi_smc2_dept
+    </sql>
+
+    <select id="selectBusiSmc2DeptList" parameterType="com.paradisecloud.fcm.dao.model.BusiSmc2Dept" resultMap="BusiSmc2DeptResult">
+        <include refid="selectBusiSmc2DeptVo"/>
+        <where>  
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="smcType != null "> and smc_type = #{smcType}</if>
+            <if test="smcId != null "> and smc_id = #{smcId}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiSmc2DeptById" parameterType="Long" resultMap="BusiSmc2DeptResult">
+        <include refid="selectBusiSmc2DeptVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiSmc2Dept" parameterType="BusiSmc2Dept" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_smc2_dept
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="smcType != null">smc_type,</if>
+            <if test="smcId != null">smc_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="smcType != null">#{smcType},</if>
+            <if test="smcId != null">#{smcId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiSmc2Dept" parameterType="com.paradisecloud.fcm.dao.model.BusiSmc2Dept">
+        update busi_smc2_dept
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="smcType != null">smc_type = #{smcType},</if>
+            <if test="smcId != null">smc_id = #{smcId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiSmc2DeptById" parameterType="Long">
+        delete from busi_smc2_dept where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiSmc2DeptByIds" parameterType="String">
+        delete from busi_smc2_dept where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

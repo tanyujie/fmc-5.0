@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.CdrRecordingMapper">
+    
+    <resultMap type="CdrRecording" id="CdrRecordingResult">
+        <result property="cdrId"    column="cdr_id"    />
+        <result property="id"    column="id"    />
+        <result property="session"    column="session"    />
+        <result property="callBridge"    column="call_bridge"    />
+        <result property="recordIndex"    column="record_index"    />
+        <result property="correlatorIndex"    column="correlator_index"    />
+        <result property="path"    column="path"    />
+        <result property="recorderUri"    column="recorder_uri"    />
+        <result property="callId"    column="call_id"    />
+        <result property="callLeg"    column="call_leg"    />
+        <result property="time"    column="time"    />
+        <result property="recordType"    column="record_type"    />
+        <result property="fileSize"    column="file_size"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="createUserId"    column="create_user_id"    />
+        <result property="createUserName"    column="create_user_name"    />
+    </resultMap>
+
+    <sql id="selectCdrRecordingVo">
+        select cdr_id, id, session, call_bridge, record_index, correlator_index, path, recorder_uri, call_id, call_leg, time, record_type,file_size from cdr_recording
+    </sql>
+
+    <select id="selectCdrRecordingList" parameterType="CdrRecording" resultMap="CdrRecordingResult">
+        <include refid="selectCdrRecordingVo"/>
+        <where>
+            <if test="cdrId != null  and cdrId != ''"> and cdr_id = #{cdrId}</if>
+            <if test="session != null  and session != ''"> and session = #{session}</if>
+            <if test="callBridge != null  and callBridge != ''"> and call_bridge = #{callBridge}</if>
+            <if test="recordIndex != null "> and record_index = #{recordIndex}</if>
+            <if test="correlatorIndex != null "> and correlator_index = #{correlatorIndex}</if>
+            <if test="path != null  and path != ''"> and path = #{path}</if>
+            <if test="recorderUri != null  and recorderUri != ''"> and recorder_uri = #{recorderUri}</if>
+            <if test="callId != null  and callId != ''"> and call_id = #{callId}</if>
+            <if test="callLeg != null  and callLeg != ''"> and call_leg = #{callLeg}</if>
+            <if test="time != null "> and time = #{time}</if>
+            <if test="recordType != null "> and record_type = #{recordType}</if>
+            <if test="fileSize != null "> and file_size = #{fileSize}</if>
+        </where>
+    </select>
+    
+    <select id="selectCdrRecordingById" parameterType="Integer" resultMap="CdrRecordingResult">
+        <include refid="selectCdrRecordingVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertCdrRecording" parameterType="CdrRecording">
+        insert into cdr_recording
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="cdrId != null">cdr_id,</if>
+            <if test="id != null">id,</if>
+            <if test="session != null">session,</if>
+            <if test="callBridge != null">call_bridge,</if>
+            <if test="recordIndex != null">record_index,</if>
+            <if test="correlatorIndex != null">correlator_index,</if>
+            <if test="path != null">path,</if>
+            <if test="recorderUri != null">recorder_uri,</if>
+            <if test="callId != null">call_id,</if>
+            <if test="callLeg != null">call_leg,</if>
+            <if test="time != null">time,</if>
+            <if test="recordType != null">record_type,</if>
+            <if test="fileSize != null">file_size,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="createUserId != null">create_user_id,</if>
+            <if test="createUserName != null">create_user_name,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="cdrId != null">#{cdrId},</if>
+            <if test="id != null">#{id},</if>
+            <if test="session != null">#{session},</if>
+            <if test="callBridge != null">#{callBridge},</if>
+            <if test="recordIndex != null">#{recordIndex},</if>
+            <if test="correlatorIndex != null">#{correlatorIndex},</if>
+            <if test="path != null">#{path},</if>
+            <if test="recorderUri != null">#{recorderUri},</if>
+            <if test="callId != null">#{callId},</if>
+            <if test="callLeg != null">#{callLeg},</if>
+            <if test="time != null">#{time},</if>
+            <if test="recordType != null">#{recordType},</if>
+            <if test="fileSize != null">#{fileSize},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="createUserId != null">#{createUserId},</if>
+            <if test="createUserName != null">#{createUserName},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCdrRecording" parameterType="CdrRecording">
+        update cdr_recording
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="cdrId != null">cdr_id = #{cdrId},</if>
+            <if test="session != null">session = #{session},</if>
+            <if test="callBridge != null">call_bridge = #{callBridge},</if>
+            <if test="recordIndex != null">record_index = #{recordIndex},</if>
+            <if test="correlatorIndex != null">correlator_index = #{correlatorIndex},</if>
+            <if test="path != null">path = #{path},</if>
+            <if test="recorderUri != null">recorder_uri = #{recorderUri},</if>
+            <if test="callId != null">call_id = #{callId},</if>
+            <if test="callLeg != null">call_leg = #{callLeg},</if>
+            <if test="time != null">time = #{time},</if>
+            <if test="recordType != null">record_type = #{recordType},</if>
+            <if test="fileSize != null">file_size = #{fileSize},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="createUserId != null">create_user_id = #{createUserId},</if>
+            <if test="createUserName != null">create_user_name = #{createUserName},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCdrRecordingById" parameterType="Integer">
+        delete from cdr_recording where id = #{id}
+    </delete>
+
+    <delete id="deleteCdrRecordingByIds" parameterType="String">
+        delete from cdr_recording where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <delete id="deleteByPath">
+        delete from cdr_recording where path like concat('%', #{path}, '%')
+    </delete>
+
+    <select id="selectCdrRecordingListDesc" parameterType="CdrRecording" resultMap="CdrRecordingResult">
+        <include refid="selectCdrRecordingVo"/>
+        <where>
+            <if test="cdrId != null  and cdrId != ''"> and cdr_id = #{cdrId}</if>
+            <if test="session != null  and session != ''"> and session = #{session}</if>
+            <if test="callBridge != null  and callBridge != ''"> and call_bridge = #{callBridge}</if>
+            <if test="recordIndex != null "> and record_index = #{recordIndex}</if>
+            <if test="correlatorIndex != null "> and correlator_index = #{correlatorIndex}</if>
+            <if test="path != null  and path != ''"> and path = #{path}</if>
+            <if test="recorderUri != null  and recorderUri != ''"> and recorder_uri = #{recorderUri}</if>
+            <if test="callId != null  and callId != ''"> and call_id = #{callId}</if>
+            <if test="callLeg != null  and callLeg != ''"> and call_leg = #{callLeg}</if>
+            <if test="time != null "> and time = #{time}</if>
+            <if test="recordType != null "> and record_type = #{recordType}</if>
+            <if test="fileSize != null "> and file_size = #{fileSize}</if>
+        </where>
+        ORDER BY create_time DESC
+    </select>
+</mapper>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiCallLegProfileMapper">
+    
+    <resultMap type="BusiCallLegProfile" id="BusiCallLegProfileResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="callLegProfileUuid"    column="call_leg_profile_uuid"    />
+        <result property="type"    column="type"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="fmeId"    column="fme_id"    />
+    </resultMap>
+
+    <sql id="selectBusiCallLegProfileVo">
+        select id, create_time, update_time, call_leg_profile_uuid, type, dept_id, fme_id from busi_call_leg_profile
+    </sql>
+    
+    <resultMap type="DeptRecordCount" id="DeptRecordCountMap">
+        <result property="deptId"    column="dept_id"    />
+        <result property="count"    column="ct"    />
+    </resultMap>
+    
+    <select id="getDeptRecordCounts" resultMap="DeptRecordCountMap">
+        SELECT
+        	a.dept_id,
+        	count(*) ct 
+        FROM
+        	busi_call_leg_profile a
+        GROUP BY
+        	a.dept_id 
+        ORDER BY
+        	a.dept_id ASC
+    </select>
+
+    <select id="selectBusiCallLegProfileList" parameterType="BusiCallLegProfile" resultMap="BusiCallLegProfileResult">
+        <include refid="selectBusiCallLegProfileVo"/>
+        <where>  
+            <if test="callLegProfileUuid != null  and callLegProfileUuid != ''"> and call_leg_profile_uuid = #{callLegProfileUuid}</if>
+            <if test="type != null "> and type = #{type}</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="fmeId != null "> and fme_id = #{fmeId}</if>
+        </where>
+    </select>
+    
+    <select id="selectBusiCallLegProfileById" parameterType="Long" resultMap="BusiCallLegProfileResult">
+        <include refid="selectBusiCallLegProfileVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBusiCallLegProfile" parameterType="BusiCallLegProfile" useGeneratedKeys="true" keyProperty="id">
+        insert into busi_call_leg_profile
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="callLegProfileUuid != null">call_leg_profile_uuid,</if>
+            <if test="type != null">type,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="fmeId != null">fme_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="callLegProfileUuid != null">#{callLegProfileUuid},</if>
+            <if test="type != null">#{type},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="fmeId != null">#{fmeId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBusiCallLegProfile" parameterType="BusiCallLegProfile">
+        update busi_call_leg_profile
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="callLegProfileUuid != null">call_leg_profile_uuid = #{callLegProfileUuid},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="fmeId != null">fme_id = #{fmeId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiCallLegProfileById" parameterType="Long">
+        delete from busi_call_leg_profile where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiCallLegProfileByIds" parameterType="String">
+        delete from busi_call_leg_profile where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
