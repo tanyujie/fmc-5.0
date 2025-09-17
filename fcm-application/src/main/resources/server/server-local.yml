@@ -53,3 +53,6 @@ server:
     
     # 是否分配的直接内存(NIO直接分配的堆外内存)
     direct-buffers: true
+sm4:
+  key: "1234567890abcdef"  # 16字节密钥（实际项目中使用更复杂的密钥）
+  iv: "fedcba0987654321"   # 16字节偏移量

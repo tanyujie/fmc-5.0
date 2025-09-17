@@ -1,4 +1,4 @@
 package com.paradisecloud.im.service;
 
-public class IBusiConferenceUserService {
+public interface IBusiConferenceUserService {
 }

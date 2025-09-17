@@ -127,9 +127,9 @@ public class MobileUserController extends BaseController {
         // 用户验证
         LoginUser loginUser = mobileUserTokenService.getLoginUser(username, password);
         SipAccountInfo userSipAccountInfo = getSipAccountInfo(loginUser.getUser().getUserId(), isExternalRequest);
-        if (Objects.isNull(userSipAccountInfo)) {
+/*        if (Objects.isNull(userSipAccountInfo)) {
             throw new CustomException("登录失败,账户未绑定终端");
-        }
+        }*/
         // 生成token
         String token = mobileUserTokenService.createToken(loginUser);
         Map<String, Object> data = new HashMap<>(2);

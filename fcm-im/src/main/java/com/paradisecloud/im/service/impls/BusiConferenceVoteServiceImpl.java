@@ -1,9 +1,11 @@
 package com.paradisecloud.im.service.impls;
 
+import com.paradisecloud.fcm.mcu.kdc.service.interfaces.IAttendeeForMcuKdcService;
+import com.paradisecloud.im.service.IBusiConferenceVoteService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 @Service
-public class BusiConferenceVoteServiceImpl {
+public class BusiConferenceVoteServiceImpl implements IBusiConferenceVoteService {
 }

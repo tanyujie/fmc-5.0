@@ -110,7 +110,15 @@
             <artifactId>itext-asian</artifactId>
             <version>5.2.0</version>
         </dependency>
-
-
+        <dependency>
+            <groupId>com.paradisecloud</groupId>
+            <artifactId>fcm-im</artifactId>
+            <version>2.0-RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk15on</artifactId>
+            <version>1.70</version>
+        </dependency>
     </dependencies>
 </project>

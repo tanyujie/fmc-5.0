@@ -19,7 +19,7 @@ public class WebSecurityConfig {
                 "/mobile/server/getServerInfo","/mobileWeb/signIn","/mobileWeb/signIn/list","/mobile/user/loginAuto","/mobile/room/**","/mobile/roomBook/**",
                 "/busi/meetingFile/callback","/mobileWeb/captchaImage","/mobileWeb/user/**","/busi/srs/v1/streams","/ops/mcuStatus","/user/loginNoCode",
                 "/test/server/**","/ops/firstInit","/ops/initCheck", "/busi/history/downHistoryExcel/**", "/busi/mcu/all/conference/getSimpleConferenceInfo",
-                "/busi/recording/download/**", "/test/server/**");
+                "/busi/recording/download/**", "/test/server/**","/im/**");
     }
 
 
