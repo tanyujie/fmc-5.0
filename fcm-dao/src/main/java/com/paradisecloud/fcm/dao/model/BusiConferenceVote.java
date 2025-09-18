@@ -36,6 +36,8 @@ public class BusiConferenceVote extends BaseEntity
     @Excel(name = "投票主题")
     private String title;
 
+    private long voteCreateTime;
+
     /** 补充描述 */
     @Schema(description = "补充描述")
     @Excel(name = "补充描述")
@@ -44,12 +46,12 @@ public class BusiConferenceVote extends BaseEntity
     /** 投票状态（0：未开始，1：进行中，2：已结束） */
     @Schema(description = "投票状态（0：未开始，1：进行中，2：已结束）")
     @Excel(name = "投票状态", readConverterExp = "0=：未开始，1：进行中，2：已结束")
-    private Long status;
+    private int status;
 
     /** 是否匿名（0：否，1：是） */
     @Schema(description = "是否匿名（0：否，1：是）")
     @Excel(name = "是否匿名", readConverterExp = "0=：否，1：是")
-    private Long isAnonymous;
+    private int isAnonymous;
 
     /** 创建人ID（外键，关联用户表） */
     @Schema(description = "创建人ID（外键，关联用户表）")
@@ -101,21 +103,21 @@ public class BusiConferenceVote extends BaseEntity
     {
         return description;
     }
-    public void setStatus(Long status)
+    public void setStatus(int status)
     {
         this.status = status;
     }
 
-    public Long getStatus()
+    public int getStatus()
     {
         return status;
     }
-    public void setIsAnonymous(Long isAnonymous)
+    public void setIsAnonymous(int isAnonymous)
     {
         this.isAnonymous = isAnonymous;
     }
 
-    public Long getIsAnonymous()
+    public int getIsAnonymous()
     {
         return isAnonymous;
     }
@@ -127,6 +129,14 @@ public class BusiConferenceVote extends BaseEntity
     public Long getCreatorId()
     {
         return creatorId;
+    }
+
+    public long getVoteCreateTime() {
+        return voteCreateTime;
+    }
+
+    public void setVoteCreateTime(long voteCreateTime) {
+        this.voteCreateTime = voteCreateTime;
     }
 
     @Override

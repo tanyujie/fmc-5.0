@@ -58,7 +58,7 @@ public class BusiConferenceVoteController extends BaseController {
 
             boolean result = voteService.save(voteVO);
             if (result) {
-                return RestResponse.success(true, "会议投票添加成功");
+                return RestResponse.success("会议投票添加成功");
             }
             return RestResponse.fail("会议投票添加失败");
         } catch (Exception e) {
@@ -81,13 +81,13 @@ public class BusiConferenceVoteController extends BaseController {
                     @ApiResponse(responseCode = "500", description = "服务器内部错误")
             })
     @PostMapping("/delete")
-    public RestResponse<Boolean> deleteVote(
+    public RestResponse deleteVote(
             @Parameter(description = "包含voteId的参数", required = true)
             @RequestBody Map<String, String> params) {
         String voteId = params.get("voteId");
         log.info("删除会议投票, ID: {}", voteId);
 
-        try {
+/*        try {
             if (voteId == null || voteId.trim().isEmpty()) {
                 return RestResponse.fail("投票ID不能为空");
             }
@@ -100,7 +100,8 @@ public class BusiConferenceVoteController extends BaseController {
         } catch (Exception e) {
             log.error("删除会议投票异常, ID: {}", voteId, e);
             return RestResponse.fail("删除会议投票失败: " + e.getMessage());
-        }
+        }*/
+        return RestResponse.success();
     }
 
     /**
@@ -117,10 +118,10 @@ public class BusiConferenceVoteController extends BaseController {
                     @ApiResponse(responseCode = "500", description = "服务器内部错误")
             })
     @PostMapping("/update")
-    public RestResponse<Boolean> updateVote(
+    public RestResponse updateVote(
             @Valid @RequestBody BusiConferenceVoteVO voteVO) {
         log.info("修改会议投票: {}", voteVO);
-        try {
+/*        try {
             if (voteVO.getId() == null) {
                 return RestResponse.fail("投票ID不能为空");
             }
@@ -133,7 +134,8 @@ public class BusiConferenceVoteController extends BaseController {
         } catch (Exception e) {
             log.error("修改会议投票异常", e);
             return RestResponse.fail("修改会议投票失败: " + e.getMessage());
-        }
+        }*/
+        return RestResponse.success();
     }
 
     /**
@@ -155,7 +157,7 @@ public class BusiConferenceVoteController extends BaseController {
             @RequestBody Map<String, String> params) {
         String voteId = params.get("voteId");
         log.info("查询会议投票详情, ID: {}", voteId);
-
+/*
         try {
             if (voteId == null || voteId.trim().isEmpty()) {
                 return RestResponse.fail("投票ID不能为空");
@@ -169,7 +171,8 @@ public class BusiConferenceVoteController extends BaseController {
         } catch (Exception e) {
             log.error("查询会议投票详情异常, ID: {}", voteId, e);
             return RestResponse.fail("查询会议投票详情失败: " + e.getMessage());
-        }
+        }*/
+        return RestResponse.success();
     }
 
     /**
@@ -191,7 +194,7 @@ public class BusiConferenceVoteController extends BaseController {
             @RequestBody Map<String, Long> params) {
         Long conferenceId = params.get("conferenceId");
         log.info("查询会议投票列表, 会议ID: {}", conferenceId);
-
+/*
         try {
             if (conferenceId == null) {
                 return RestResponse.fail("会议ID不能为空");
@@ -204,7 +207,8 @@ public class BusiConferenceVoteController extends BaseController {
         } catch (Exception e) {
             log.error("查询会议投票列表异常, 会议ID: {}", conferenceId, e);
             return RestResponse.fail("查询会议投票列表失败: " + e.getMessage());
-        }
+        }*/
+        return RestResponse.success();
     }
 
 }

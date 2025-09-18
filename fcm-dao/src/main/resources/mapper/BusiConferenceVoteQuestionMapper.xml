@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiConferenceVoteQuestionMapper">
+
+    <resultMap type="BusiConferenceVoteQuestion" id="BusiConferenceVoteQuestionResult">
+        <result property="questionId"    column="question_id"    />
+        <result property="voteId"    column="vote_id"    />
+        <result property="content"    column="content"    />
+        <result property="type"    column="type"    />
+        <result property="sortOrder"    column="sort_order"    />
+    </resultMap>
+
+    <sql id="selectBusiConferenceVoteQuestionVo">
+        select question_id, vote_id, content, type, sort_order from busi_conference_vote_question
+    </sql>
+
+    <select id="selectBusiConferenceVoteQuestionList" parameterType="BusiConferenceVoteQuestion" resultMap="BusiConferenceVoteQuestionResult">
+        <include refid="selectBusiConferenceVoteQuestionVo"/>
+        <where>
+            <if test="voteId != null "> and vote_id = #{voteId}</if>
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="type != null "> and type = #{type}</if>
+            <if test="sortOrder != null "> and sort_order = #{sortOrder}</if>
+        </where>
+    </select>
+
+    <select id="selectBusiConferenceVoteQuestionById" parameterType="Long" resultMap="BusiConferenceVoteQuestionResult">
+        <include refid="selectBusiConferenceVoteQuestionVo"/>
+        where question_id = #{questionId}
+    </select>
+
+    <insert id="insertBusiConferenceVoteQuestion" parameterType="BusiConferenceVoteQuestion" useGeneratedKeys="true" keyProperty="questionId">
+        insert into busi_conference_vote_question
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="voteId != null">vote_id,</if>
+            <if test="content != null and content != ''">content,</if>
+            <if test="type != null">type,</if>
+            <if test="sortOrder != null">sort_order,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="voteId != null">#{voteId},</if>
+            <if test="content != null and content != ''">#{content},</if>
+            <if test="type != null">#{type},</if>
+            <if test="sortOrder != null">#{sortOrder},</if>
+        </trim>
+    </insert>
+
+    <update id="updateBusiConferenceVoteQuestion" parameterType="BusiConferenceVoteQuestion">
+        update busi_conference_vote_question
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="voteId != null">vote_id = #{voteId},</if>
+            <if test="content != null and content != ''">content = #{content},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="sortOrder != null">sort_order = #{sortOrder},</if>
+        </trim>
+        where question_id = #{questionId}
+    </update>
+
+    <delete id="deleteBusiConferenceVoteQuestionById" parameterType="Long">
+        delete from busi_conference_vote_question where question_id = #{questionId}
+    </delete>
+
+    <delete id="deleteBusiConferenceVoteQuestionByIds" parameterType="String">
+        delete from busi_conference_vote_question where question_id in
+        <foreach item="questionId" collection="array" open="(" separator="," close=")">
+            #{questionId}
+        </foreach>
+    </delete>
+</mapper>
