@@ -4,6 +4,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
+import javax.validation.constraints.*;
+
 @Schema(description = "会议模板的签到主表")
 public class BusiConferenceSignIn extends BaseEntity {
     private static final long serialVersionUID = 1L;
@@ -18,7 +20,7 @@ public class BusiConferenceSignIn extends BaseEntity {
 
     /** 会议id */
     @Schema(description = "会议id")
-    private String templateConferenceId;
+    private long templateConferenceId;
 
     /** 发起者ID */
     @Schema(description = "发起者ID")
@@ -26,10 +28,14 @@ public class BusiConferenceSignIn extends BaseEntity {
 
     /** 发起时间 */
     @Schema(description = "发起时间")
+    @NotNull(message = "startTime 不能为空") // 数值非空
+    @Future(message = "startTime 必须为未来的时间（不允许过去或当前时间）") // 调整为必须是未来时间
     private Long startTime;
 
     /** 签到时长（单位：秒） */
     @Schema(description = "签到时长（单位：秒）")
+/*    @Min(value = 30, message = "签到时长不能小于 30 秒") // 最小值校验
+    @Max(value = 180, message = "签到时长不能大于 180 秒") // 最大值校验*/
     private Integer duration;
 
     /** 签到说明 */
@@ -56,11 +62,11 @@ public class BusiConferenceSignIn extends BaseEntity {
         return mcuType;
     }
 
-    public void setTemplateConferenceId(String templateConferenceId) {
+    public void setTemplateConferenceId(long templateConferenceId) {
         this.templateConferenceId = templateConferenceId;
     }
 
-    public String getTemplateConferenceId() {
+    public long getTemplateConferenceId() {
         return templateConferenceId;
     }
 

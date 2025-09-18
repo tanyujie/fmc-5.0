@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiConferenceUserSignInMapper">
+
+    <resultMap type="BusiConferenceUserSignIn" id="BusiConferenceUserSignInResult">
+        <result property="id"    column="id"    />
+        <result property="signInId"    column="sign_in_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="userNickname"    column="user_nickname"    />
+        <result property="signInTime"    column="sign_in_time"    />
+        <result property="signStatus"    column="sign_status"    />
+    </resultMap>
+
+    <sql id="selectBusiConferenceUserSignInVo">
+        select id, sign_in_id, user_id, user_nickname, sign_in_time, sign_status from busi_conference_user_sign_in
+    </sql>
+
+    <select id="selectBusiConferenceUserSignInList" parameterType="BusiConferenceUserSignIn" resultMap="BusiConferenceUserSignInResult">
+        <include refid="selectBusiConferenceUserSignInVo"/>
+        <where>
+            <if test="signInId != null "> and sign_in_id = #{signInId}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="userNickname != null  and userNickname != ''"> and user_nickname like concat('%', #{userNickname}, '%')</if>
+            <if test="signInTime != null "> and sign_in_time = #{signInTime}</if>
+            <if test="signStatus != null "> and sign_status = #{signStatus}</if>
+        </where>
+    </select>
+
+    <select id="selectBusiConferenceUserSignInById" parameterType="Long" resultMap="BusiConferenceUserSignInResult">
+        <include refid="selectBusiConferenceUserSignInVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertBusiConferenceUserSignIn" parameterType="BusiConferenceUserSignIn">
+        insert into busi_conference_user_sign_in
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="signInId != null">sign_in_id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="userNickname != null">user_nickname,</if>
+            <if test="signInTime != null">sign_in_time,</if>
+            <if test="signStatus != null">sign_status,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="signInId != null">#{signInId},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="userNickname != null">#{userNickname},</if>
+            <if test="signInTime != null">#{signInTime},</if>
+            <if test="signStatus != null">#{signStatus},</if>
+        </trim>
+    </insert>
+
+    <update id="updateBusiConferenceUserSignIn" parameterType="BusiConferenceUserSignIn">
+        update busi_conference_user_sign_in
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="signInId != null">sign_in_id = #{signInId},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="userNickname != null">user_nickname = #{userNickname},</if>
+            <if test="signInTime != null">sign_in_time = #{signInTime},</if>
+            <if test="signStatus != null">sign_status = #{signStatus},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusiConferenceUserSignInById" parameterType="Long">
+        delete from busi_conference_user_sign_in where id = #{id}
+    </delete>
+
+    <delete id="deleteBusiConferenceUserSignInByIds" parameterType="String">
+        delete from busi_conference_user_sign_in where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

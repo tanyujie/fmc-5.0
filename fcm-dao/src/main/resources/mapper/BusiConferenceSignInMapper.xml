@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiConferenceSignInMapper">
+
+    <resultMap type="BusiConferenceSignIn" id="BusiConferenceSignInResult">
+        <result property="signInId"    column="sign_in_id"    />
+        <result property="mcuType"    column="mcu_type"    />
+        <result property="templateConferenceId"    column="template_conference_id"    />
+        <result property="initiatorId"    column="initiator_id"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="duration"    column="duration"    />
+        <result property="description"    column="description"    />
+        <result property="status"    column="status"    />
+    </resultMap>
+
+    <sql id="selectBusiConferenceSignInVo">
+        select sign_in_id, mcu_type, template_conference_id, initiator_id, start_time, duration, description, status from busi_conference_sign_in
+    </sql>
+
+    <select id="selectBusiConferenceSignInList" parameterType="BusiConferenceSignIn" resultMap="BusiConferenceSignInResult">
+        <include refid="selectBusiConferenceSignInVo"/>
+        <where>
+            <if test="mcuType != null  and mcuType != ''"> and mcu_type = #{mcuType}</if>
+            <if test="templateConferenceId != null  and templateConferenceId != ''"> and template_conference_id = #{templateConferenceId}</if>
+            <if test="initiatorId != null "> and initiator_id = #{initiatorId}</if>
+            <if test="startTime != null "> and start_time = #{startTime}</if>
+            <if test="duration != null "> and duration = #{duration}</if>
+            <if test="description != null  and description != ''"> and description = #{description}</if>
+            <if test="status != null "> and status = #{status}</if>
+        </where>
+    </select>
+
+    <select id="selectBusiConferenceSignInById" parameterType="Long" resultMap="BusiConferenceSignInResult">
+        <include refid="selectBusiConferenceSignInVo"/>
+        where sign_in_id = #{signInId}
+    </select>
+
+    <insert id="insertBusiConferenceSignIn" parameterType="BusiConferenceSignIn" useGeneratedKeys="true" keyProperty="signInId">
+        insert into busi_conference_sign_in
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="mcuType != null">mcu_type,</if>
+            <if test="templateConferenceId != null">template_conference_id,</if>
+            <if test="initiatorId != null">initiator_id,</if>
+            <if test="startTime != null">start_time,</if>
+            <if test="duration != null">duration,</if>
+            <if test="description != null">description,</if>
+            <if test="status != null">status,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="mcuType != null">#{mcuType},</if>
+            <if test="templateConferenceId != null">#{templateConferenceId},</if>
+            <if test="initiatorId != null">#{initiatorId},</if>
+            <if test="startTime != null">#{startTime},</if>
+            <if test="duration != null">#{duration},</if>
+            <if test="description != null">#{description},</if>
+            <if test="status != null">#{status},</if>
+        </trim>
+    </insert>
+
+    <update id="updateBusiConferenceSignIn" parameterType="BusiConferenceSignIn">
+        update busi_conference_sign_in
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="mcuType != null">mcu_type = #{mcuType},</if>
+            <if test="templateConferenceId != null">template_conference_id = #{templateConferenceId},</if>
+            <if test="initiatorId != null">initiator_id = #{initiatorId},</if>
+            <if test="startTime != null">start_time = #{startTime},</if>
+            <if test="duration != null">duration = #{duration},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="status != null">status = #{status},</if>
+        </trim>
+        where sign_in_id = #{signInId}
+    </update>
+
+    <delete id="deleteBusiConferenceSignInById" parameterType="Long">
+        delete from busi_conference_sign_in where sign_in_id = #{signInId}
+    </delete>
+
+    <delete id="deleteBusiConferenceSignInByIds" parameterType="String">
+        delete from busi_conference_sign_in where sign_in_id in
+        <foreach item="signInId" collection="array" open="(" separator="," close=")">
+            #{signInId}
+        </foreach>
+    </delete>
+</mapper>
