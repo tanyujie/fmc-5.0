@@ -8,6 +8,8 @@ import java.util.List;
 
 @Data
 public class BusiConferenceVoteVO  extends BusiConferenceVote {
-    private String conferenceId;
+    private String confId;
+    //用户uuid，方便匿名登录
+    private String userUUID;
     private List<BusiConferenceVoteQuestionVO> questionList;
 }

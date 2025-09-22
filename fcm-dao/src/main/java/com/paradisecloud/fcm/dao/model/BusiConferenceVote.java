@@ -29,7 +29,7 @@ public class BusiConferenceVote extends BaseEntity
     /** 会议id */
     @Schema(description = "会议id")
     @Excel(name = "会议id")
-    private Long templateConferenceId;
+    private Long conferenceId;
 
     /** 投票主题 */
     @Schema(description = "投票主题")
@@ -76,14 +76,14 @@ public class BusiConferenceVote extends BaseEntity
     {
         return mcuType;
     }
-    public void setTemplateConferenceId(Long templateConferenceId)
+    public void setConferenceId(Long conferenceId)
     {
-        this.templateConferenceId = templateConferenceId;
+        this.conferenceId = conferenceId;
     }
 
-    public Long getTemplateConferenceId()
+    public Long getConferenceId()
     {
-        return templateConferenceId;
+        return conferenceId;
     }
     public void setTitle(String title)
     {
@@ -144,7 +144,7 @@ public class BusiConferenceVote extends BaseEntity
         return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
                 .append("voteId", getVoteId())
                 .append("mcuType", getMcuType())
-                .append("templateConferenceId", getTemplateConferenceId())
+                .append("templateConferenceId", getConferenceId())
                 .append("title", getTitle())
                 .append("description", getDescription())
                 .append("createTime", getCreateTime())

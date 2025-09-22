@@ -59,4 +59,11 @@ public interface BusiConferenceVoteOptionMapper
      * @return 结果
      */
     public int deleteBusiConferenceVoteOptionByIds(Long[] optionIds);
+    /**
+     * 根据问题ID查询选项列表
+     * @param questionId 问题ID
+     * @return 选项列表
+     */
+    List<BusiConferenceVoteOption> selectByQuestionId(Long questionId);
+
 }

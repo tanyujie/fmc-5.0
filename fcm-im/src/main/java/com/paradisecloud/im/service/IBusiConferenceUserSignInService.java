@@ -2,6 +2,7 @@ package com.paradisecloud.im.service;
 
 import com.paradisecloud.fcm.dao.model.BusiConferenceUserSignIn;
 import com.paradisecloud.fcm.dao.model.vo.BusiConferenceSignInVO;
+import com.paradisecloud.fcm.dao.model.vo.BusiConferenceUserSignInDetailVO;
 import com.paradisecloud.fcm.dao.model.vo.BusiConferenceUserSignInVO;
 
 import java.util.List;
@@ -14,5 +15,5 @@ public interface IBusiConferenceUserSignInService {
      * @param busiConferenceUserSignIn 成员签到关联
      * @return 成员签到关联集合
      */
-    public List<BusiConferenceUserSignIn> selectBusiConferenceUserSignInList(BusiConferenceUserSignInVO busiConferenceUserSignIn);
+    public BusiConferenceUserSignInDetailVO selectBusiConferenceUserSignInList(BusiConferenceUserSignInVO busiConferenceUserSignIn);
 }

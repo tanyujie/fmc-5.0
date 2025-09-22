@@ -1,6 +1,7 @@
 package com.paradisecloud.fcm.dao.mapper;
 
 import com.paradisecloud.fcm.dao.model.BusiConferenceVoteRecord;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -59,4 +60,11 @@ public interface BusiConferenceVoteRecordMapper
      * @return 结果
      */
     public int deleteBusiConferenceVoteRecordByIds(Long[] recordIds);
+    /**
+     * 根据投票ID和用户ID查询投票记录
+     * @param voteId 投票ID
+     * @param userId 用户ID
+     * @return 投票记录
+     */
+    BusiConferenceVoteRecord selectByVoteId(@Param("voteId") Long voteId);
 }

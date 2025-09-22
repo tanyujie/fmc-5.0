@@ -1,6 +1,7 @@
 package com.paradisecloud.fcm.dao.mapper;
 
 import com.paradisecloud.fcm.dao.model.BusiConferenceVote;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -59,4 +60,10 @@ public interface BusiConferenceVoteMapper
      * @return 结果
      */
     public int deleteBusiConferenceVoteByIds(Long[] voteIds);
+    /**
+     * 根据状态查询投票
+     * @param conferenceId 状态值（1表示进行中）
+     * @return 符合条件的投票列表
+     */
+    BusiConferenceVote selectPendingVote(Long conferenceId);
 }

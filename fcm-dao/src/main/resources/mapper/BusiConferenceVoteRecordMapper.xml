@@ -78,4 +78,8 @@
             #{recordId}
         </foreach>
     </delete>
+    <select id="selectByVoteId" parameterType="Long" resultMap="BusiConferenceVoteRecordResult">
+        <include refid="selectBusiConferenceVoteRecordVo"/>
+        WHERE vote_id = #{voteId}
+    </select>
 </mapper>

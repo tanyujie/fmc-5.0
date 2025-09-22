@@ -59,4 +59,11 @@ public interface BusiConferenceVoteQuestionMapper
      * @return 结果
      */
     public int deleteBusiConferenceVoteQuestionByIds(Long[] questionIds);
+
+    /**
+     * 获取投票问题
+     * @param voteId
+     * @return
+     */
+    List<BusiConferenceVoteQuestion> selectByVoteId(Long voteId);
 }

@@ -6,6 +6,7 @@ import com.paradisecloud.fcm.dao.mapper.BusiConferenceSignInMapper;
 import com.paradisecloud.fcm.dao.mapper.BusiConferenceUserSignInMapper;
 import com.paradisecloud.fcm.dao.model.BusiConferenceSignIn;
 import com.paradisecloud.fcm.dao.model.BusiConferenceUserSignIn;
+import com.paradisecloud.fcm.dao.model.vo.BusiConferenceUserSignInDetailVO;
 import com.paradisecloud.fcm.dao.model.vo.BusiConferenceUserSignInVO;
 import com.paradisecloud.fcm.mcu.kdc.service.interfaces.IAttendeeForMcuKdcService;
 import com.paradisecloud.fcm.service.conference.AllConferenceContextCache;
@@ -51,7 +52,7 @@ public class BusiConferenceUserSignInServiceImpl implements IBusiConferenceUserS
 
         // 如果已签到，直接返回true
         if (existingSignIn != null) {
-            if (existingSignIn.getSignStatus() == 1) {
+            if (existingSignIn.getSignStatus()==null||existingSignIn.getSignStatus() != 2) {
                 existingSignIn.setSignStatus(2);
                 userSignInMapper.updateBusiConferenceUserSignIn(existingSignIn);
             }
@@ -71,12 +72,31 @@ public class BusiConferenceUserSignInServiceImpl implements IBusiConferenceUserS
      * @return 成员签到关联
      */
     @Override
-    public List<BusiConferenceUserSignIn> selectBusiConferenceUserSignInList(BusiConferenceUserSignInVO userSignIn) {
+    public BusiConferenceUserSignInDetailVO selectBusiConferenceUserSignInList(BusiConferenceUserSignInVO userSignIn) {
         String contextKey = EncryptIdUtil.parasToContextKey(userSignIn.getConfId());
         ConferenceIdVo conferenceIdVo = EncryptIdUtil.parasContextKey(contextKey);
         Long id = conferenceIdVo.getId();
         userSignIn.setConferenceId(id);
-        List<BusiConferenceUserSignIn> list= userSignInMapper.selectBusiConferenceUserSignInList(userSignIn);
-        return list;
+        // 2. 查询该会议的所有签到记录
+        BusiConferenceSignIn signInInfo = signInMapper.selectBusiConferenceSignInByConferenceId(id);
+        // 2. 查询该会议的所有签到记录
+        List<BusiConferenceUserSignIn> signInList = userSignInMapper.selectBusiConferenceUserSignInList(userSignIn);
+
+        // 3. 统计核心数据：总记录数、已签到人数（signStatus=2代表已签到，与表结构定义一致）
+        int totalCount = signInList.size(); // 总签到记录数（包含已签到/未签到）
+        // 流式统计已签到人数（过滤signStatus=2的记录）
+        int signedCount = (int) signInList.stream()
+                .filter(signIn -> signIn.getSignStatus() != null && 2 == signIn.getSignStatus())
+                .count();
+
+        // 4. 组装返回VO
+        BusiConferenceUserSignInDetailVO resultVo = new BusiConferenceUserSignInDetailVO();
+        resultVo.setTotalCount(totalCount);     // 总记录数
+        resultVo.setSignedCount(signedCount);   // 已签到人数
+        resultVo.setUserSignInList(signInList); // 具体签到列表
+        // 签到状态1进行中2已结束
+        resultVo.setSignStatus(signInInfo.getStatus());
+
+        return resultVo;
     }
 }

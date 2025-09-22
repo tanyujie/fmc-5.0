@@ -6,4 +6,5 @@ import lombok.Data;
 @Data
 public class BusiConferenceVoteOptionVO extends BusiConferenceVoteOption {
     private String content;
+    private boolean isSelected;
 }

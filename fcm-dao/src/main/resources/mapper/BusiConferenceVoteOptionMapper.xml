@@ -9,10 +9,11 @@
         <result property="questionId"    column="question_id"    />
         <result property="content"    column="content"    />
         <result property="voteCount"    column="vote_count"    />
+        <result property="optionOrder"    column="option_order"    />
     </resultMap>
 
     <sql id="selectBusiConferenceVoteOptionVo">
-        select option_id, question_id, content, vote_count from busi_conference_vote_option
+        select option_id, question_id, content, vote_count,option_order from busi_conference_vote_option
     </sql>
 
     <select id="selectBusiConferenceVoteOptionList" parameterType="BusiConferenceVoteOption" resultMap="BusiConferenceVoteOptionResult">
@@ -63,4 +64,9 @@
             #{optionId}
         </foreach>
     </delete>
+    <select id="selectByQuestionId" parameterType="Long" resultMap="BusiConferenceVoteOptionResult">
+        SELECT * FROM busi_conference_vote_option
+        WHERE question_id = #{questionId}
+        ORDER BY option_order ASC
+    </select>
 </mapper>

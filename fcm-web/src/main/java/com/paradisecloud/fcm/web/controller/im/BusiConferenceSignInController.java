@@ -6,6 +6,7 @@ import com.paradisecloud.fcm.dao.model.BusiConferenceOption;
 import com.paradisecloud.fcm.dao.model.BusiConferenceSignIn;
 import com.paradisecloud.fcm.dao.model.BusiConferenceUserSignIn;
 import com.paradisecloud.fcm.dao.model.vo.BusiConferenceSignInVO;
+import com.paradisecloud.fcm.dao.model.vo.BusiConferenceUserSignInDetailVO;
 import com.paradisecloud.fcm.dao.model.vo.BusiConferenceUserSignInVO;
 import com.paradisecloud.im.service.IBusiConferenceQuestionnaireService;
 import com.paradisecloud.im.service.IBusiConferenceSignInService;
@@ -70,9 +71,8 @@ public class BusiConferenceSignInController extends BaseController {
     @Operation(summary = "查询成员签到关联列表")
     public RestResponse list(@RequestBody BusiConferenceUserSignInVO busiConferenceUserSignIn)
     {
-        startPage();
-        List<BusiConferenceUserSignIn> list = userSignInService.selectBusiConferenceUserSignInList(busiConferenceUserSignIn);
-        return getDataTable(list);
+        BusiConferenceUserSignInDetailVO signInDetailVO=userSignInService.selectBusiConferenceUserSignInList(busiConferenceUserSignIn);
+        return RestResponse.success(signInDetailVO);
     }
     @Operation(summary = "重新发起签到", responses = {
             @ApiResponse(responseCode = "200", description = "重新发起签到",

@@ -34,7 +34,7 @@ public class BusiConferenceVoteQuestion extends BaseEntity
     /** 问题类型（0：单选，1：多选） */
     @Schema(description = "问题类型（0：单选，1：多选）")
     @Excel(name = "问题类型", readConverterExp = "0=：单选，1：多选")
-    private Long type;
+    private Integer type;
 
     /** 问题排序 */
     @Schema(description = "问题排序")
@@ -68,12 +68,12 @@ public class BusiConferenceVoteQuestion extends BaseEntity
     {
         return content;
     }
-    public void setType(Long type)
+    public void setType(Integer type)
     {
         this.type = type;
     }
 
-    public Long getType()
+    public Integer getType()
     {
         return type;
     }

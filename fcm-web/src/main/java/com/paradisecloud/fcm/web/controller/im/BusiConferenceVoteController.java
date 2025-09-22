@@ -3,6 +3,7 @@ package com.paradisecloud.fcm.web.controller.im;
 import com.paradisecloud.common.core.controller.BaseController;
 import com.paradisecloud.common.core.model.RestResponse;
 import com.paradisecloud.common.core.page.TableDataInfo;
+import com.paradisecloud.fcm.dao.model.vo.BusiConferencePendingVoteVO;
 import com.paradisecloud.fcm.dao.model.vo.BusiConferenceSignInVO;
 import com.paradisecloud.fcm.dao.model.vo.BusiConferenceVoteVO;
 import com.paradisecloud.im.service.IBusiConferenceUserSignInService;
@@ -13,6 +14,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -39,20 +41,14 @@ public class BusiConferenceVoteController extends BaseController {
      * @return 操作结果
      */
     @Operation(summary = "添加会议投票",
-            description = "创建新的会议投票项目",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "添加成功",
-                            content = @Content(schema = @Schema(implementation = Boolean.class))),
-                    @ApiResponse(responseCode = "400", description = "参数错误"),
-                    @ApiResponse(responseCode = "500", description = "服务器内部错误")
-            })
+            description = "创建新的会议投票项目")
     @PostMapping("/add")
     public RestResponse addVote(
             @Valid @RequestBody BusiConferenceVoteVO voteVO) {
         log.info("添加会议投票: {}", voteVO);
         try {
             // 校验会议是否存在
-            if (voteVO.getConferenceId() == null) {
+            if (StringUtils.isEmpty(voteVO.getConfId())) {
                 return RestResponse.fail("会议ID不能为空");
             }
 
@@ -73,13 +69,7 @@ public class BusiConferenceVoteController extends BaseController {
      * @return 操作结果
      */
     @Operation(summary = "删除会议投票",
-            description = "根据ID删除会议投票项目",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "删除成功",
-                            content = @Content(schema = @Schema(implementation = Boolean.class))),
-                    @ApiResponse(responseCode = "400", description = "参数错误"),
-                    @ApiResponse(responseCode = "500", description = "服务器内部错误")
-            })
+            description = "根据ID删除会议投票项目")
     @PostMapping("/delete")
     public RestResponse deleteVote(
             @Parameter(description = "包含voteId的参数", required = true)
@@ -87,20 +77,6 @@ public class BusiConferenceVoteController extends BaseController {
         String voteId = params.get("voteId");
         log.info("删除会议投票, ID: {}", voteId);
 
-/*        try {
-            if (voteId == null || voteId.trim().isEmpty()) {
-                return RestResponse.fail("投票ID不能为空");
-            }
-
-            boolean result = voteService.removeById(voteId);
-            if (result) {
-                return RestResponse.success(true, "会议投票删除成功");
-            }
-            return RestResponse.fail("会议投票不存在或已删除");
-        } catch (Exception e) {
-            log.error("删除会议投票异常, ID: {}", voteId, e);
-            return RestResponse.fail("删除会议投票失败: " + e.getMessage());
-        }*/
         return RestResponse.success();
     }
 
@@ -110,13 +86,7 @@ public class BusiConferenceVoteController extends BaseController {
      * @return 操作结果
      */
     @Operation(summary = "修改会议投票",
-            description = "更新会议投票项目信息",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "修改成功",
-                            content = @Content(schema = @Schema(implementation = Boolean.class))),
-                    @ApiResponse(responseCode = "400", description = "参数错误"),
-                    @ApiResponse(responseCode = "500", description = "服务器内部错误")
-            })
+            description = "更新会议投票项目信息")
     @PostMapping("/update")
     public RestResponse updateVote(
             @Valid @RequestBody BusiConferenceVoteVO voteVO) {
@@ -144,35 +114,11 @@ public class BusiConferenceVoteController extends BaseController {
      * @return 投票详情
      */
     @Operation(summary = "查询会议投票详情",
-            description = "根据ID获取会议投票项目详细信息",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "查询成功",
-                            content = @Content(schema = @Schema(implementation = BusiConferenceVoteVO.class))),
-                    @ApiResponse(responseCode = "400", description = "参数错误"),
-                    @ApiResponse(responseCode = "500", description = "服务器内部错误")
-            })
-    @PostMapping("/detail")
-    public RestResponse getVoteDetail(
-            @Parameter(description = "包含voteId的参数", required = true)
-            @RequestBody Map<String, String> params) {
-        String voteId = params.get("voteId");
-        log.info("查询会议投票详情, ID: {}", voteId);
-/*
-        try {
-            if (voteId == null || voteId.trim().isEmpty()) {
-                return RestResponse.fail("投票ID不能为空");
-            }
-
-            BusiConferenceVoteVO voteVO = voteService.getById(voteId);
-            if (voteVO != null) {
-                return RestResponse.success(voteVO);
-            }
-            return RestResponse.fail("未找到该会议投票信息");
-        } catch (Exception e) {
-            log.error("查询会议投票详情异常, ID: {}", voteId, e);
-            return RestResponse.fail("查询会议投票详情失败: " + e.getMessage());
-        }*/
-        return RestResponse.success();
+            description = "根据ID获取会议投票项目详细信息")
+    @PostMapping("/getPendingVoteDetail")
+    public RestResponse getVotePendingVoteDetail(@Valid @RequestBody BusiConferenceVoteVO voteVO) {
+        BusiConferencePendingVoteVO pendingVoteVO=voteService.getPendingVoteDetail(voteVO);
+        return RestResponse.success(pendingVoteVO);
     }
 
     /**
@@ -181,13 +127,7 @@ public class BusiConferenceVoteController extends BaseController {
      * @return 投票列表
      */
     @Operation(summary = "查询会议投票列表",
-            description = "根据会议ID获取该会议下的所有投票项目",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "查询成功",
-                            content = @Content(schema = @Schema(implementation = TableDataInfo.class))),
-                    @ApiResponse(responseCode = "400", description = "参数错误"),
-                    @ApiResponse(responseCode = "500", description = "服务器内部错误")
-            })
+            description = "根据会议ID获取该会议下的所有投票项目")
     @PostMapping("/list")
     public RestResponse getVoteList(
             @Parameter(description = "包含conferenceId的参数", required = true)

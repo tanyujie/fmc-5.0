@@ -68,4 +68,9 @@
             #{questionId}
         </foreach>
     </delete>
+    <select id="selectByVoteId" parameterType="Long"  resultMap="BusiConferenceVoteQuestionResult">
+        SELECT * FROM busi_conference_vote_question
+        WHERE vote_id = #{voteId}
+        ORDER BY sort_order ASC
+    </select>
 </mapper>

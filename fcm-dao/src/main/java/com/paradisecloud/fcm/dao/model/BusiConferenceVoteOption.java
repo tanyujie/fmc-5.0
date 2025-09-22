@@ -33,11 +33,23 @@ public class BusiConferenceVoteOption extends BaseEntity
     /** 该选项的投票数 */
     @Schema(description = "该选项的投票数")
     @Excel(name = "该选项的投票数")
-    private Long voteCount;
+    private Integer voteCount;
+
+    @Schema(description = "选项排序")
+    @Excel(name = "选项排序")
+    private Integer optionOrder;
 
     public void setOptionId(Long optionId)
     {
         this.optionId = optionId;
+    }
+
+    public Integer getOptionOrder() {
+        return optionOrder;
+    }
+
+    public void setOptionOrder(Integer optionOrder) {
+        this.optionOrder = optionOrder;
     }
 
     public Long getOptionId()
@@ -62,12 +74,12 @@ public class BusiConferenceVoteOption extends BaseEntity
     {
         return content;
     }
-    public void setVoteCount(Long voteCount)
+    public void setVoteCount(Integer voteCount)
     {
         this.voteCount = voteCount;
     }
 
-    public Long getVoteCount()
+    public Integer getVoteCount()
     {
         return voteCount;
     }

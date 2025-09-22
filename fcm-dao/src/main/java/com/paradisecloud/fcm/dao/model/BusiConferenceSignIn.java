@@ -43,7 +43,7 @@ public class BusiConferenceSignIn extends BaseEntity {
     private String description;
 
     /** 签到状态 */
-    @Schema(description = "签到状态")
+    @Schema(description = "签到状态1进行中2已结束")
     private Integer status;
 
     public void setSignInId(Integer signInId) {

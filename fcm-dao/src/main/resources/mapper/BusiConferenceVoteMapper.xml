@@ -7,7 +7,7 @@
     <resultMap type="BusiConferenceVote" id="BusiConferenceVoteResult">
         <result property="voteId"    column="vote_id"    />
         <result property="mcuType"    column="mcu_type"    />
-        <result property="templateConferenceId"    column="template_conference_id"    />
+        <result property="conferenceId"    column="conference_id"    />
         <result property="title"    column="title"    />
         <result property="description"    column="description"    />
         <result property="voteCreateTime"    column="vote_create_time"    />
@@ -17,14 +17,14 @@
     </resultMap>
 
     <sql id="selectBusiConferenceVoteVo">
-        select vote_id, mcu_type, template_conference_id, title, description, vote_create_time, status, is_anonymous, creator_id from busi_conference_vote
+        select vote_id, mcu_type, conference_id, title, description, vote_create_time, status, is_anonymous, creator_id from busi_conference_vote
     </sql>
 
     <select id="selectBusiConferenceVoteList" parameterType="BusiConferenceVote" resultMap="BusiConferenceVoteResult">
         <include refid="selectBusiConferenceVoteVo"/>
         <where>
             <if test="mcuType != null  and mcuType != ''"> and mcu_type = #{mcuType}</if>
-            <if test="templateConferenceId != null "> and template_conference_id = #{templateConferenceId}</if>
+            <if test="conferenceId != null "> and conference_id = #{conferenceId}</if>
             <if test="title != null  and title != ''"> and title = #{title}</if>
             <if test="description != null  and description != ''"> and description = #{description}</if>
             <if test="status != null "> and status = #{status}</if>
@@ -42,7 +42,7 @@
         insert into busi_conference_vote
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="mcuType != null">mcu_type,</if>
-            <if test="templateConferenceId != null">template_conference_id,</if>
+            <if test="conferenceId != null">conference_id,</if>
             <if test="title != null and title != ''">title,</if>
             <if test="description != null">description,</if>
             <if test="voteCreateTime != null">vote_create_time,</if>
@@ -52,7 +52,7 @@
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="mcuType != null">#{mcuType},</if>
-            <if test="templateConferenceId != null">#{templateConferenceId},</if>
+            <if test="conferenceId != null">#{conferenceId},</if>
             <if test="title != null and title != ''">#{title},</if>
             <if test="description != null">#{description},</if>
             <if test="voteCreateTime != null">#{voteCreateTime},</if>
@@ -66,7 +66,7 @@
         update busi_conference_vote
         <trim prefix="SET" suffixOverrides=",">
             <if test="mcuType != null">mcu_type = #{mcuType},</if>
-            <if test="templateConferenceId != null">template_conference_id = #{templateConferenceId},</if>
+            <if test="conferenceId != null">conference_id = #{conferenceId},</if>
             <if test="title != null and title != ''">title = #{title},</if>
             <if test="description != null">description = #{description},</if>
             <if test="voteCreateTime != null">vote_create_time = #{voteCreateTime},</if>
@@ -87,4 +87,13 @@
             #{voteId}
         </foreach>
     </delete>
+    <!-- 根据状态查询投票 -->
+    <select id="selectPendingVote" parameterType="Long" resultMap="BusiConferenceVoteResult">
+        SELECT
+        *
+        from busi_conference_vote
+        WHERE status = 1
+        and conference_id=#{conferenceId}
+        ORDER BY vote_create_time DESC
+    </select>
 </mapper>

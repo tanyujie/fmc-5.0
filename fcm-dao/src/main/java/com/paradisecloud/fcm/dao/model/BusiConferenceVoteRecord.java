@@ -33,7 +33,7 @@ public class BusiConferenceVoteRecord extends BaseEntity
     /** 投票用户ID（匿名时为NULL） */
     @Schema(description = "投票用户ID（匿名时为NULL）")
     @Excel(name = "投票用户ID", readConverterExp = "匿=名时为NULL")
-    private Long userId;
+    private String userId;
 
     /** 投票用户昵称 */
     @Schema(description = "投票用户昵称")
@@ -77,12 +77,12 @@ public class BusiConferenceVoteRecord extends BaseEntity
     {
         return questionId;
     }
-    public void setUserId(Long userId)
+    public void setUserId(String userId)
     {
         this.userId = userId;
     }
 
-    public Long getUserId()
+    public String getUserId()
     {
         return userId;
     }
