@@ -5,5 +5,5 @@ import lombok.Data;
 
 @Data
 public class BusiConferenceSignInVO extends BusiConferenceSignIn {
-    private String conferenceId;
+    private String confId;
 }

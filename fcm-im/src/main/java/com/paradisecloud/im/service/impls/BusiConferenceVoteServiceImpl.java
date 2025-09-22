@@ -33,14 +33,14 @@ public class BusiConferenceVoteServiceImpl implements IBusiConferenceVoteService
         voteMapper.insertBusiConferenceVote(vo);
         if(vo.getQuestionList().size()>0){
             vo.getQuestionList().forEach(e->{
-
-/*                questionMapper.insertBusiConferenceVoteQuestion(e);
+                e.setVoteId(vo.getVoteId());
+                questionMapper.insertBusiConferenceVoteQuestion(e);
                 if(e.getOptionList().size()>0){
                     e.getOptionList().forEach(o->{
                         o.setQuestionId(e.getQuestionId());
                         voteOptionMapper.insertBusiConferenceVoteOption(o);
                     });
-                }*/
+                }
 
 
             });
@@ -48,6 +48,6 @@ public class BusiConferenceVoteServiceImpl implements IBusiConferenceVoteService
 
         }
 
-        return false;
+        return true;
     }
 }

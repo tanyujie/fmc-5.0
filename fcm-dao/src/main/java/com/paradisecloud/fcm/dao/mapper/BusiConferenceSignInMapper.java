@@ -21,6 +21,7 @@ public interface BusiConferenceSignInMapper
      * @return 会议模板的签到主
      */
     public BusiConferenceSignIn selectBusiConferenceSignInById(Long signInId);
+    public BusiConferenceSignIn selectBusiConferenceSignInByConferenceId(Long conferenceId);
 
     /**
      * 查询会议模板的签到主列表

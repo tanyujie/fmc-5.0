@@ -12,7 +12,7 @@ public class BusiConferenceSignIn extends BaseEntity {
 
     /** 签到 ID，主键，自增 */
     @Schema(description = "签到 ID，主键，自增")
-    private Integer signInId;
+    private long signInId;
 
     /** mcu type */
     @Schema(description = "mcu type")
@@ -20,7 +20,7 @@ public class BusiConferenceSignIn extends BaseEntity {
 
     /** 会议id */
     @Schema(description = "会议id")
-    private long templateConferenceId;
+    private long conferenceId;
 
     /** 发起者ID */
     @Schema(description = "发起者ID")
@@ -50,8 +50,12 @@ public class BusiConferenceSignIn extends BaseEntity {
         this.signInId = signInId;
     }
 
-    public Integer getSignInId() {
+    public long getSignInId() {
         return signInId;
+    }
+
+    public void setSignInId(long signInId) {
+        this.signInId = signInId;
     }
 
     public void setMcuType(String mcuType) {
@@ -62,12 +66,12 @@ public class BusiConferenceSignIn extends BaseEntity {
         return mcuType;
     }
 
-    public void setTemplateConferenceId(long templateConferenceId) {
-        this.templateConferenceId = templateConferenceId;
+    public long getConferenceId() {
+        return conferenceId;
     }
 
-    public long getTemplateConferenceId() {
-        return templateConferenceId;
+    public void setConferenceId(long conferenceId) {
+        this.conferenceId = conferenceId;
     }
 
     public void setInitiatorId(Integer initiatorId) {
@@ -115,7 +119,7 @@ public class BusiConferenceSignIn extends BaseEntity {
         return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
                 .append("signInId", getSignInId())
                 .append("mcuType", getMcuType())
-                .append("templateConferenceId", getTemplateConferenceId())
+                .append("conferenceId", getConferenceId())
                 .append("initiatorId", getInitiatorId())
                 .append("startTime", getStartTime())
                 .append("duration", getDuration())

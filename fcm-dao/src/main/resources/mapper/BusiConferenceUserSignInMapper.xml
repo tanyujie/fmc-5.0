@@ -7,6 +7,7 @@
     <resultMap type="BusiConferenceUserSignIn" id="BusiConferenceUserSignInResult">
         <result property="id"    column="id"    />
         <result property="signInId"    column="sign_in_id"    />
+        <result property="conferenceId"    column="conference_id"    />
         <result property="userId"    column="user_id"    />
         <result property="userNickname"    column="user_nickname"    />
         <result property="signInTime"    column="sign_in_time"    />
@@ -14,13 +15,13 @@
     </resultMap>
 
     <sql id="selectBusiConferenceUserSignInVo">
-        select id, sign_in_id, user_id, user_nickname, sign_in_time, sign_status from busi_conference_user_sign_in
+        select id, sign_in_id,conference_id, user_id, user_nickname, sign_in_time, sign_status from busi_conference_user_sign_in
     </sql>
-
     <select id="selectBusiConferenceUserSignInList" parameterType="BusiConferenceUserSignIn" resultMap="BusiConferenceUserSignInResult">
         <include refid="selectBusiConferenceUserSignInVo"/>
         <where>
             <if test="signInId != null "> and sign_in_id = #{signInId}</if>
+            <if test="conferenceId != null "> and conference_id = #{conferenceId}</if>
             <if test="userId != null "> and user_id = #{userId}</if>
             <if test="userNickname != null  and userNickname != ''"> and user_nickname like concat('%', #{userNickname}, '%')</if>
             <if test="signInTime != null "> and sign_in_time = #{signInTime}</if>
@@ -32,12 +33,31 @@
         <include refid="selectBusiConferenceUserSignInVo"/>
         where id = #{id}
     </select>
-
+    <!-- 根据会议ID、签到ID和用户昵称查询签到记录 -->
+    <select id="selectByConferenceIdAndSignInIdAndNickname"
+            resultMap="BusiConferenceUserSignInResult">
+        SELECT
+        id,
+        conference_id,
+        sign_in_id,
+        user_nickname,
+        sign_in_time,
+        sign_status
+        FROM
+        busi_conference_user_sign_in
+        WHERE
+        conference_id = #{conferenceId}
+        AND sign_in_id = #{signInId}
+        AND user_nickname = #{userNickname}
+        <!-- 可选：如果需要只查询有效记录，可以添加状态条件 -->
+        <!-- AND sign_status = 2 -->
+    </select>
     <insert id="insertBusiConferenceUserSignIn" parameterType="BusiConferenceUserSignIn">
         insert into busi_conference_user_sign_in
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">id,</if>
             <if test="signInId != null">sign_in_id,</if>
+            <if test="conferenceId != null "> conference_id,</if>
             <if test="userId != null">user_id,</if>
             <if test="userNickname != null">user_nickname,</if>
             <if test="signInTime != null">sign_in_time,</if>
@@ -46,6 +66,7 @@
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">#{id},</if>
             <if test="signInId != null">#{signInId},</if>
+            <if test="conferenceId != null ">#{conferenceId},</if>
             <if test="userId != null">#{userId},</if>
             <if test="userNickname != null">#{userNickname},</if>
             <if test="signInTime != null">#{signInTime},</if>
@@ -57,6 +78,7 @@
         update busi_conference_user_sign_in
         <trim prefix="SET" suffixOverrides=",">
             <if test="signInId != null">sign_in_id = #{signInId},</if>
+            <if test="conferenceId != null ">conference_id=#{conferenceId},</if>
             <if test="userId != null">user_id = #{userId},</if>
             <if test="userNickname != null">user_nickname = #{userNickname},</if>
             <if test="signInTime != null">sign_in_time = #{signInTime},</if>

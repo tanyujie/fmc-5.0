@@ -28,13 +28,18 @@ public class BusiConferenceSignInServiceImpl implements IBusiConferenceSignInSer
     private BusiConferenceSignInMapper conferenceSignInMapper;
     @Override
     public boolean save(BusiConferenceSignInVO option) {
-        String contextKey = EncryptIdUtil.parasToContextKey(option.getConferenceId());
+        String contextKey = EncryptIdUtil.parasToContextKey(option.getConfId());
         BaseConferenceContext baseConferenceContext = AllConferenceContextCache.getInstance().get(contextKey);
         ConferenceIdVo conferenceIdVo = EncryptIdUtil.parasContextKey(contextKey);
         Long id = conferenceIdVo.getId();
 
         option.setMcuType(McuType.SMC3.getCode());
-        option.setTemplateConferenceId(id);
+        option.setConferenceId(id);
         return conferenceSignInMapper.insertBusiConferenceSignIn(option)>0;
+    }
+
+    @Override
+    public boolean getList(BusiConferenceSignInVO option) {
+        return false;
     }
 }

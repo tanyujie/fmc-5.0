@@ -6,4 +6,5 @@ import com.paradisecloud.fcm.dao.model.vo.BusiConferenceSignInVO;
 
 public interface IBusiConferenceSignInService {
     boolean save(BusiConferenceSignInVO option);
+    boolean getList(BusiConferenceSignInVO option);
 }
