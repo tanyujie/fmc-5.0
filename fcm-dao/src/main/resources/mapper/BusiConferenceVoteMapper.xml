@@ -15,7 +15,18 @@
         <result property="isAnonymous"    column="is_anonymous"    />
         <result property="creatorId"    column="creator_id"    />
     </resultMap>
-
+    <!-- 2. 投票选项统计VO结果集映射（新增） -->
+    <resultMap type="com.paradisecloud.fcm.dao.model.vo.BusiConferenceVoteOptionStatsVO" id="BusiConferenceVoteOptionStatsResult">
+        <result property="voteId"            column="vote_id"            />
+        <result property="questionId"        column="question_id"        />
+        <result property="questionContent"   column="question_content"   />
+        <result property="questionType"      column="question_type"      />
+        <result property="optionId"          column="option_id"          />
+        <result property="optionContent"     column="option_content"     />
+        <result property="optionVoteCount"   column="option_vote_count"  />
+        <result property="voteRatePercent"   column="vote_rate_percent"  />
+        <result property="questionTotalVotes" column="question_total_votes" />
+    </resultMap>
     <sql id="selectBusiConferenceVoteVo">
         select vote_id, mcu_type, conference_id, title, description, vote_create_time, status, is_anonymous, creator_id from busi_conference_vote
     </sql>
@@ -31,6 +42,11 @@
             <if test="isAnonymous != null "> and is_anonymous = #{isAnonymous}</if>
             <if test="creatorId != null "> and creator_id = #{creatorId}</if>
         </where>
+    </select>
+
+    <select id="selectBusiConferenceVoteByConferenceId" parameterType="Long" resultMap="BusiConferenceVoteResult">
+        <include refid="selectBusiConferenceVoteVo"/>
+        where conference_id = #{conferenceId}
     </select>
 
     <select id="selectBusiConferenceVoteById" parameterType="Long" resultMap="BusiConferenceVoteResult">
@@ -96,4 +112,29 @@
         and conference_id=#{conferenceId}
         ORDER BY vote_create_time DESC
     </select>
+    <!-- 4. 修正：按投票ID查询选项统计 -->
+    <select id="selectOptionStatsByVoteId" parameterType="Long" resultMap="BusiConferenceVoteOptionStatsResult">
+        SELECT
+        q.vote_id,
+        q.question_id,
+        q.content AS question_content,
+        q.type AS question_type,
+        o.option_id,
+        o.content AS option_content,
+        o.vote_count AS option_vote_count,
+        -- 计算得票率（保留2位小数，避免除数为0）
+        ROUND(IFNULL(o.vote_count / NULLIF(SUM(o.vote_count) OVER (PARTITION BY q.question_id), 0), 0) * 100, 2) AS vote_rate_percent,
+        -- 问题总票数
+        SUM(o.vote_count) OVER (PARTITION BY q.question_id) AS question_total_votes
+        FROM
+        busi_conference_vote_question q
+        INNER JOIN
+        busi_conference_vote_option o ON q.question_id = o.question_id
+        WHERE
+        q.vote_id = #{voteId} <!-- 按投票ID筛选，只查指定投票的统计 -->
+        ORDER BY
+        q.sort_order ASC,  <!-- 先按问题排序 -->
+        o.option_order ASC <!-- 再按选项排序 -->
+    </select>
+
 </mapper>

@@ -15,7 +15,8 @@ import java.util.List;
 @Data
 public class BusiConferenceVoteRecordAddVO {
     private Long voteId;
-    private List<BusiConferenceVoteQuestionVO> questionList;
+    private String confId;
+    private List<BusiConferenceVoteQuestionVO> answers;
     private String userId;
     private String userName;
 
@@ -26,7 +27,7 @@ public class BusiConferenceVoteRecordAddVO {
     // 全参构造函数
     public BusiConferenceVoteRecordAddVO(Long voteId, List<BusiConferenceVoteQuestionVO> questionList, String userId, String userName) {
         this.voteId = voteId;
-        this.questionList = questionList;
+        this.answers = questionList;
         this.userId = userId;
         this.userName = userName;
     }
@@ -40,12 +41,12 @@ public class BusiConferenceVoteRecordAddVO {
         this.voteId = voteId;
     }
 
-    public List<BusiConferenceVoteQuestionVO> getQuestionList() {
-        return questionList;
+    public List<BusiConferenceVoteQuestionVO> getAnswers() {
+        return answers;
     }
 
-    public void setQuestionList(List<BusiConferenceVoteQuestionVO> questionList) {
-        this.questionList = questionList;
+    public void setAnswers(List<BusiConferenceVoteQuestionVO> answers) {
+        this.answers = answers;
     }
 
     public String getUserId() {
