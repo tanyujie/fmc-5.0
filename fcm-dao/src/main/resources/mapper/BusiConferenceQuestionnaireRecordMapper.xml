@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiConferenceQuestionnaireRecordMapper">
+
+    <resultMap type="BusiConferenceQuestionnaireRecord" id="BusiConferenceQuestionnaireRecordResult">
+        <result property="recordId"    column="record_id"    />
+        <result property="questionnaireId"    column="questionnaire_id"    />
+        <result property="questionId"    column="question_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="userName"    column="user_name"    />
+        <result property="optionIds"    column="option_ids"    />
+        <result property="voteTime"    column="vote_time"    />
+    </resultMap>
+
+    <sql id="selectBusiConferenceQuestionnaireRecordVo">
+        select record_id, questionnaire_id, question_id, user_id, user_name, option_ids, vote_time from busi_conference_questionnaire_record
+    </sql>
+
+    <select id="selectBusiConferenceQuestionnaireRecordList" parameterType="BusiConferenceQuestionnaireRecord" resultMap="BusiConferenceQuestionnaireRecordResult">
+        <include refid="selectBusiConferenceQuestionnaireRecordVo"/>
+        <where>
+            <if test="questionnaireId != null "> and questionnaire_id = #{questionnaireId}</if>
+            <if test="questionId != null "> and question_id = #{questionId}</if>
+            <if test="userId != null  and userId != ''"> and user_id = #{userId}</if>
+            <if test="userName != null  and userName != ''"> and user_name like concat('%', #{userName}, '%')</if>
+            <if test="optionIds != null  and optionIds != ''"> and option_ids = #{optionIds}</if>
+            <if test="voteTime != null "> and vote_time = #{voteTime}</if>
+        </where>
+    </select>
+
+    <select id="selectBusiConferenceQuestionnaireRecordById" parameterType="Long" resultMap="BusiConferenceQuestionnaireRecordResult">
+        <include refid="selectBusiConferenceQuestionnaireRecordVo"/>
+        where record_id = #{recordId}
+    </select>
+
+    <insert id="insertBusiConferenceQuestionnaireRecord" parameterType="BusiConferenceQuestionnaireRecord" useGeneratedKeys="true" keyProperty="recordId">
+        insert into busi_conference_questionnaire_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="questionnaireId != null">questionnaire_id,</if>
+            <if test="questionId != null">question_id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="userName != null">user_name,</if>
+            <if test="optionIds != null">option_ids,</if>
+            <if test="voteTime != null">vote_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="questionnaireId != null">#{questionnaireId},</if>
+            <if test="questionId != null">#{questionId},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="userName != null">#{userName},</if>
+            <if test="optionIds != null">#{optionIds},</if>
+            <if test="voteTime != null">#{voteTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateBusiConferenceQuestionnaireRecord" parameterType="BusiConferenceQuestionnaireRecord">
+        update busi_conference_questionnaire_record
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="questionnaireId != null">questionnaire_id = #{questionnaireId},</if>
+            <if test="questionId != null">question_id = #{questionId},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="userName != null">user_name = #{userName},</if>
+            <if test="optionIds != null">option_ids = #{optionIds},</if>
+            <if test="voteTime != null">vote_time = #{voteTime},</if>
+        </trim>
+        where record_id = #{recordId}
+    </update>
+
+    <delete id="deleteBusiConferenceQuestionnaireRecordById" parameterType="Long">
+        delete from busi_conference_questionnaire_record where record_id = #{recordId}
+    </delete>
+
+    <delete id="deleteBusiConferenceQuestionnaireRecordByIds" parameterType="String">
+        delete from busi_conference_questionnaire_record where record_id in
+        <foreach item="recordId" collection="array" open="(" separator="," close=")">
+            #{recordId}
+        </foreach>
+    </delete>
+</mapper>

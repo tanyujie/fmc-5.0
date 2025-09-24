@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiConferenceQuestionnaireMapper">
+
+    <resultMap type="BusiConferenceQuestionnaire" id="BusiConferenceQuestionnaireResult">
+        <result property="questionnaireId"    column="questionnaire_id"    />
+        <result property="mcuType"    column="mcu_type"    />
+        <result property="conferenceId"    column="conference_id"    />
+        <result property="title"    column="title"    />
+        <result property="effectiveTime"    column="effective_time"    />
+        <result property="createQuestionnaireTime"    column="create_questionnaire_time"    />
+        <result property="status"    column="status"    />
+        <result property="isAnonymous"    column="is_anonymous"    />
+        <result property="creatorId"    column="creator_id"    />
+        <result property="creatorNickname"    column="creator_nickname"    />
+    </resultMap>
+
+    <sql id="selectBusiConferenceQuestionnaireVo">
+        select questionnaire_id, mcu_type, conference_id, title, effective_time, create_questionnaire_time, status, is_anonymous, creator_id, creator_nickname from busi_conference_questionnaire
+    </sql>
+
+    <select id="selectBusiConferenceQuestionnaireList" parameterType="BusiConferenceQuestionnaire" resultMap="BusiConferenceQuestionnaireResult">
+        <include refid="selectBusiConferenceQuestionnaireVo"/>
+        <where>
+            <if test="mcuType != null  and mcuType != ''"> and mcu_type = #{mcuType}</if>
+            <if test="conferenceId != null "> and conference_id = #{conferenceId}</if>
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="effectiveTime != null "> and effective_time = #{effectiveTime}</if>
+            <if test="createQuestionnaireTime != null "> and create_questionnaire_time = #{createQuestionnaireTime}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="isAnonymous != null "> and is_anonymous = #{isAnonymous}</if>
+            <if test="creatorId != null  and creatorId != ''"> and creator_id = #{creatorId}</if>
+            <if test="creatorNickname != null  and creatorNickname != ''"> and creator_nickname like concat('%', #{creatorNickname}, '%')</if>
+        </where>
+    </select>
+
+    <select id="selectBusiConferenceQuestionnaireById" parameterType="Long" resultMap="BusiConferenceQuestionnaireResult">
+        <include refid="selectBusiConferenceQuestionnaireVo"/>
+        where questionnaire_id = #{questionnaireId}
+    </select>
+
+    <insert id="insertBusiConferenceQuestionnaire" parameterType="BusiConferenceQuestionnaire" useGeneratedKeys="true" keyProperty="questionnaireId">
+        insert into busi_conference_questionnaire
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="mcuType != null">mcu_type,</if>
+            <if test="conferenceId != null">conference_id,</if>
+            <if test="title != null and title != ''">title,</if>
+            <if test="effectiveTime != null">effective_time,</if>
+            <if test="createQuestionnaireTime != null">create_questionnaire_time,</if>
+            <if test="status != null">status,</if>
+            <if test="isAnonymous != null">is_anonymous,</if>
+            <if test="creatorId != null and creatorId != ''">creator_id,</if>
+            <if test="creatorNickname != null">creator_nickname,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="mcuType != null">#{mcuType},</if>
+            <if test="conferenceId != null">#{conferenceId},</if>
+            <if test="title != null and title != ''">#{title},</if>
+            <if test="effectiveTime != null">#{effectiveTime},</if>
+            <if test="createQuestionnaireTime != null">#{createQuestionnaireTime},</if>
+            <if test="status != null">#{status},</if>
+            <if test="isAnonymous != null">#{isAnonymous},</if>
+            <if test="creatorId != null and creatorId != ''">#{creatorId},</if>
+            <if test="creatorNickname != null">#{creatorNickname},</if>
+        </trim>
+    </insert>
+
+    <update id="updateBusiConferenceQuestionnaire" parameterType="BusiConferenceQuestionnaire">
+        update busi_conference_questionnaire
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="mcuType != null">mcu_type = #{mcuType},</if>
+            <if test="conferenceId != null">conference_id = #{conferenceId},</if>
+            <if test="title != null and title != ''">title = #{title},</if>
+            <if test="effectiveTime != null">effective_time = #{effectiveTime},</if>
+            <if test="createQuestionnaireTime != null">create_questionnaire_time = #{createQuestionnaireTime},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="isAnonymous != null">is_anonymous = #{isAnonymous},</if>
+            <if test="creatorId != null and creatorId != ''">creator_id = #{creatorId},</if>
+            <if test="creatorNickname != null">creator_nickname = #{creatorNickname},</if>
+        </trim>
+        where questionnaire_id = #{questionnaireId}
+    </update>
+
+    <delete id="deleteBusiConferenceQuestionnaireById" parameterType="Long">
+        delete from busi_conference_questionnaire where questionnaire_id = #{questionnaireId}
+    </delete>
+
+    <delete id="deleteBusiConferenceQuestionnaireByIds" parameterType="String">
+        delete from busi_conference_questionnaire where questionnaire_id in
+        <foreach item="questionnaireId" collection="array" open="(" separator="," close=")">
+            #{questionnaireId}
+        </foreach>
+    </delete>
+    <!-- 根据状态查询投票 -->
+    <select id="selectPendingQuestionnaire" parameterType="Long" resultMap="BusiConferenceQuestionnaireResult">
+        SELECT
+        *
+        from busi_conference_questionnaire
+        WHERE status = 1
+        and conference_id=#{conferenceId}
+        ORDER BY create_questionnaire_time DESC
+    </select>
+</mapper>

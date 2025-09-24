@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.paradisecloud.fcm.dao.mapper.BusiConferenceOptionMapper">
+
+    <resultMap type="BusiConferenceOption" id="BusiConferenceOptionResult">
+        <result property="optionId"    column="option_id"    />
+        <result property="questionId"    column="question_id"    />
+        <result property="content"    column="content"    />
+        <result property="voteCount"    column="vote_count"    />
+        <result property="sortNum"    column="sort_num"    />
+    </resultMap>
+
+    <sql id="selectBusiConferenceOptionVo">
+        select option_id, question_id, content, vote_count, sort_num from busi_conference_option
+    </sql>
+
+    <select id="selectBusiConferenceOptionList" parameterType="BusiConferenceOption" resultMap="BusiConferenceOptionResult">
+        <include refid="selectBusiConferenceOptionVo"/>
+        <where>
+            <if test="questionId != null "> and question_id = #{questionId}</if>
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="voteCount != null "> and vote_count = #{voteCount}</if>
+            <if test="sortNum != null "> and sort_num = #{sortNum}</if>
+        </where>
+    </select>
+
+    <select id="selectBusiConferenceOptionById" parameterType="Long" resultMap="BusiConferenceOptionResult">
+        <include refid="selectBusiConferenceOptionVo"/>
+        where option_id = #{optionId}
+    </select>
+
+    <insert id="insertBusiConferenceOption" parameterType="BusiConferenceOption" useGeneratedKeys="true" keyProperty="optionId">
+        insert into busi_conference_option
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="questionId != null">question_id,</if>
+            <if test="content != null and content != ''">content,</if>
+            <if test="voteCount != null">vote_count,</if>
+            <if test="sortNum != null">sort_num,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="questionId != null">#{questionId},</if>
+            <if test="content != null and content != ''">#{content},</if>
+            <if test="voteCount != null">#{voteCount},</if>
+            <if test="sortNum != null">#{sortNum},</if>
+        </trim>
+    </insert>
+
+    <update id="updateBusiConferenceOption" parameterType="BusiConferenceOption">
+        update busi_conference_option
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="questionId != null">question_id = #{questionId},</if>
+            <if test="content != null and content != ''">content = #{content},</if>
+            <if test="voteCount != null">vote_count = #{voteCount},</if>
+            <if test="sortNum != null">sort_num = #{sortNum},</if>
+        </trim>
+        where option_id = #{optionId}
+    </update>
+
+    <delete id="deleteBusiConferenceOptionById" parameterType="Long">
+        delete from busi_conference_option where option_id = #{optionId}
+    </delete>
+
+    <delete id="deleteBusiConferenceOptionByIds" parameterType="String">
+        delete from busi_conference_option where option_id in
+        <foreach item="optionId" collection="array" open="(" separator="," close=")">
+            #{optionId}
+        </foreach>
+    </delete>
+    <select id="selectByQuestionId" parameterType="Long" resultMap="BusiConferenceOptionResult">
+        SELECT * FROM busi_conference_option
+        WHERE question_id = #{questionnaireId}
+        ORDER BY sort_num ASC
+    </select>
+</mapper>
